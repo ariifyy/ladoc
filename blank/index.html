@@ -8,87 +8,21 @@
 </head>
 <body>
   <header>
-    <h1>🔐 SafeHash Security & OSINT Toolbox</h1>
-    <nav>
-      <ul>
-        <li><a href="#password-tools">Password Tools</a></li>
-        <li><a href="#osint-tools">OSINT Tools</a></li>
-        <li><a href="#utilities">Utilities</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-    </nav>
+    <h1>SafeHash</h1>
+    <p>Your browser-based security and OSINT toolkit</p>
   </header>
 
   <main>
-    <!-- Password Tools Section -->
-    <section id="password-tools">
-      <h2>Password Tools</h2>
-
-      <!-- Breach Checker -->
-      <div class="tool">
-        <h3>Password Breach Checker</h3>
-        <input type="password" id="breachInput" placeholder="Enter password...">
-        <button onclick="checkBreach()">Check</button>
-        <p id="breachResult"></p>
-      </div>
-
-      <!-- Strength Checker -->
-      <div class="tool">
-        <h3>Password Strength Checker</h3>
-        <input type="password" id="strengthInput" oninput="checkStrength()" placeholder="Type password...">
-        <div id="strengthBar"></div>
-        <p id="strengthText"></p>
-      </div>
-
-      <!-- Password Generator -->
-      <div class="tool">
-        <h3>Password Recommender</h3>
-        <button onclick="generatePassword()">Generate Password</button>
-        <input type="text" id="passwordOutput" readonly>
-      </div>
-    </section>
-
-    <!-- OSINT Tools Section -->
-    <section id="osint-tools">
-      <h2>OSINT Tools</h2>
-
-      <!-- IP Lookup -->
-      <div class="tool">
-        <h3>IP Address Lookup</h3>
-        <input type="text" id="ipInput" placeholder="Enter IP...">
-        <button onclick="lookupIP()">Lookup</button>
-        <pre id="ipResult"></pre>
-      </div>
-
-      <!-- Username Checker (mockup) -->
-      <div class="tool">
-        <h3>Username OSINT Checker</h3>
-        <p>This feature will check if a username exists across common platforms. Coming soon!</p>
-      </div>
-    </section>
-
-    <!-- Utility Section -->
-    <section id="utilities">
-      <h2>Utilities</h2>
-
-      <!-- Hash Generator -->
-      <div class="tool">
-        <h3>Hash Generator (SHA-256)</h3>
-        <input type="text" id="hashInput" placeholder="Enter text...">
-        <button onclick="generateHash()">Generate Hash</button>
-        <pre id="hashResult"></pre>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-      <h2>About</h2>
-      <p>SafeHash Toolbox is a client-side collection of password and OSINT tools, built using only free and open APIs for educational and security research purposes.</p>
+    <section class="grid">
+      <a href="password.html" class="card">Password</a>
+      <a href="osint.html" class="card">OSINT</a>
+      <a href="utilities.html" class="card">Utilities</a>
+      <a href="about.html" class="card">About</a>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 SafeHash Project | Built with ❤️ using HTML, CSS & JS</p>
+    <p>TSNP Project | 2025</p>
   </footer>
 
   <script src="script.js"></script>
