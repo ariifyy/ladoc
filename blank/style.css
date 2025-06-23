@@ -1,25 +1,69 @@
-/* Dark theme with base: #181414 and accent: #3d85c6 */
+/* ===== Theme Variables ===== */
+/* Dark mode (now default) */
+:root {
+  --bg-color: #17191c;
+  --text-color: #ffffff;
+  --accent-color: #3d85c6;
+  --card-bg: #2a2a2a;
+  --card-hover: #3d85c6;
+}
+
+/* Light mode overrides */
+[data-theme="light"] {
+  --bg-color: #ffffff;
+  --text-color: #181414;
+  --accent-color: #3d85c6;
+  --card-bg: #f2f2f2;
+  --card-hover: #d0e4f7;
+}
+
+/* ===== Base Styles ===== */
 body {
   margin: 0;
   padding: 0;
-  background-color: #181414;
-  color: #ffffff;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
+/* ===== Header ===== */
 header {
   text-align: center;
   padding: 2rem 1rem 0;
+  position: relative;
 }
 
 header p {
-  color: #ccc;
+  color: #aaa;
   margin-top: 0.5rem;
 }
 
+/* ===== Theme Toggle Button ===== */
+#themeToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  padding: 0;
+}
+
+#themeToggle img {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0.9);
+  transition: transform 0.3s ease;
+}
+
+#themeToggle img:hover {
+  transform: rotate(15deg);
+}
+
+/* ===== Grid Layout for Cards ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -31,9 +75,10 @@ header p {
   box-sizing: border-box;
 }
 
+/* ===== Card Style ===== */
 .card {
-  background-color: #2a2a2a;
-  color: #fff;
+  background-color: var(--card-bg);
+  color: var(--text-color);
   padding: 2rem;
   border-radius: 10px;
   text-align: center;
@@ -43,10 +88,11 @@ header p {
 }
 
 .card:hover {
-  background-color: #3d85c6;
+  background-color: var(--card-hover);
   transform: translateY(-4px);
 }
 
+/* ===== Footer ===== */
 footer {
   margin-top: auto;
   padding: 1rem;
