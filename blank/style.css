@@ -1,4 +1,5 @@
 /* ===== Theme Variables ===== */
+/* Dark mode (now default) */
 :root {
   --bg-color: #1a1c1f;
   --text-color: #ffffff;
@@ -7,10 +8,11 @@
   --card-hover: #3d85c6;
 
   --footer-bg: #1e1e1e;
-  --footer-text: #ffffff;
+  --footer-text: #bbb;
   --footer-subtext: #888;
 }
 
+/* Light mode overrides */
 [data-theme="light"] {
   --bg-color: #ffffff;
   --text-color: #181414;
@@ -19,7 +21,7 @@
   --card-hover: #d0e4f7;
 
   --footer-bg: #f3f3f3;
-  --footer-text: #333333;
+  --footer-text: #444;
   --footer-subtext: #666;
 }
 
@@ -117,17 +119,13 @@ footer {
 }
 
 .footer-links a {
-  color: #ffffff; /* Always white by default */
+  color: var(--accent-color);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-[data-theme="light"] .footer-links a {
-  color: #333333; /* Dark text in light mode */
-}
-
 .footer-links a:hover {
-  color: var(--accent-color); /* Accent hover effect */
+  color: var(--text-color);
 }
 
 .footer-copy {
