@@ -1,11 +1,15 @@
 /* ===== Theme Variables ===== */
 /* Dark mode (now default) */
 :root {
-  --bg-color: #17191c;
+  --bg-color: #1a1c1f;
   --text-color: #ffffff;
   --accent-color: #3d85c6;
   --card-bg: #2a2a2a;
   --card-hover: #3d85c6;
+
+  --footer-bg: #1e1e1e;
+  --footer-text: #bbb;
+  --footer-subtext: #888;
 }
 
 /* Light mode overrides */
@@ -15,6 +19,10 @@
   --accent-color: #3d85c6;
   --card-bg: #f2f2f2;
   --card-hover: #d0e4f7;
+
+  --footer-bg: #f3f3f3;
+  --footer-text: #444;
+  --footer-subtext: #666;
 }
 
 /* ===== Base Styles ===== */
@@ -95,8 +103,32 @@ header p {
 /* ===== Footer ===== */
 footer {
   margin-top: auto;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
   text-align: center;
   font-size: 0.9rem;
-  color: #999;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--text-color);
+}
+
+.footer-copy {
+  color: var(--footer-subtext);
+  font-size: 0.8rem;
 }
