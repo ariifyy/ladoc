@@ -24,16 +24,38 @@
     </section>
   </main>
 
-<footer>
-  <div class="footer-links">
-    <a href="mailto:support@ladoc.app">Contact</a>
-    <a href="https://github.com/yourusername/LADOC/issues/new?labels=bug&template=vulnerability-report.md" target="_blank">Report Vulnerability</a>
-    <a href="https://github.com/yourusername/LADOC/issues/new?labels=enhancement&template=feature-request.md" target="_blank">Suggest Feature</a>
-    <a href="https://github.com/yourusername/LADOC" target="_blank">GitHub</a>
-  </div>
-  <p class="footer-copy">2025 | LADOC Project</p>
-</footer>
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:support@ladoc.app">Contact</a>
+      <a href="https://github.com/yourusername/LADOC/issues/new?labels=bug&template=vulnerability-report.md" target="_blank">Report Vulnerability</a>
+      <a href="https://github.com/yourusername/LADOC/issues/new?labels=enhancement&template=feature-request.md" target="_blank">Suggest Feature</a>
+      <a href="https://github.com/yourusername/LADOC" target="_blank">GitHub</a>
+    </div>
+    <p class="footer-copy">2025 | LADOC Project</p>
+  </footer>
 
-  <script src="script.js"></script>
+  <script>
+    // Theme toggle logic
+    const toggleBtn = document.getElementById("themeToggle");
+    const icon = document.getElementById("themeIcon");
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+      icon.src = theme === "dark" ? "assets/sun.png" : "assets/moon.png";
+      icon.alt = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      setTheme(newTheme);
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      setTheme(savedTheme);
+    });
+  </script>
 </body>
 </html>
