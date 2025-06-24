@@ -5,7 +5,7 @@ const icon = document.getElementById("themeIcon");
 function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
-  icon.src = theme === "dark" ? "moon.png" : "sun.png";
+  icon.src = theme === "dark" ? "sun.png" : "moon.png";
   icon.alt = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
 }
 
