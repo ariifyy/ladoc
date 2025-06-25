@@ -1,39 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Like a Deck of Cards</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>Like a Deck of Cards</h1>
-    <p>Your Data, Your Cards - Play them Right</p>
-    <button id="themeToggle" aria-label="Toggle theme">
-      <img src="assets/moon.png" alt="Toggle Theme" id="themeIcon" />
-    </button>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Like a Deck of Cards</title>
+    <link rel="icon" type="image/x-icon" href="assets/logodark.png">
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-  <main>
-    <section class="grid">
-      <a href="password.html" class="card">Password</a>
-      <a href="osint.html" class="card">OSINT</a>
-      <a href="utilities.html" class="card">Utilities</a>
-      <a href="about.html" class="card">About</a>
-    </section>
-  </main>
+  <body>
+    <header>
+      <div class="header-inner">
+        <!-- existing header content here -->
+        <a href="index.html" id="logo-link">
+          <img src="assets/logodark.png" alt="LADOC Logo" id="logo" />
+        </a>
+        <p id="typewriter" class="typewriter-text"></p>
+        <h1 id="ladoc" class="ladoc-text">Like a Deck of Cards</h1> 
+        <p>Your data, Your cards - Play them Right</p>
+        <button id="themeToggle" aria-label="Toggle theme">
+          <img src="assets/moon.png" alt="Toggle Theme" id="themeIcon" />
+        </button>
+      </div>
+    </header>
 
-<footer>
-  <div class="footer-links">
-    <a href="mailto:support@ladoc.app">Contact</a>
-    <a href="https://github.com/yourusername/LADOC/issues/new?labels=bug&template=vulnerability-report.md" target="_blank">Report Vulnerability</a>
-    <a href="https://github.com/yourusername/LADOC/issues/new?labels=enhancement&template=feature-request.md" target="_blank">Suggest Feature</a>
-    <a href="https://github.com/yourusername/LADOC" target="_blank">GitHub</a>
-  </div>
-  <p class="footer-copy">2025 | LADOC Project</p>
-</footer>
 
-  <script src="script.js"></script>
-</body>
+    <main>
+      <!-- PASSWORD TOOLS -->
+      <section class="tool-section">
+        <h2 class="section-title">Password Tools</h2>
+        <div class="grid">
+          <a href="password_checker.html" class="card">Password Breach Checker</a>
+          <a href="password_strength.html" class="card">Password Strength Checker</a>
+          <a href="password_generator.html" class="card">Password Generator</a>
+        </div>
+      </section>
+
+      <!-- OSINT TOOLS -->
+      <section class="tool-section">
+        <h2 class="section-title">OSINT Tools</h2>
+        <div class="grid">
+          <a href="email_lookup.html" class="card">Email Lookup</a>
+          <a href="username_search.html" class="card">Username Search</a>
+          <a href="ip_tracker.html" class="card">IP Tracker</a>
+        </div>
+      </section>
+
+      <!-- UTILITY TOOLS -->
+      <section class="tool-section">
+        <h2 class="section-title">Utility Tools</h2>
+        <div class="grid">
+          <a href="hash_converter.html" class="card">Hash Converter</a>
+          <a href="base64_decoder.html" class="card">Base64 Decoder</a>
+        </div>
+      </section>
+
+      <!-- ABOUT SECTION -->
+      <section class="tool-section">
+        <h2 class="section-title">Project Info</h2>
+        <div class="grid">
+          <a href="about.html" class="card">About LADOC</a>
+          <a href="https://github.com/yourusername/LADOC" class="card" target="_blank">View on GitHub</a>
+        </div>
+      </section>
+    </main>
+
+
+    <footer>
+      <div class="footer-links">
+        <a href="mailto:support@ladoc.app"></a>
+        <a href="https://github.com/yourusername/LADOC/issues/new?labels=bug&template=vulnerability-report.md" target="_blank">Report Vulnerability</a>
+        <a href="https://github.com/yourusername/LADOC/issues/new?labels=enhancement&template=feature-request.md" target="_blank">Suggest Feature</a>
+        <a href="https://github.com/yourusername/LADOC" target="_blank">GitHub</a>
+      </div>
+      <p class="footer-copy">2025 | LADOC Project</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
 </html>

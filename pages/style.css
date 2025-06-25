@@ -1,15 +1,19 @@
 /* ===== Theme Variables ===== */
-/* Dark mode (now default) */
+/* Dark mode (default) */
 :root {
   --bg-color: #1a1c1f;
   --text-color: #ffffff;
   --accent-color: #3d85c6;
+  --header-color: #2e4f6a;     /* New: dark bluish tone */
   --card-bg: #2a2a2a;
   --card-hover: #3d85c6;
 
-  --footer-bg: #1e1e1e;
-  --footer-text: #bbb;
-  --footer-subtext: #888;
+  --footer-bg: #1f1f1f;
+  --footer-text: #dddddd;
+  --footer-subtext: #999;
+
+  --tagline-color: #d6ddeb;
+  --ladoc-color: #ffffff;
 }
 
 /* Light mode overrides */
@@ -17,13 +21,18 @@
   --bg-color: #ffffff;
   --text-color: #181414;
   --accent-color: #3d85c6;
+  --header-color: #e1ecf5;     /* New: light desaturated blue */
   --card-bg: #f2f2f2;
   --card-hover: #d0e4f7;
 
   --footer-bg: #f3f3f3;
   --footer-text: #444;
   --footer-subtext: #666;
+
+  --tagline-color: #444;
+  --ladoc-color: #181414;
 }
+
 
 /* ===== Base Styles ===== */
 body {
@@ -39,25 +48,53 @@ body {
 
 /* ===== Header ===== */
 header {
-  text-align: center;
-  padding: 2rem 1rem 0;
+  padding: 2rem 1rem 1rem;
   position: relative;
 }
 
-header p {
-  color: #aaa;
-  margin-top: 0.5rem;
+.header-inner {
+  background-color: var(--header-color);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  max-width: 1100px;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* ===== Theme Toggle Button ===== */
+#logo-link {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.5rem;
+  display: block;
+  z-index: 2;
+}
+
+#logo {
+  height: 36px;
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+#logo:hover {
+  transform: scale(1.05);
+}
+
 #themeToggle {
   background: none;
   border: none;
   cursor: pointer;
   position: absolute;
-  top: 1.5rem;
+  top: 1.2rem;
   right: 1.5rem;
   padding: 0;
+  z-index: 2;
 }
 
 #themeToggle img {
@@ -71,20 +108,82 @@ header p {
   transform: rotate(15deg);
 }
 
-/* ===== Grid Layout for Cards ===== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  box-sizing: border-box;
+/* Header text */
+.typewriter-text,
+#ladoc,
+.header-inner p:last-of-type {
+  text-align: left;
+  margin-left: 60px;
+  margin-bottom: 0.2rem;
 }
 
-/* ===== Card Style ===== */
+/* Typewriter text */
+.typewriter-text {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid var(--text-color);
+  width: fit-content;
+  animation: blink 0.8s steps(2, start) infinite;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  min-height: 1.5em;
+  display: inline-block;
+}
+
+/* LADOC Title */
+#ladoc {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--ladoc-color);
+  line-height: 1.2;
+}
+
+/* Tagline */
+.header-inner p:last-of-type {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--tagline-color);
+  margin-bottom: 0;
+}
+
+@keyframes blink {
+  0%, 100% { border-color: transparent; }
+  50% { border-color: var(--text-color); }
+}
+
+/* ===== Section Titles and Grid ===== */
+.tool-section {
+  padding: 2rem 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  margin: 1rem 0 1rem 2rem;
+  color: var(--accent-color);
+  font-weight: 600;
+  text-align: left;
+  max-width: calc(1000px - 4rem);
+}
+
+/* Grid layout */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
+  justify-content: start;
+}
+
+/* Card style */
 .card {
+  max-width: 250px;
+  width: 100%;
   background-color: var(--card-bg);
   color: var(--text-color);
   padding: 2rem;
@@ -93,6 +192,7 @@ header p {
   text-decoration: none;
   font-size: 1.25rem;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -131,4 +231,39 @@ footer {
 .footer-copy {
   color: var(--footer-subtext);
   font-size: 0.8rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .section-title {
+    margin-left: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  #logo-link {
+    left: 1rem;
+  }
+
+  #themeToggle {
+    right: 1rem;
+  }
+
+  .header-inner {
+    padding: 1rem;
+  }
+
+  .typewriter-text,
+  #ladoc,
+  .header-inner p:last-of-type {
+    margin-left: 40px;
+    text-align: left;
+  }
+
+  #ladoc {
+    font-size: 2rem;
+  }
+
+  .header-inner p:last-of-type {
+    font-size: 0.85rem;
+  }
 }
