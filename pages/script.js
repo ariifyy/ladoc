@@ -128,3 +128,15 @@ async function sha1(str) {
   return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("").toUpperCase();
 }
 
+
+// Show/hide password logic
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("passwordInput");
+
+if (togglePassword && passwordInput) {
+  togglePassword.addEventListener("click", () => {
+    const isHidden = passwordInput.type === "password";
+    passwordInput.type = isHidden ? "text" : "password";
+    togglePassword.textContent = isHidden ? "Show" : "Hide"; 
+  });
+}

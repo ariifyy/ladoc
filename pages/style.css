@@ -1,4 +1,3 @@
-/* ===== Theme Variables ===== */
 /* Dark mode (default) */
 :root {
   --bg-color: #1a1c1f;
@@ -271,4 +270,31 @@ footer {
   .header-inner p:last-of-type {
     font-size: 0.85rem;
   }
+
+  .password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  #passwordInput {
+    width: 100%;
+    padding-right: 3rem; /* space for the toggle button */
+    box-sizing: border-box;
+  }
+
+  #togglePassword {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+
+
 }
+
+
