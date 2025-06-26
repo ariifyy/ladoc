@@ -13,40 +13,25 @@
     <a href="index.html" id="logo-link">
       <img src="assets/logodark.png" alt="LADOC Logo" id="logo" />
     </a>
+
     <button id="themeToggle" aria-label="Toggle theme">
       <img src="assets/moon.png" alt="Toggle Theme" id="themeIcon" />
     </button>
   </header>
 
   <main style="max-width: 500px; margin: 4rem auto; padding: 1rem;">
-    <h2>Password Strength Checker</h2>
-    <p>Check how secure your password is</p>
+    <h2>About LADOC</h2>
+    <p> 
+        Just like in a card game, your data is in your hand – every card matters. <br><br> 
+        Our goal for LADOC is to give users the tools to take control of their digital hand 
+        and play smart – using our pocket-sized tools 
+        <span style="color: var(--accent-color)">like a deck of cards</span>, 
+        to take control of their data 
+        <span style="color: var(--accent-color)">like a deck of cards</span>. <br><br>
+        What began as a simple password breach checker has evolved into a lightweight and versatile toolkit,
+        equipping you to be tech-smart and tech-safe.
+    </p>
 
-    <form id="strengthchecker">
-      <div class="password-wrapper">
-        <input type="password" class="password-input" id="strengthPasswordInput" placeholder="Enter password" required />
-        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">Show</button>
-      </div>
-
-      <!-- Password Strength Meter -->
-      <div class="meter-container">
-        <label for="strengthMeter">Strength:</label>
-        <meter id="strengthMeter" min="0" max="5" value="0"></meter>
-        <span id="strengthLabel">Too Short</span>
-      </div>
-
-      <!-- Entropy Display -->
-      <div class="entropy-container">
-        <label>Password Entropy: <span id="entropyValue">0 bits</span></label>
-        <button type="button" id="entropyInfoBtn">What is entropy?</button>
-      </div>
-
-      <!-- Password Tips -->
-      <div id="passwordTips">
-        <strong>Tips:</strong>
-        <ul id="tipsList"></ul>
-      </div>
-    </form>
   </main>
 
   <footer>

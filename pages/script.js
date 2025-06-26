@@ -128,15 +128,213 @@ async function sha1(str) {
   return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("").toUpperCase();
 }
 
+// Unified password toggle visibility for all password-wrapper blocks
+document.querySelectorAll('.toggle-password').forEach(toggleBtn => {
+  toggleBtn.addEventListener('click', () => {
+    const wrapper = toggleBtn.closest('.password-wrapper');
+    if (!wrapper) return;
 
-// Show/hide password logic
-const togglePassword = document.getElementById("togglePassword");
-const passwordInput = document.getElementById("passwordInput");
+    const input = wrapper.querySelector('.password-input');
+    if (!input) return;
 
-if (togglePassword && passwordInput) {
-  togglePassword.addEventListener("click", () => {
-    const isHidden = passwordInput.type === "password";
-    passwordInput.type = isHidden ? "text" : "password";
-    togglePassword.textContent = isHidden ? "Show" : "Hide"; 
+    if (input.type === 'password') {
+      input.type = 'text';
+      toggleBtn.textContent = 'Hide';
+      toggleBtn.setAttribute('aria-label', 'Hide password');
+    } else {
+      input.type = 'password';
+      toggleBtn.textContent = 'Show';
+      toggleBtn.setAttribute('aria-label', 'Show password');
+    }
+  });
+});
+
+
+
+// Password strength checking
+const strengthMeter = document.getElementById("strengthMeter");
+const strengthText = document.getElementById("strengthText");
+const entropyText = document.getElementById("entropyValue");
+const tipsList = document.getElementById("passwordTips");
+const strengthPasswordInput = document.getElementById("strengthPasswordInput");
+
+if (strengthPasswordInput) {
+  strengthPasswordInput.addEventListener("input", () => {
+    const password = strengthPasswordInput.value;
+    const score = calculatePasswordScore(password);
+    const entropy = calculateEntropy(password);
+
+    if (strengthMeter) strengthMeter.value = score;
+    if (strengthText) strengthText.textContent = getStrengthLabel(score);
+    if (entropyText) entropyText.textContent = `${entropy.toFixed(2)} bits`;
+    if (tipsList) tipsList.innerHTML = generateTips(password).map(tip => `<li>${tip}</li>`).join("");
   });
 }
+
+function calculatePasswordScore(password) {
+  let score = 0;
+  if (!password) return score;
+  if (password.length >= 8) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[a-z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+  return score;
+}
+
+function getStrengthLabel(score) {
+  switch (score) {
+    case 0:
+    case 1:
+      return "Very Weak";
+    case 2:
+      return "Weak";
+    case 3:
+      return "Moderate";
+    case 4:
+      return "Strong";
+    case 5:
+      return "Very Strong";
+    default:
+      return "";
+  }
+}
+
+function calculateEntropy(password) {
+  let charsetSize = 0;
+  if (/[a-z]/.test(password)) charsetSize += 26;
+  if (/[A-Z]/.test(password)) charsetSize += 26;
+  if (/[0-9]/.test(password)) charsetSize += 10;
+  if (/[^A-Za-z0-9]/.test(password)) charsetSize += 32; // Simplified symbols set
+  return password.length * Math.log2(charsetSize || 1);
+}
+
+function generateTips(password) {
+  const tips = [];
+  if (password.length < 12) tips.push("Use at least 12 characters.");
+  if (!/[A-Z]/.test(password)) tips.push("Include uppercase letters.");
+  if (!/[a-z]/.test(password)) tips.push("Include lowercase letters.");
+  if (!/[0-9]/.test(password)) tips.push("Add numbers.");
+  if (!/[^A-Za-z0-9]/.test(password)) tips.push("Use special characters (e.g. !@#$%).");
+  return tips;
+}
+
+// Entropy popup
+const entropyInfoBtn = document.getElementById("entropyInfoBtn");
+if (entropyInfoBtn) {
+  entropyInfoBtn.addEventListener("click", () => {
+    alert("Password entropy is a measure of how unpredictable a password is. Higher entropy means better resistance against brute-force attacks.");
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const generateBtn = document.getElementById("generatePasswordBtn");
+  const passwordOutput = document.getElementById("generatedPassword");
+  const lengthInput = document.getElementById("passwordLength");
+  const uppercaseCheckbox = document.getElementById("includeUppercase");
+  const lowercaseCheckbox = document.getElementById("includeLowercase");
+  const digitsCheckbox = document.getElementById("includeDigits");
+  const symbolsCheckbox = document.getElementById("includeSymbols");
+  const ambiguousCheckbox = document.getElementById("avoidAmbiguous");
+  const copyBtn = document.getElementById("copyPasswordBtn");
+
+  let lastGenerated = "";
+
+  const CHAR_SETS = {
+    upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    lower: "abcdefghijklmnopqrstuvwxyz",
+    digits: "0123456789",
+    symbols: "!@#$%^&*()_+-=[]{}|;:,.<>?/~",
+    ambiguous: "Il1O0|`'\"\\"
+  };
+
+  function generatePassword() {
+    const length = parseInt(lengthInput.value, 10) || 12;
+    let characterPool = "";
+
+    if (uppercaseCheckbox.checked) characterPool += CHAR_SETS.upper;
+    if (lowercaseCheckbox.checked) characterPool += CHAR_SETS.lower;
+    if (digitsCheckbox.checked) characterPool += CHAR_SETS.digits;
+    if (symbolsCheckbox.checked) characterPool += CHAR_SETS.symbols;
+
+    if (ambiguousCheckbox.checked) {
+      const ambiguousChars = new Set(CHAR_SETS.ambiguous.split(""));
+      characterPool = [...characterPool].filter(c => !ambiguousChars.has(c)).join("");
+    }
+
+    if (!characterPool) {
+      passwordOutput.value = "Select at least one character set!";
+      return;
+    }
+
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      const index = Math.floor(Math.random() * characterPool.length);
+      password += characterPool[index];
+    }
+
+    passwordOutput.value = password;
+    lastGenerated = password;
+    copyBtn.textContent = "Copy";
+    copyBtn.disabled = false;
+  }
+
+  function copyPasswordToClipboard() {
+    if (!lastGenerated) return;
+
+    navigator.clipboard.writeText(lastGenerated)
+      .then(() => {
+        copyBtn.textContent = "Copied!";
+        copyBtn.disabled = true;
+      })
+      .catch(() => {
+        copyBtn.textContent = "Failed to copy!";
+      });
+  }
+
+  if (generateBtn) generateBtn.addEventListener("click", generatePassword);
+  if (copyBtn) copyBtn.addEventListener("click", copyPasswordToClipboard);
+});
+
+
+// Email breach checker
+const emailForm = document.getElementById("emailForm");
+const emailInput = document.getElementById("emailInput");
+const emailResult = document.getElementById("emailResult");
+
+if (emailForm) {
+  emailForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    emailResult.innerHTML = "<p>Checking...</p>";
+
+    try {
+      const res = await fetch(`https://api.xposedornot.com/v1/check-email/${encodeURIComponent(email)}`);
+      const data = await res.json();
+
+      if (data && data.status === "success" && data.breaches.length > 0) {
+        const breachesList = data.breaches.map(b => `<li>${b}</li>`).join("");
+        emailResult.innerHTML = `
+          <p>⚠️ This email was found in <strong>${data.breaches.length}</strong> breach(es).</p>
+          <button id="toggleDetails">Show Details</button>
+          <ul id="breachDetails" class="hidden">${breachesList}</ul>
+        `;
+
+        const toggleBtn = document.getElementById("toggleDetails");
+        const breachDetails = document.getElementById("breachDetails");
+
+        toggleBtn.addEventListener("click", () => {
+          breachDetails.classList.toggle("hidden");
+          toggleBtn.textContent = breachDetails.classList.contains("emailhidden") ? "Show Details" : "Hide Details";
+        });
+      } else if (data.status === "not_found") {
+        emailResult.innerHTML = "<p>✅ No breaches found for this email.</p>";
+      } else {
+        emailResult.innerHTML = "<p>❗ Unexpected response from the API.</p>";
+      }
+    } catch (err) {
+      emailResult.innerHTML = "<p>❌ Error checking email.</p>";
+    }
+  });
+}
+

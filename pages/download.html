@@ -13,41 +13,33 @@
     <a href="index.html" id="logo-link">
       <img src="assets/logodark.png" alt="LADOC Logo" id="logo" />
     </a>
+
     <button id="themeToggle" aria-label="Toggle theme">
       <img src="assets/moon.png" alt="Toggle Theme" id="themeIcon" />
     </button>
   </header>
-
+  
   <main style="max-width: 500px; margin: 4rem auto; padding: 1rem;">
-    <h2>Password Strength Checker</h2>
-    <p>Check how secure your password is</p>
+    <h2>Download the Desktop Version of LADOC</h2>
+        <p>
+            The web version offers essential features, 
+            but for full access to advanced tools such as the password manager 
+            and CIS benchmark utilities, please download our desktop application.
+        </p>
 
-    <form id="strengthchecker">
-      <div class="password-wrapper">
-        <input type="password" class="password-input" id="strengthPasswordInput" placeholder="Enter password" required />
-        <button type="button" class="toggle-password" id="togglePassword" aria-label="Show password">Show</button>
-      </div>
+        <p>
+            Click the button below to begin your download, or visit our
+            <a href="https://github.com/yourusername/LADOC" target="_blank" style="color: #3d85c6; text-decoration: underline;">
+            GitHub repository</a> to explore the source code or download the latest release.
+        </p>
 
-      <!-- Password Strength Meter -->
-      <div class="meter-container">
-        <label for="strengthMeter">Strength:</label>
-        <meter id="strengthMeter" min="0" max="5" value="0"></meter>
-        <span id="strengthLabel">Too Short</span>
-      </div>
+        <p>
+            <a href="assets/dummydownload.zip" download style="display: inline-block; margin-top: 1rem; background-color: #3d85c6; color: white; padding: 0.7rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: bold; transition: background-color 0.3s;">
+                ⬇️ Download Now
+            </a>
+        </p>
+    </main>
 
-      <!-- Entropy Display -->
-      <div class="entropy-container">
-        <label>Password Entropy: <span id="entropyValue">0 bits</span></label>
-        <button type="button" id="entropyInfoBtn">What is entropy?</button>
-      </div>
-
-      <!-- Password Tips -->
-      <div id="passwordTips">
-        <strong>Tips:</strong>
-        <ul id="tipsList"></ul>
-      </div>
-    </form>
-  </main>
 
   <footer>
     <div class="footer-links">
