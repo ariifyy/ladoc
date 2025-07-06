@@ -37,7 +37,8 @@ const phrases = [
   "Protect your data",
   "Use our OSINT tools",
   "Spot the scams",
-  "Guard your digital footprint"
+  "Guard your digital footprint",
+  "Download our desktop application"
 ];
 
 let currentPhraseIndex = 0;
@@ -336,5 +337,141 @@ if (emailForm) {
       emailResult.innerHTML = "<p>❌ Error checking email.</p>";
     }
   });
+}
+
+//URL expander via unshorten.me (limited to 10/ip/hour)
+async function expandURL() {
+  const input = document.getElementById('shortUrlInput').value.trim();
+  const resultDiv = document.getElementById('expandURLresult');
+
+  if (!input) {
+    resultDiv.textContent = "Please enter a URL.";
+    return;
+  }
+
+  try {
+    const apiUrl = `https://unshorten.me/json/${encodeURIComponent(input)}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.success && data.resolved_url) {
+      resultDiv.innerHTML = `
+        <strong>Expanded URL:</strong><br>
+        <a href="${data.resolved_url}" target="_blank">${data.resolved_url}</a>
+      `;
+    } else {
+      resultDiv.textContent = "Could not resolve the URL.";
+    }
+  } catch (error) {
+    resultDiv.textContent = `Error: ${error.message}`;
+  }
+}
+
+//qr code decoder
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("qrInput");
+  const canvas = document.getElementById("qrCanvas");
+  const resultDiv = document.getElementById("qrResult");
+  const ctx = canvas.getContext("2d");
+
+  input.addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+      if (code) {
+        resultDiv.innerHTML = `
+          <strong>QR Code Content:</strong><br>
+          <a href="${code.data}" target="_blank">${code.data}</a>
+        `;
+      } else {
+        resultDiv.textContent = "No QR code found in the image.";
+      }
+    };
+
+    reader.readAsDataURL(file);
+  });
+});
+
+
+//qr code scanner
+let html5QrcodeScanner;
+
+function startScanner() {
+  const qrResult = document.getElementById("qrScanResult");
+
+  html5QrcodeScanner = new Html5Qrcode("reader");
+
+  const config = { fps: 10, qrbox: 250 };
+
+  html5QrcodeScanner.start(
+    { facingMode: "environment" }, // use back camera
+    config,
+    (decodedText) => {
+      qrResult.innerHTML = `
+        <strong>QR Code Content:</strong><br>
+        <a href="${decodedText}" target="_blank">${decodedText}</a>
+      `;
+      stopScanner(); // auto-stop after one scan (optional)
+    },
+    (errorMessage) => {
+      // console.log(`Scan error: ${errorMessage}`);
+    }
+  ).catch(err => {
+    qrResult.textContent = `Camera start failed: ${err}`;
+  });
+}
+
+function stopScanner() {
+  if (html5QrcodeScanner) {
+    html5QrcodeScanner.stop().then(() => {
+      html5QrcodeScanner.clear();
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+});
+
+function showUpload() {
+  stopScanner(); // stop camera if running
+  document.getElementById("uploadSection").style.display = "block";
+  document.getElementById("scannerSection").style.display = "none";
+}
+
+function showScanner() {
+  document.getElementById("uploadSection").style.display = "none";
+  document.getElementById("scannerSection").style.display = "block";
+  startScanner(); // start camera on demand
+}
+
+function showUpload() {
+  stopScanner();
+  document.getElementById("qrScanResult").innerHTML = "";
+  document.getElementById("qrResult").innerHTML = "";
+  document.getElementById("uploadSection").style.display = "block";
+  document.getElementById("scannerSection").style.display = "none";
+}
+
+function showScanner() {
+  document.getElementById("qrScanResult").innerHTML = "";
+  document.getElementById("qrResult").innerHTML = "";
+  document.getElementById("uploadSection").style.display = "none";
+  document.getElementById("scannerSection").style.display = "block";
+  startScanner();
 }
 

@@ -20,8 +20,11 @@
     </header>
 
     <main style="max-width: 500px; margin: 4rem auto; padding: 1rem;">
-        <h2>template</h2>
-        <p>template asdlfkjjasldas;df.</p>
+        <h2>Short URL expander</h2>
+        <p>Enter a shortened URL (e.g. bit.ly, tinyurl) to reveal its true destination</p>
+        <input type="text" id="shortUrlInput" placeholder="Enter short URL" style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;" />
+        <button onclick="expandURL()" style="padding: 0.5rem 1rem;">Expand URL</button>
+        <div id="expandURLresult" style="margin-top: 1rem ;"></div>
     </main>
 
 
