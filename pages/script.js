@@ -367,7 +367,7 @@ async function expandURL() {
   }
 }
 
-//qr code decoder
+//qr code decoder (file upload)
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("qrInput");
   const canvas = document.getElementById("qrCanvas");
@@ -408,7 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-//qr code scanner
+//qr code scanner (camera)
 let html5QrcodeScanner;
 
 function startScanner() {
@@ -475,3 +475,96 @@ function showScanner() {
   startScanner();
 }
 
+//URL risk identifier logic
+document.getElementById("urlForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const url = document.getElementById("urlInput").value.trim();
+  const resultDiv = document.getElementById("result");
+
+  if (!url) return;
+
+  const risks = analyzeURL(url);
+  const riskLevel = risks.length === 0 ? "Low Risk ✅" :
+                    risks.length <= 2 ? "Moderate Risk ⚠️" :
+                    "High Risk 🚨";
+
+  resultDiv.innerHTML = `
+    <h3>Analysis Result: ${riskLevel}</h3>
+    <ul>
+      ${risks.length ? risks.map(risk => `<li>${risk}</li>`).join('') : "<li>No major issues detected.</li>"}
+    </ul>
+  `;
+});
+
+function analyzeURL(inputUrl) {
+  const warnings = [];
+
+  try {
+    const parsed = new URL(inputUrl);
+
+    // No HTTPS
+    if (parsed.protocol !== "https:") {
+      warnings.push("❌ Uses HTTP instead of HTTPS.");
+    }
+
+    // IP address instead of domain
+    if (/^\d{1,3}(\.\d{1,3}){3}$/.test(parsed.hostname)) {
+      warnings.push("❌ Domain is an IP address, which is unusual.");
+    }
+
+    // Typosquatting / brand misuse
+    const knownBrands = ["google", "paypal", "apple", "amazon", "facebook"];
+    knownBrands.forEach(brand => {
+      if (parsed.hostname.includes(brand) && !parsed.hostname.endsWith(`${brand}.com`)) {
+        warnings.push(`⚠️ Suspicious use of brand name "${brand}" in domain.`);
+      }
+    });
+
+    // Suspicious TLD
+    const riskyTLDs = [".tk", ".ml", ".gq", ".cf", ".ga"];
+    riskyTLDs.forEach(tld => {
+      if (parsed.hostname.endsWith(tld)) {
+        warnings.push(`⚠️ Suspicious top-level domain (${tld}).`);
+      }
+    });
+
+    // Long URL
+    if (inputUrl.length > 100) {
+      warnings.push("⚠️ Very long URL. Could be trying to obfuscate true destination.");
+    }
+
+    // Nested subdomains
+    const subdomainParts = parsed.hostname.split(".");
+    if (subdomainParts.length > 3) {
+      warnings.push("⚠️ Deeply nested subdomain structure.");
+    }
+
+    // Encoded characters
+    if (decodeURIComponent(parsed.href) !== parsed.href) {
+      warnings.push("⚠️ Encoded characters found in URL.");
+    }
+
+    // Suspicious keywords
+    const riskyWords = ["login", "verify", "secure", "update", "account", "free", "win"];
+    riskyWords.forEach(word => {
+      if (parsed.hostname.includes(word) || parsed.pathname.includes(word)) {
+        warnings.push(`⚠️ Contains suspicious keyword: "${word}".`);
+      }
+    });
+
+    // "@" symbol trick
+    if (parsed.href.includes("@")) {
+      warnings.push("⚠️ URL contains '@' symbol, may redirect to a different site.");
+    }
+
+    // Non-standard port
+    if (parsed.port && parsed.port !== "80" && parsed.port !== "443") {
+      warnings.push(`⚠️ Non-standard port used: ${parsed.port}.`);
+    }
+
+  } catch (error) {
+    warnings.push("❌ Invalid URL format.");
+  }
+
+  return warnings;
+}
