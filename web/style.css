@@ -7,7 +7,7 @@
   --card-bg: #2a2a2a;
   --card-hover: #3d85c6;
 
-  --header-gradient: linear-gradient(270deg, #3d85c6, #2e4f6a, #1a1c1f);
+  --header-gradient: linear-gradient(270deg, #3d85c6, #2e4f6a, #192538);
   --gradient-animation: gradient-dark 8s ease infinite;
 
   --footer-bg: #1f1f1f;
@@ -27,7 +27,7 @@
   --card-bg: #f2f2f2;
   --card-hover: #d0e4f7;
 
-  --header-gradient: linear-gradient(270deg, #3a71a1, #b3d4f0, #f9fafe);
+  --header-gradient: linear-gradient(270deg, #6da4d4, #b3d4f0, #f9fafe);
   --gradient-animation: gradient-light 8s ease infinite;
 
   --footer-bg: #f3f3f3;
