@@ -2,38 +2,38 @@
 :root {
   --bg-color: #1a1c1f;
   --text-color: #ffffff;
-  --accent-color: #3d85c6;
-  --header-color: #2e4f6a;     
+  --accent-color: #a470f0;         /* PURPLE */
+  --header-color: #5a3c77;         /* PURPLE DARK */
   --card-bg: #2a2a2a;
-  --card-hover: #3d85c6;
-
-  --header-gradient: linear-gradient(270deg, #3d85c6, #2e4f6a, #192538);
+  --card-hover: #a470f0;           /* PURPLE */
+ 
+  --header-gradient: linear-gradient(270deg, #a470f0, #5a3c77, #2e2239);  /* PURPLE GRADIENT */
   --gradient-animation: gradient-dark 8s ease infinite;
-
+ 
   --footer-bg: #1f1f1f;
   --footer-text: #dddddd;
   --footer-subtext: #999;
-
+ 
   --tagline-color: #d6ddeb;
   --ladoc-color: #ffffff;
 }
-
+ 
 /* Light mode overrides */
 [data-theme="light"] {
   --bg-color: #ffffff;
   --text-color: #181414;
-  --accent-color: #3d85c6;
-  --header-color: #e1ecf5;    
+  --accent-color: #a470f0;          
+  --header-color: #eae2f5;          
   --card-bg: #f2f2f2;
-  --card-hover: #d0e4f7;
-
-  --header-gradient: linear-gradient(270deg, #6da4d4, #b3d4f0, #f9fafe);
+  --card-hover: #e1d2fa;          
+ 
+  --header-gradient: linear-gradient(270deg, #bb85f7, #d9bdfd, #f3e8ff);
   --gradient-animation: gradient-light 8s ease infinite;
-
+ 
   --footer-bg: #f3f3f3;
   --footer-text: #444;
   --footer-subtext: #666;
-
+ 
   --tagline-color: #444;
   --ladoc-color: #181414;
 }
