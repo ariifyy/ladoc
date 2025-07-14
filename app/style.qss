@@ -1,0 +1,182 @@
+/* === Global Base Styles === */
+QWidget {
+    background-color: %(bg_color)s;
+    color: %(text_color)s;
+}
+
+/* === Global Buttons === */
+QPushButton {
+    background-color: %(accent_color)s;
+    color: %(button_text_colour)s;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+QPushButton:hover {
+    background-color: %(accent_hover)s;
+}
+
+QPushButton:pressed {
+    background-color: %(accent_pressed)s;
+}
+
+/* === Sidebar === */
+QFrame#Sidebar {
+    background-color: %(card_bg)s;
+    border: none;
+}
+
+#Sidebar QWidget {
+    background-color: transparent;
+    border: none;
+}
+
+/* Sidebar Title Label */
+QLabel#SidebarTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: %(text_color)s;
+}
+
+/* Sidebar Buttons */
+QPushButton#SidebarButton {
+    background-color: transparent;
+    color: %(text_color)s;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+    border: none;
+}
+
+QPushButton#SidebarButton:hover {
+    background-color: %(card_hover)s;
+}
+
+/* === Inputs === */
+QLineEdit {
+    background-color: %(input_bg)s;
+    color: %(input_text_color)s;
+    border-radius: 4px;
+    padding: 5px;
+    border: 1px solid %(accent_color)s;
+}
+
+QPushButton#LoginButton {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                      stop:0 #ae80f3, stop:1 #b994f5);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+QPushButton#LoginButton:hover {
+    background-color: #c6aaf9;
+}
+
+QPushButton#LoginButton:pressed {
+    background-color: #5a3c77;
+}
+
+QPushButton#CreateAccountButton {
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+QPushButton#CreateAccountButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    text-decoration: underline;
+}
+
+
+/* === AuthCard Login/Signup Box === */
+QFrame#AuthCard {
+    background-color: %(card_bg)s;
+    border-radius: 12px;
+    padding: 30px;
+    min-width: 320px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+QFrame#AuthCard QLabel {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: %(text_color)s;
+}
+
+QFrame#AuthCard QLineEdit {
+    background-color: %(input_bg)s;
+    color: %(input_text_color)s;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid %(accent_color)s;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+QFrame#AuthCard QPushButton {
+    background-color: %(accent_color)s;
+    color: %(button_text_colour)s;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+QFrame#AuthCard QPushButton:hover {
+    background-color: %(accent_hover)s;
+}
+
+QFrame#AuthCard QPushButton:pressed {
+    background-color: %(accent_pressed)s;
+}
+
+QFrame#AuthCard QLabel#AuthHeading {
+    background-color: transparent;
+    color: %(text_color)s;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+QFrame#AuthCard QLabel#AuthSubLink {
+    color: %(text_color)s;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+QFrame#AuthCard QLabel#AuthSubLink:hover {
+    color: %(accent_hover)s;
+    text-decoration: underline;
+}
+
+/* === Welcome Labels on Home Page === */
+QLabel#WelcomeHeading {
+    font-size: 20px;
+    font-weight: bold;
+    color: %(text_color)s;
+}
+
+QLabel#WelcomeSubheading {
+    font-size: 12px;
+    color: %(text_color)s;
+}
+
+/* === Scrollbars === */
+QScrollBar:vertical {
+    background: %(card_bg)s;
+    width: 10px;
+}
+
+QScrollBar::handle:vertical {
+    background: %(accent_color)s;
+    min-height: 20px;
+    border-radius: 4px;
+}
+

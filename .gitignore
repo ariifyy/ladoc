@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# SQLite/Databases
+*.db
+*.sqlite3
+*.sql
+
+# IDE
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
