@@ -180,3 +180,25 @@ QScrollBar::handle:vertical {
     border-radius: 4px;
 }
 
+QPushButton#DeleteAccountButton {
+    background-color: 
+}
+
+
+/* === Delete Account Button === */
+QPushButton#DeleteAccountButton {
+    background-color: %(delete_button_colour)s;
+    color: white;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
+QPushButton#DeleteAccountButton:hover {
+    background-color: %(delete_button_hover)s;
+}
+
+QPushButton#DeleteAccountButton:pressed {
+    background-color: %(delete_button_pressed)s;
+}
+

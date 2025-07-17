@@ -25,26 +25,30 @@
     <h2>QR Code Decoder</h2>
     <p>Choose how you'd like to scan a QR code:</p>
 
-    <!-- Buttons -->
+    <!-- Toggle Buttons -->
     <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
       <button onclick="showUpload()" style="flex: 1;">Upload Image</button>
       <button onclick="showScanner()" style="flex: 1;">Scan Camera</button>
     </div>
 
-    <!-- Upload Section -->
-    <div id="uploadSection" style="display: none;">
-      <input type="file" id="qrInput" accept="image/*" />
-      <canvas id="qrCanvas" style="display: none;"></canvas>
-      <div id="qrResult" style="margin-top: 1rem;"></div>
+    <!-- Upload Section (Default Visible) -->
+    <div id="uploadSection">
+      <div id="dropZone">
+        <p>Drag & drop QR Code or click to upload file</p>
+        <input type="file" id="qrInput" accept="image/*" hidden />
+        <canvas id="qrCanvas" style="display: none;"></canvas>
+      </div>
+      <div id="qrResult" class="result"></div>
     </div>
 
     <!-- Camera Scanner Section -->
     <div id="scannerSection" style="display: none;">
       <div id="reader" style="width: 100%; margin-bottom: 1rem;"></div>
-      <div id="qrScanResult" style="margin-top: 1rem;"></div>
-      <button onclick="stopScanner()" style="padding: 0.5rem 1rem;">Stop Camera</button>
+      <div id="qrScanResult" class="result"></div>
+      <button id="scanAgainBtn" onclick="rescan()" style="display: none;">Scan Again</button>
     </div>
   </main>
+
 
   <footer>
     <div class="footer-links">

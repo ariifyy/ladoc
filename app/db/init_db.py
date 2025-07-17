@@ -29,6 +29,16 @@ CREATE TABLE IF NOT EXISTS user_passwords (
 )
 """)
 
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users_folders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    parent_id INTEGER,
+    FOREIGN KEY (parent_id) REFERENCES users_folders(id)
+);
+""")
+
 conn.commit()
 conn.close()
 

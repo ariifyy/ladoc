@@ -4,8 +4,8 @@ from PyQt5.QtWidgets import (
     QSplitter, QInputDialog, QMessageBox, QMenu, QAction, QDialog,
     QCheckBox, QSizePolicy, QSpacerItem, QFrame
 )
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QClipboard
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtGui import QClipboard, QIcon
 import sqlite3
 
 from manager_addpassword import AddPasswordDialog
@@ -37,7 +37,21 @@ class PasswordManagerWidget(QWidget):
         top_bar.addStretch()
         top_bar.addWidget(self.add_btn)
 
+        folder_controls = QHBoxLayout()
+        self.add_folder_btn = QPushButton("Add")
+        self.rename_folder_btn = QPushButton("Edit")
+        self.delete_folder_btn = QPushButton("Delete")
+        folder_controls.addWidget(self.add_folder_btn)
+        folder_controls.addWidget(self.rename_folder_btn)
+        folder_controls.addWidget(self.delete_folder_btn)
+
+        self.add_folder_btn.clicked.connect(self.handle_add_folder)
+        self.rename_folder_btn.clicked.connect(self.handle_rename_folder)
+        self.delete_folder_btn.clicked.connect(self.handle_delete_folder)
+        
+
         main_layout.addLayout(top_bar)
+        main_layout.addLayout(folder_controls)
 
         splitter = QSplitter(Qt.Horizontal)
         splitter.setHandleWidth(0)
@@ -45,8 +59,6 @@ class PasswordManagerWidget(QWidget):
 
         self.folder_tree = QTreeWidget()
         self.folder_tree.setHeaderHidden(True)
-        self.folder_tree.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.folder_tree.customContextMenuRequested.connect(self.folder_context_menu)
         self.folder_tree.itemClicked.connect(self.on_folder_selected)
         splitter.addWidget(self.folder_tree)
 
@@ -106,28 +118,75 @@ class PasswordManagerWidget(QWidget):
     def load_folders(self):
         self.folder_tree.clear()
         root = QTreeWidgetItem(["All Passwords"])
+        root.setData(0, Qt.UserRole, None) #Root folder has no folder id
         root.setExpanded(True)
         self.folder_tree.addTopLevelItem(root)
 
         conn = sqlite3.connect("LADOC.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT DISTINCT folder_path FROM user_passwords WHERE user_id = ?", (self.user_id,))
-        folders = sorted(set(path for (path,) in cursor.fetchall() if path))
+        cursor.execute("SELECT id, name, parent_id FROM users_folders WHERE user_id = ?", (self.user_id,))
+        folders = cursor.fetchall()
         conn.close()
 
-        for path in folders:
-            parts = path.split("/")
-            parent = root
-            for part in parts:
-                match = None
-                for i in range(parent.childCount()):
-                    if parent.child(i).text(0) == part:
-                        match = parent.child(i)
-                        break
-                if not match:
-                    match = QTreeWidgetItem([part])
-                    parent.addChild(match)
-                parent = match
+        id_to_item = {None:root}
+        for folder_id, name, parent_id in folders:
+            parent_item = id_to_item.get(parent_id, root)
+            item = QTreeWidgetItem([name])
+            item.setData(0, Qt.UserRole, folder_id)
+            parent_item.addChild(item)
+            id_to_item[folder_id] = item
+
+    def handle_add_folder(self):
+        selected = self.folder_tree.currentItem()
+        if not selected:
+            QMessageBox.warning(self, "No folder selected", "Select a parent folder.")
+            return
+        name, ok = QInputDialog.getText(self, "New Folder", "Folder name:")
+        if ok and name:
+            parent_id = selected.data(0, Qt.UserRole)
+            conn = sqlite3.connect("LADOC.db")
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO users_folders (user_id, name, parent_id) VALUES (?, ?, ?)",
+                           self.user_id, name, parent_id)
+            conn.commit()
+            conn.close()
+            self.load_folders() 
+
+    def handle_rename_folder(self):
+        item = self.folder_tree.currentItem()
+        folder_id = item.data(0, Qt.UserRole)
+        if not folder_id:
+            return
+        new_name, ok = QInputDialog.getText(self, "Rename Folder", "New name", text=item.text(0))
+        if ok and new_name:
+            conn = sqlite3.connect("LADOC.db")
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users_folders SET name = ? WHERE id = ?  and user_id = ?",
+                           (new_name, folder_id, self.user_id))
+            conn.commit()
+            conn.close()
+            self.load_folders()
+
+    def handle_delete_folder(self):
+        item = self.folder_tree.currentItem()
+        folder_id = item.data(0, Qt.UserRole)
+        if not folder_id:
+            return
+        reply = QMessageBox.question(self, "Delete Folder",
+                                     "This will NOT delete passwords, only the folder. Continue?",
+                                     QMessageBox.Yes | QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            folder_path = self.build_folder_path(item)
+            conn = sqlite3.connect("LADOC.db")
+            cursor = conn.cursor()
+            cursor.execute("UPDATE user_passwords SET folder_path = NULL WHERE user_id = ? AND folder_path = ?",
+                           (self.user_id, folder_path))
+            cursor.execute("DELETE FROM users_folders WHERE id = ? and user_id = ?", (folder_id, self.user_id))
+            conn.commit()
+            conn.close()
+            self.load_folders()
+            self.load_passwords()
+        
 
     def load_passwords(self):
         self.password_list.clear()
@@ -181,32 +240,13 @@ class PasswordManagerWidget(QWidget):
             item.setHidden(keyword not in combined_text)
 
     def on_folder_selected(self, item):
-        names = []
-        while item:
-            names.insert(0, item.text(0))
-            item = item.parent()
-        self.selected_folder = "/".join(names)
+        if item.data(0, Qt.UserRole) is None:
+            self.selected_folder = "All Passwords"
+        else:
+            self.selected_folder = self.build_folder_path(item)
         self.load_passwords()
-        self.detail_panel.setText("")
+        self.clear_detail_panel()
 
-    def folder_context_menu(self, pos):
-        item = self.folder_tree.itemAt(pos)
-        if not item:
-            return
-
-        menu = QMenu()
-        add_action = QAction("Add Folder", self)
-        rename_action = QAction("Rename Folder", self)
-        delete_action = QAction("Delete Folder", self)
-
-        add_action.triggered.connect(lambda: self.add_folder(item))
-        rename_action.triggered.connect(lambda: self.rename_folder(item))
-        delete_action.triggered.connect(lambda: self.delete_folder(item))
-
-        menu.addAction(add_action)
-        menu.addAction(rename_action)
-        menu.addAction(delete_action)
-        menu.exec_(self.folder_tree.viewport().mapToGlobal(pos))
 
     def add_folder(self, parent_item):
         name, ok = QInputDialog.getText(self, "New Folder", "Folder name:")
@@ -253,11 +293,11 @@ class PasswordManagerWidget(QWidget):
             self.load_passwords()
 
     def build_folder_path(self, item):
-        path = []
-        while item:
-            path.insert(0, item.text(0))
+        names = []
+        while item and item.data(0, Qt.UserRole) is not None:
+            names.insert(0, item.text(0))
             item = item.parent()
-        return "/".join(path)
+        return "/".join(names)
 
     def get_selected_entry_id(self):
         selected = self.password_list.selectedItems()
@@ -344,45 +384,81 @@ class PasswordManagerWidget(QWidget):
             return
 
         title, username, password, site, expiry, notes = row
-        stars = "*" * len(password)
         expiry = expiry or "None"
+        self.current_password_plain = password
+        self.current_password_visible = False
 
         self.clear_detail_panel()
 
-        def add_field(label_text, value_text, multiline=False):
+        def add_field(label_text, value_text, multiline=False, is_password=False):
             field_container = QWidget()
             field_layout = QVBoxLayout(field_container)
-            field_layout.setContentsMargins(0, 0, 0, 12)  # spacing below each field
+            field_layout.setContentsMargins(0, 0, 0, 12)
             field_layout.setSpacing(2)
 
             label = QLabel(label_text)
             label.setStyleSheet("font-size: 14px; color: grey;")
 
-            value = QLabel(value_text)
-            value.setStyleSheet("font-weight: bold; font-size: 16px;")
-            value.setTextInteractionFlags(Qt.TextSelectableByMouse)
-            
-            if multiline:
-                value.setWordWrap(True)
+            if is_password:
+                # HBox for password + icon
+                pw_row = QHBoxLayout()
+                pw_row.setContentsMargins(0, 0, 0, 0)
+                pw_row.setSpacing(6)
 
-            field_layout.addWidget(label)
-            field_layout.addWidget(value)
+                self.password_value_label = QLabel("●" * len(value_text))
+                self.password_value_label.setStyleSheet("font-weight: bold; font-size: 16px;")
+                self.password_value_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+
+                self.eye_btn = QPushButton("Show")  # text instead of icon
+                self.eye_btn.setFlat(True)
+                self.eye_btn.setCursor(Qt.PointingHandCursor)
+                self.eye_btn.setStyleSheet("""
+                    border: none;
+                    font-weight: bold;
+                    font-size: 14px;
+                """)
+                self.eye_btn.clicked.connect(self.toggle_password_visibility)
+
+                pw_row.addWidget(self.password_value_label)
+                pw_row.addWidget(self.eye_btn)
+
+                field_layout.addWidget(label)
+                field_layout.addLayout(pw_row)
+
+            else:
+                value = QLabel(value_text)
+                value.setStyleSheet("font-weight: bold; font-size: 16px;")
+                value.setTextInteractionFlags(Qt.TextSelectableByMouse)
+                if multiline:
+                    value.setWordWrap(True)
+                field_layout.addWidget(label)
+                field_layout.addWidget(value)
 
             self.detail_panel_layout.addWidget(field_container)
 
-
         add_field("Title", title)
         add_field("Username", username)
-        add_field("Password", stars)
+        add_field("Password", password, is_password=True)
         add_field("Site", site)
         add_field("Expiry", expiry)
         add_field("Notes", notes or "", multiline=True)
+
 
     def clear_detail_panel(self):
         while self.detail_panel_layout.count():
             child = self.detail_panel_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
+
+    def toggle_password_visibility(self):
+        self.current_password_visible = not self.current_password_visible
+        if self.current_password_visible:
+            self.password_value_label.setText(self.current_password_plain)
+            self.eye_btn.setText("Hide")
+        else:
+            self.password_value_label.setText("●" * len(self.current_password_plain))
+            self.eye_btn.setText("Show")
+
 
     def add_password(self):
         dialog = AddPasswordDialog(self)

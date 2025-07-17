@@ -1,3 +1,4 @@
+#Imports
 import sys, os
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QStackedWidget, QWidget, QVBoxLayout, QLabel,
@@ -5,8 +6,11 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QPropertyAnimation
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
+from PyQt5.QtGui import QIcon
 
-from fonts import load_inter_fonts  # Make sure this file exists
+#Importing widgets from respective .py pages
+from fonts import load_inter_fonts
 from themes import dark_theme, light_theme
 from auth_pages.login_page import LoginPage
 from auth_pages.signup_page import SignupPage
@@ -15,11 +19,15 @@ from password_haveibeenpwned import HaveIBeenPwnedWidget
 from password_checkstrength import PasswordStrengthWidget
 from password_recommend import PasswordGeneratorWidget
 from cis_machine_checker import CISLauncher
-
+from password_weeklychecker import WeeklyChecker
+from email_breachchecker import EmailBreachChecker
+from url_qrdecoder import  QRDecoderPage
+from account import AccountPage
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import Qt
 
+#Main window where all the action takes place
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -48,6 +56,21 @@ class MainWindow(QMainWindow):
         self.stack.addWidget(self.signup_page)
         self.stack.setCurrentWidget(self.login_page)
 
+        # Setup tray
+        self.tray_icon = QSystemTrayIcon(QIcon("password-512.png"), self)
+        tray_menu = QMenu()
+        restore_action = QAction("Restore", self)
+        quit_action = QAction("Exit", self)
+
+        restore_action.triggered.connect(self.showNormal)
+        quit_action.triggered.connect(QApplication.quit)
+
+        tray_menu.addAction(restore_action)
+        tray_menu.addAction(quit_action)
+        self.tray_icon.setContextMenu(tray_menu)
+        self.tray_icon.show()
+
+    #applying style.qss
     def apply_stylesheet(self):
         base_dir = os.path.dirname(os.path.abspath(__file__))
         qss_path = os.path.join(base_dir, "style.qss")
@@ -55,13 +78,14 @@ class MainWindow(QMainWindow):
             qss_template = f.read()
         themed_qss = qss_template % self.themes[self.current_theme]
         self.setStyleSheet(themed_qss)
-
+    
+    #dark mode light mode toggle
     def toggle_theme(self):
         self.current_theme = "light" if self.current_theme == "dark" else "dark"
         self.apply_stylesheet()
 
     def setup_tool_home(self, user_id, username):
-        self.tool_home = LADCOClandingpage(user_id, username, parent=self)
+        self.tool_home = LADOClandingpage(user_id, username, parent=self)
         self.stack.addWidget(self.tool_home)
         self.stack.setCurrentWidget(self.tool_home)
 
@@ -74,10 +98,22 @@ class MainWindow(QMainWindow):
     def show_homepage(self, user_id, username):
         self.setup_tool_home(user_id, username)
 
+    def closeEvent(self, event):
+        event.ignore()
+        self.hide()
+        self.tray_icon.showMessage(
+            "Still Running",
+            "Weekly Password Checker is running in background.",
+            QSystemTrayIcon.Information,
+            2000
+        )
+
 
 class CollapsibleSection(QWidget):
-    def __init__(self, title, parent=None):
+    def __init__(self, title, toggle_callback=None, parent=None):
         super().__init__(parent)
+        self.toggle_callback = toggle_callback
+
         self.toggle_button = QPushButton(title)
         self.toggle_button.setCheckable(True)
         self.toggle_button.setChecked(False)
@@ -98,14 +134,25 @@ class CollapsibleSection(QWidget):
         self.toggle_animation.setDuration(200)
 
     def toggle(self):
-        content_height = self.content_area.sizeHint().height()
         if self.toggle_button.isChecked():
-            self.toggle_animation.setStartValue(0)
-            self.toggle_animation.setEndValue(content_height)
+            if self.toggle_callback:
+                self.toggle_callback(self)
+            self.expand()
         else:
-            self.toggle_animation.setStartValue(content_height)
-            self.toggle_animation.setEndValue(0)
+            self.collapse()
+
+    def expand(self):
+        content_height = self.content_area.sizeHint().height()
+        self.toggle_animation.setStartValue(0)
+        self.toggle_animation.setEndValue(content_height)
         self.toggle_animation.start()
+
+    def collapse(self):
+        content_height = self.content_area.height()
+        self.toggle_animation.setStartValue(content_height)
+        self.toggle_animation.setEndValue(0)
+        self.toggle_animation.start()
+        self.toggle_button.setChecked(False)
 
     def add_widget(self, widget):
         content_layout = self.content_area.layout()
@@ -116,9 +163,10 @@ class CollapsibleSection(QWidget):
         content_layout.addWidget(widget)
 
 
-class LADCOClandingpage(QWidget):
+class LADOClandingpage(QWidget):
     def __init__(self, user_id, username, parent=None):
         super().__init__(parent)
+        self.collapsible_sections = []
         self.user_id = user_id
         self.username = username
 
@@ -137,6 +185,7 @@ class LADCOClandingpage(QWidget):
 
         self.show_home_page()
 
+    #constructing left menu bar
     def build_sidebar(self):
         sidebar = QFrame()
         sidebar.setObjectName("Sidebar")
@@ -156,18 +205,34 @@ class LADCOClandingpage(QWidget):
 
         self.add_sidebar_button(layout, "Home", self.show_home_page)
 
-        pw_section = CollapsibleSection("Password Tools")
+        # creating menu sections and register them
+        # password stuff
+        pw_section = self.create_section("Password Tools")
         pw_section.add_widget(self.make_action_button("HaveIBeenPwned", self.show_breach_checker))
         pw_section.add_widget(self.make_action_button("Strength Checker", self.show_strength_checker))
         pw_section.add_widget(self.make_action_button("Password Generator", self.show_password_generator))
         pw_section.add_widget(self.make_action_button("Password Manager", self.show_password_manager))
+        pw_section.add_widget(self.make_action_button("Weekly Checker", self.show_password_WChecker))
         layout.addWidget(pw_section)
 
-        cis_section = CollapsibleSection("CIS Tools")
+        #cis stuff
+        cis_section = self.create_section("CIS Tools")
         cis_section.add_widget(self.make_action_button("CIS Hardening", self.show_cis_launcher))
         layout.addWidget(cis_section)
 
-        settings_section = CollapsibleSection("Settings")
+        #osint stuff
+        osint_section = self.create_section("OSINT")
+        osint_section.add_widget(self.make_action_button("Email Breach Checker", self.show_email_breach_checker))
+        layout.addWidget(osint_section)
+
+        #url stuff
+        url_section = self.create_section("URL")
+        url_section.add_widget(self.make_action_button("QR Decoder", self.show_qrdecoder_page))
+        layout.addWidget(url_section)
+
+        #settings stuff
+        settings_section = self.create_section("Settings")
+        settings_section.add_widget(self.make_action_button("Account", self.show_account_page))
         settings_section.add_widget(self.make_action_button("Toggle Theme", self.toggle_theme))
         layout.addWidget(settings_section)
 
@@ -181,6 +246,16 @@ class LADCOClandingpage(QWidget):
         sidebar.setLayout(sidebar_layout)
 
         return sidebar
+
+    def create_section(self, title):
+        section = CollapsibleSection(title, toggle_callback=self.handle_section_toggle)
+        self.collapsible_sections.append(section)
+        return section
+
+    def handle_section_toggle(self, selected_section):
+        for section in self.collapsible_sections:
+            if section != selected_section:
+                section.collapse()
 
     def add_sidebar_button(self, layout, label, callback):
         btn = QPushButton(label)
@@ -205,6 +280,7 @@ class LADCOClandingpage(QWidget):
             if child.widget():
                 child.widget().deleteLater()
 
+    #home page stuff
     def show_home_page(self):
         self.clear_main_content()
 
@@ -221,6 +297,7 @@ class LADCOClandingpage(QWidget):
         self.main_content.addWidget(subtitle)
         self.main_content.addStretch(1)
 
+    #open respective tool pages functions
     def show_breach_checker(self):
         self.clear_main_content()
         self.main_content.addWidget(HaveIBeenPwnedWidget())
@@ -241,11 +318,26 @@ class LADCOClandingpage(QWidget):
         self.clear_main_content()
         self.main_content.addWidget(CISLauncher())
 
+    def show_password_WChecker(self):
+        self.clear_main_content()
+        self.main_content.addWidget(WeeklyChecker(self.user_id))
+
+    def show_email_breach_checker(self):
+        self.clear_main_content()
+        self.main_content.addWidget(EmailBreachChecker())
+
+    def show_qrdecoder_page(self):
+        self.clear_main_content()
+        self.main_content.addWidget(QRDecoderPage())
+
+    def show_account_page(self):
+        self.clear_main_content()
+        self.main_content.addWidget(AccountPage(self.username, self.user_id))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # Load and apply Inter font globally
+    # Load and apply inter font globally
     font_families = load_inter_fonts()
     if any("Inter" in family for family in font_families):
         app.setFont(QFont("Inter", 10))

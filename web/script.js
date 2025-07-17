@@ -339,7 +339,7 @@ if (emailForm) {
   });
 }
 
-//URL expander via unshorten.me (limited to 10/ip/hour)
+//URL expander via unshorten.me ***(limited to 10/ip/hour)***
 async function expandURL() {
   const input = document.getElementById('shortUrlInput').value.trim();
   const resultDiv = document.getElementById('expandURLresult');
@@ -367,17 +367,41 @@ async function expandURL() {
   }
 }
 
-//qr code decoder (file upload)
+// QRCode decoder
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("qrInput");
   const canvas = document.getElementById("qrCanvas");
-  const resultDiv = document.getElementById("qrResult");
+  const resultDiv = document.getElementById("qrResult"); // outside dropZone now
+  const dropZone = document.getElementById("dropZone");
   const ctx = canvas.getContext("2d");
 
-  input.addEventListener("change", async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  showUpload();
 
+  // Drag-and-drop upload
+  dropZone.addEventListener("click", () => input.click());
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (file) handleImageFile(file);
+  });
+
+  input.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file) handleImageFile(file);
+  });
+
+  function handleImageFile(file) {
     const img = new Image();
     const reader = new FileReader();
 
@@ -396,7 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (code) {
         resultDiv.innerHTML = `
           <strong>QR Code Content:</strong><br>
-          <a href="${code.data}" target="_blank">${code.data}</a>
+          <a href="${code.data}" target="_blank" rel="noopener noreferrer">${code.data}</a>
         `;
       } else {
         resultDiv.textContent = "No QR code found in the image.";
@@ -404,76 +428,106 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     reader.readAsDataURL(file);
-  });
+  }
+
+  // Expose toggles globally
+  window.showUpload = showUpload;
+  window.showScanner = showScanner;
+  window.rescan = rescan;
 });
 
-
-//qr code scanner (camera)
-let html5QrcodeScanner;
+let html5QrcodeScanner = null;
+let scanningPaused = false;
 
 function startScanner() {
   const qrResult = document.getElementById("qrScanResult");
+  const scanAgainBtn = document.getElementById("scanAgainBtn");
+  qrResult.innerHTML = "Initializing camera...";
+  scanAgainBtn.style.display = "none";
+  scanningPaused = false;
 
-  html5QrcodeScanner = new Html5Qrcode("reader");
+  if (!html5QrcodeScanner) {
+    html5QrcodeScanner = new Html5Qrcode("reader");
+  }
 
   const config = { fps: 10, qrbox: 250 };
 
   html5QrcodeScanner.start(
-    { facingMode: "environment" }, // use back camera
+    { facingMode: "environment" },
     config,
     (decodedText) => {
+      if (scanningPaused) return;
+
+      scanningPaused = true;
       qrResult.innerHTML = `
         <strong>QR Code Content:</strong><br>
-        <a href="${decodedText}" target="_blank">${decodedText}</a>
+        <a href="${decodedText}" target="_blank" rel="noopener noreferrer">${decodedText}</a>
       `;
-      stopScanner(); // auto-stop after one scan (optional)
+      scanAgainBtn.style.display = "inline-block";
     },
     (errorMessage) => {
-      // console.log(`Scan error: ${errorMessage}`);
+      // optional: log error
     }
   ).catch(err => {
+    const qrResult = document.getElementById("qrScanResult");
     qrResult.textContent = `Camera start failed: ${err}`;
+    
+    // attempt cleanup
+    stopScanner().then(() => {
+      showUpload();  // Fallback to upload mode if camera fails
+    });
   });
 }
 
 function stopScanner() {
   if (html5QrcodeScanner) {
-    html5QrcodeScanner.stop().then(() => {
-      html5QrcodeScanner.clear();
+    return html5QrcodeScanner.stop().then(() => {
+      return html5QrcodeScanner.clear();
+    }).then(() => {
+      html5QrcodeScanner = null;
+    }).catch((err) => {
+      console.error("Failed to stop scanner: ", err);
     });
   }
+  return Promise.resolve();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-});
-
-function showUpload() {
-  stopScanner(); // stop camera if running
-  document.getElementById("uploadSection").style.display = "block";
-  document.getElementById("scannerSection").style.display = "none";
-}
-
-function showScanner() {
-  document.getElementById("uploadSection").style.display = "none";
-  document.getElementById("scannerSection").style.display = "block";
-  startScanner(); // start camera on demand
+function rescan() {
+  const scanAgainBtn = document.getElementById("scanAgainBtn");
+  const qrResult = document.getElementById("qrScanResult");
+  qrResult.innerHTML = "";
+  scanAgainBtn.style.display = "none";
+  scanningPaused = false;
 }
 
 function showUpload() {
   stopScanner();
+
+  document.getElementById("scannerSection").style.display = "none";
+  document.getElementById("uploadSection").style.display = "block";
+
   document.getElementById("qrScanResult").innerHTML = "";
   document.getElementById("qrResult").innerHTML = "";
-  document.getElementById("uploadSection").style.display = "block";
-  document.getElementById("scannerSection").style.display = "none";
+
+  const scanAgainBtn = document.getElementById("scanAgainBtn");
+  if (scanAgainBtn) scanAgainBtn.style.display = "none";
 }
 
 function showScanner() {
-  document.getElementById("qrScanResult").innerHTML = "";
-  document.getElementById("qrResult").innerHTML = "";
   document.getElementById("uploadSection").style.display = "none";
   document.getElementById("scannerSection").style.display = "block";
+
+  document.getElementById("qrScanResult").innerHTML = "";
+  document.getElementById("qrResult").innerHTML = "";
+
+  const scanAgainBtn = document.getElementById("scanAgainBtn");
+  if (scanAgainBtn) scanAgainBtn.style.display = "none";
+
   startScanner();
 }
+
+
+
 
 //URL risk identifier logic
 document.getElementById("urlForm").addEventListener("submit", function (e) {

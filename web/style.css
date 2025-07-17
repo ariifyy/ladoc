@@ -1,11 +1,16 @@
+/*Import inter and poppins font*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
 /* Dark mode (default) */
 :root {
   --bg-color: #1a1c1f;
   --text-color: #ffffff;
-  --accent-color: #a470f0;         /* PURPLE */
-  --header-color: #5a3c77;         /* PURPLE DARK */
+  --accent-color: #a470f0;  
+  --header-color: #5a3c77;  
   --card-bg: #2a2a2a;
-  --card-hover: #a470f0;           /* PURPLE */
+  --card-hover: #a470f0;   
  
   --header-gradient: linear-gradient(270deg, #a470f0, #5a3c77, #2e2239);  /* PURPLE GRADIENT */
   --gradient-animation: gradient-dark 8s ease infinite;
@@ -57,7 +62,7 @@ body {
   padding: 0;
   background-color: var(--bg-color);
   color: var(--text-color);
-  font-family: Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -153,6 +158,7 @@ header {
 
 /* LADOC Title */
 #ladoc {
+  font-family: "poppins", Arial, sans-serif;
   font-size: 2.4rem;
   font-weight: 700;
   color: var(--ladoc-color);
@@ -357,8 +363,29 @@ footer {
     color: var(--text-color);
   }
 
-  
+}
 
+#dropZone {
+  border: 2px dashed var(--accent-color);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
 
+#dropZone.dragover {
+  background-color: var(--card-hover);
+}
 
+#dropZone p {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+#dropZone input[type="file"] {
+  display: none;
 }

@@ -10,19 +10,25 @@ dark_theme = {
     "card_bg": "#2a2a2a",
     "card_hover": "#a470f0",
     "header_color": "#5a3c77",
-    "button_text_colour": "#ffffff"
+    "button_text_colour": "#ffffff",
+    "delete_button_colour": "#e74c3c",
+    "delete_button_hover": "#c0392b",
+    "delete_button_pressed": "#a93226"
 }
 
 light_theme = {
     "bg_color": "#ffffff",
     "text_color": "#181414",
     "accent_color": "#a470f0",
-    "accent_hover": "#d9bdfd",      # Light purple hover
-    "accent_pressed": "#bb85f7",    # Light-pressed purple
+    "accent_hover": "#d9bdfd",   
+    "accent_pressed": "#bb85f7",   
     "input_bg": "#ffffff",
     "input_text_color": "#181414",
     "card_bg": "#f2f2f2",
     "card_hover": "#e1d2fa",
     "header_color": "#eae2f5",
-    "button_text_colour": "#181414"
+    "button_text_colour": "#181414",
+    "delete_button_colour": "#e74c3c",
+    "delete_button_hover": "#ff6b5a",
+    "delete_button_pressed": "#d43f2d"
 }
