@@ -423,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <a href="${code.data}" target="_blank" rel="noopener noreferrer">${code.data}</a>
         `;
       } else {
-        resultDiv.textContent = "No QR code found in the image.";
+        resultDiv.textContent = "Invalid / No QR code found in the image.";
       }
     };
 
