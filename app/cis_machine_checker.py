@@ -25,7 +25,8 @@ class CISLauncher(QWidget):
         layout.addWidget(title)
 
         # Instruction Label
-        desc = QLabel("Click the button below to run the CIS security-hardening script.\nRequires administrator privileges.")
+        desc = QLabel("Click a button below to run the CIS security-hardening script "
+                      "or open its folder.\nRequires administrator privileges.")
         desc.setFont(QFont("Arial", 11))
         desc.setAlignment(Qt.AlignCenter)
         desc.setWordWrap(True)
@@ -39,6 +40,15 @@ class CISLauncher(QWidget):
         run_button.setFixedWidth(200)
         run_button.setStyleSheet("padding: 10px;")
         layout.addWidget(run_button, alignment=Qt.AlignCenter)
+
+        # Open Folder Button
+        open_folder_button = QPushButton("Open Script Folder")
+        open_folder_button.setFont(QFont("Arial", 12))
+        open_folder_button.setToolTip("Opens the folder containing cis_hardening.bat")
+        open_folder_button.clicked.connect(self.open_script_folder)
+        open_folder_button.setFixedWidth(200)
+        open_folder_button.setStyleSheet("padding: 10px;")
+        layout.addWidget(open_folder_button, alignment=Qt.AlignCenter)
 
         # Footer Label
         footer = QLabel("Script: cis_hardening.bat")
@@ -70,6 +80,16 @@ class CISLauncher(QWidget):
                                     f"The script exited with code {result.returncode}.\n\n{result.stderr}")
         except Exception as e:
             QMessageBox.critical(self, "Exception", f"An unexpected error occurred:\n{str(e)}")
+
+    def open_script_folder(self):
+        folder_path = os.path.dirname(os.path.abspath(__file__))
+        if os.path.isdir(folder_path):
+            try:
+                os.startfile(folder_path)
+            except Exception as e:
+                QMessageBox.critical(self, "Error", f"Could not open folder:\n{str(e)}")
+        else:
+            QMessageBox.critical(self, "Error", "Folder does not exist.")
 
 
 if __name__ == "__main__":

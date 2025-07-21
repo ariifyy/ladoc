@@ -1,6 +1,7 @@
-/*Import inter and poppins font*/
+/*Import font*/
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 
 /* Dark mode (default) */
@@ -150,6 +151,7 @@ header {
   border-right: 2px solid var(--text-color);
   width: fit-content;
   animation: blink 0.8s steps(2, start) infinite;
+  font-family: "Space Grotesk", Arial, sans-serif;
   font-weight: 500;
   letter-spacing: 0.04em;
   min-height: 1.5em;
@@ -158,7 +160,7 @@ header {
 
 /* LADOC Title */
 #ladoc {
-  font-family: "poppins", Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 2.4rem;
   font-weight: 700;
   color: var(--ladoc-color);
@@ -388,4 +390,18 @@ footer {
 
 #dropZone input[type="file"] {
   display: none;
+}
+
+.char-indicator {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  background-color: #444;
+  color: #aaa;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.char-indicator.active {
+  background-color: #2e7d32; /* green */
+  color: #fff;
 }

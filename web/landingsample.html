@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Like a Deck of Cards</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@700&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #050505;
+      color: white;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .gradient-background {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .gradient-sphere {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(50px);
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      opacity: 0.18;
+    }
+
+    .sphere-1 {
+      width: 40vw;
+      height: 40vw;
+      background: linear-gradient(40deg, rgba(128, 0, 255, 0.25), rgba(72, 0, 255, 0.12));
+      top: -15%;
+      left: -15%;
+      animation-name: float-1;
+      animation-duration: 18s;
+    }
+
+    .sphere-2 {
+      width: 45vw;
+      height: 45vw;
+      background: linear-gradient(240deg, rgba(0, 183, 255, 0.2), rgba(0, 72, 255, 0.1));
+      bottom: -25%;
+      right: -15%;
+      animation-name: float-2;
+      animation-duration: 20s;
+    }
+
+    @keyframes float-1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(8%, 8%) scale(1.05); }
+    }
+
+    @keyframes float-2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-8%, -6%) scale(1.07); }
+    }
+
+    .grid-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 60px 60px;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .glow {
+      position: absolute;
+      width: 40vw;
+      height: 40vh;
+      background: radial-gradient(circle, rgba(72, 0, 255, 0.07), transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      animation: pulse 10s infinite alternate;
+      filter: blur(30px);
+      pointer-events: none;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.9); }
+      100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    .content-container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 2rem;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 4rem;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #5dc9ea, #e880f3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    p {
+      font-size: 1.2rem;
+      line-height: 1.7;
+      background: linear-gradient(135deg, #d0f1ff, #ffd6f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 2.5rem;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 300;
+    }
+
+    p::after {
+      content: " Lightweight, pocket-sized, and built for your digital peace of mind.";
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      font-style: italic;
+      font-weight: 400;
+      background: linear-gradient(135deg, #b2e9ff, #ffc8f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.9rem 2.5rem;
+      border-radius: 50px;
+      border: 2.5px solid transparent;
+      background: linear-gradient(90deg, #7f5aff, #c58fff);
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      box-shadow: 0 2px 12px rgba(127, 90, 255, 0.25);
+    }
+
+    .btn:hover,
+    .btn:focus {
+      background-color: transparent;
+      border-color: white;
+      color: white;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      outline: none;
+    }
+
+    .btn:focus-visible {
+      outline-offset: 4px;
+      outline: 2px solid #7f5aff;
+    }
+  </style>
+</head>
+<body>
+  <div class="gradient-background" aria-hidden="true">
+    <div class="gradient-sphere sphere-1"></div>
+    <div class="gradient-sphere sphere-2"></div>
+    <div class="glow"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <main class="content-container">
+    <h1>Like a Deck of Cards</h1>
+    <p>
+      Your gateway to digital security tools — from password breach detection to QR scanning.
+    </p>
+    <button class="btn" type="button">Explore</button>
+  </main>
+</body>
+</html>
