@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Like a Deck of Cards</title>
+  <link rel="icon" type="image/png" href="assets/logodark.png" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" id="logo-link">
+      <img src="assets/logodark.png" alt="LADOC Logo" id="logo" />
+    </a>
+    <button id="themeToggle" aria-label="Toggle theme">
+      <img src="assets/moon.png" alt="Toggle Theme" id="themeIcon" />
+    </button>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <section id="scanner-ui" style="max-width: 500px; margin: 4rem auto; padding: 1rem;">
+      <h2>QR Code / URL analyser</h2>
+      <p>Select how you'd like to scan a QR code or paste a URL manually:</p>
+
+      <!-- Scan Method Buttons -->
+      <div id="scanMethodButtons" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <button onclick="showPaste()">Paste Link</button>
+        <button onclick="showUpload()">Upload Image</button>
+      </div>
+
+      <!-- Paste URL Section -->
+      <section id="pasteSection" style="display: none;">
+        <input type="text" id="pastedUrl" placeholder="Paste a link here" style="width: 100%; margin-bottom: 1rem;" />
+        <button onclick="handlePastedUrl()">Analyze</button>
+        <div id="pasteResult" class="result"></div>
+      </section>
+
+      <!-- Upload Section -->
+      <section id="uploadSection" style="display: none;">
+        <article id="dropZone" onclick="document.getElementById('qrInput').click()">
+          <p>Drag & drop QR Code or click to upload</p>
+          <input type="file" id="qrInput" accept="image/*" hidden />
+          <canvas id="qrCanvas" style="display: none;"></canvas>
+        </article>
+        <div id="uploadResult" class="result"></div>
+      </section>
+    </section>
+
+    <!-- Analysis Result Section -->
+    <section id="analysisSection" style="max-width: 500px; margin: 2rem auto; padding: 1rem;">
+      <h3>Analysis</h3>
+      <div id="analysisOutput" class="result"></div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:support@ladoc.app">Contact</a>
+      <a href="https://github.com/yourusername/LADOC/issues/new?labels=bug&template=vulnerability-report.md" target="_blank">Report Vulnerability</a>
+      <a href="https://github.com/yourusername/LADOC/issues/new?labels=enhancement&template=feature-request.md" target="_blank">Suggest Feature</a>
+      <a href="https://github.com/yourusername/LADOC" target="_blank">GitHub</a>
+    </div>
+    <p class="footer-copy">2025 | LADOC Project</p>
+  </footer>
+
+  <!-- JS Scripts -->
+  <script src="global.js"></script>
+  <script src="qrcode_url.js"></script>
+</body>
+</html>
