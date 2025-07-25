@@ -35,4 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const savedTheme = localStorage.getItem("theme") || "dark";
   setTheme(savedTheme);
+
+  // Close menu when clicking outside of toggle or menu
+  document.addEventListener("click", (event) => {
+    if (!toggle.classList.contains("active")) return;
+
+    const isClickInsideToggle = toggle.contains(event.target);
+    const isClickInsideMenu = menu.contains(event.target);
+
+    if (!isClickInsideToggle && !isClickInsideMenu) {
+      toggle.classList.remove("active");
+      menu.classList.remove("active");
+    }
+  });
 });
