@@ -31,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "assets/down_arrow_dark.png"
         : "assets/down_arrow_light.png";
     });
+
+    
   }
 
   if (themeBtn) {
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
 
 // Typewriter effect
 document.addEventListener("DOMContentLoaded", () => {

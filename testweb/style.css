@@ -10,8 +10,8 @@
   --header-gradient: linear-gradient(270deg, #6b7aff, #c89bff); 
   --typewriter-color: #f7f6f6;
 
-  --footer-bg: #1f1f1f;
-  --footer-text: #dddddd;
+  --footer-bg: #1a1c1f;
+  --footer-text: #efefef;
   --footer-subtext: #999;
 
   --tagline-color: #d6ddeb;
@@ -30,7 +30,7 @@
   --header-gradient: linear-gradient(270deg, #7d91ff, #ad6df7);
   --typewriter-color: #363636;
 
-  --footer-bg: #f3f3f3;
+  --footer-bg: #f2f2f2;
   --footer-text: #444;
   --footer-subtext: #666;
 
@@ -353,3 +353,59 @@ body.dark-theme {
   transition: background-image 0.4s ease;
 }
 
+
+/*test footer*/
+.site-footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.95rem;
+  border-top: 1px solid var(--grid-color);
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.footer-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: var(--footer-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-color);
+}
+
+.footer-note {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+/* Optional: force footer to bottom even if content is short */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
