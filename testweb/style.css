@@ -6,6 +6,8 @@
   --header-color: #5a3c77;
   --card-bg: #2a2a2a;
   --card-hover: #a470f0;
+  --button-color: #8c6cd8;
+
 
   --grid-color: rgba(255, 255, 255, 0.05); 
   --header-gradient: linear-gradient(270deg, #6b7aff, #c89bff); 
@@ -17,6 +19,8 @@
 
   --tagline-color: #d6ddeb;
   --hamburger-color-dark: rgba(239, 239, 239, 0.5);
+
+
 }
 
 [data-theme="light"] {
@@ -27,6 +31,8 @@
   --header-color: #eae2f5;
   --card-bg: #f2f2f2;
   --card-hover: #e1d2fa;
+  --button-color: #a59de8;
+
 
   --grid-color: rgba(0, 0, 0, 0.05); 
   --header-gradient: linear-gradient(270deg, #7d91ff, #ad6df7);
@@ -176,13 +182,26 @@ body.dark-theme {
   color: #999;
 }
 
-.download a {
-  background: var(--header-gradient);
-  padding: 0.5rem 1rem;
+/* Call to action buttons*/
+.cta_button {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
   border-radius: 8px;
-  font-weight: 500;
-  color: black !important;
+  font-weight: 600;
+  color: var(--text-color);
+  background: var(--button-color);
+  border: 2px solid transparent;
   text-decoration: none;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect for CTA button*/
+.cta_button:hover,
+.cta_button:focus {
+  background: transparent;
+  border-color: var(--accent-color);
+  color: var(--text-color);
 }
 
 .dropdown {

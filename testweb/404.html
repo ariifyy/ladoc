@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .error-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .error-subtitle {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      color: var(--muted-typewriter-color, #aaaaaa);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-overlay"></div>
+
+  <main class="error-container">
+    <h1 class="app-title">Oops! Card not found.</h1>
+    <p class="error-subtitle">The card you picked isnt in this deck. Maybe try reshuffling?</p>
+    <a href="index.html" class="cta_button" style="margin-top: 2rem;">Home</a>
+  </main>
+
+
+
+</body>
+</html>
