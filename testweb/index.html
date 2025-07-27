@@ -9,44 +9,80 @@
 </head>
 <body>
 
-  <!-- Grid Overlay -->
   <div class="grid-overlay"></div>
 
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar_container">
-      <!-- Logo -->
+      
       <div class="navbar_logo">
-        <a href="">
+        <a href="index.html">
           <img id="logo" src="assets/logodark.png" alt="Logo" />
         </a>
       </div>
 
-      <!-- Hamburger -->
-      <div class="navbar_toggle" id="mobile_menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
+      <div class="navbar_controls">
+        <ul class="navbar_menu center" id="navbar_menu">
+          <li class="navbar_item"><a href="index.html" class="navbar_links">Home</a></li>
+          <li class="navbar_item dropdown">
+            <a href="#" class="navbar_links dropdown_toggle">Tools
+                <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
+            </a>
+            <ul class="dropdown_menu">
+              <li><a href="#password" class="navbar_links">Password Checker</a></li>
+              <li><a href="#urlqr" class="navbar_links">URL & QR</a></li>
+              <li><a href="#email" class="navbar_links">Email</a></li>
+            </ul>
+          </li>
+          <li class="navbar_item dropdown">
+            <a href="#" class="navbar_links dropdown_toggle">Learn
+                <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
+            </a>
+            <ul class="dropdown_menu">
+              <li><a href="#password-safety" class="navbar_links">Password Safety</a></li>
+              <li><a href="#url-safety" class="navbar_links">Phishing Scams</a></li>
+            </ul>
+          </li>
+          <li class="navbar_item dropdown">
+            <a href="#" class="navbar_links dropdown_toggle">Quiz
+                <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
+            </a>
+            <ul class="dropdown_menu">
+              <li><a href="#quiz-password" class="navbar_links">Password</a></li>
+              <li><a href="#quiz-phishing" class="navbar_links">Phishing Awareness</a></li>
+            </ul>
+          </li>
+          <li class="navbar_item"><a href="#about" class="navbar_links">About</a></li>
+        </ul>
 
-      <!-- Menu -->
-      <ul class="navbar_menu" id="navbar_menu">
-        <li class="navbar_item"><a href="#" class="navbar_links">Home</a></li>
-        <li class="navbar_item"><a href="#tools" class="navbar_links">Tools</a></li>
-        <li class="navbar_item"><a href="#about" class="navbar_links">About</a></li>
-        <li class="navbar_item download"><a href="/download" class="navbar_links">Download</a></li>
-        <li class="navbar_item theme-toggle">
-          <button id="themeToggleBtn">
-            <img id="themeIcon" src="assets/sun.png" alt="Switch to light mode" />
-          </button>
-        </li>
-      </ul>
+        <div class="navbar_right">
+          <div class="navbar_item download">
+            <a href="/download" class="navbar_links">Download</a>
+          </div>
+          <div class="navbar_item theme-toggle">
+            <button id="themeToggleBtn">
+              <img id="themeIcon" src="assets/sun.png" alt="Switch to light mode" />
+            </button>
+          </div>
+
+          <!-- Hamburger menu for mobile -->
+          <div class="navbar_toggle" id="mobile_menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 
   <!-- Landing Section -->
-  <main class="landing-container">
-    <h1 class="app-title">Like a Deck of Cards</h1>
-  </main>
+  <header class="landing-header">
+    <div class="header-content">
+      <p id="typewriter" class="typewriter-text"></p>
+      <h1 class="app-title">Like a Deck of Cards</h1>
+    </div>
+  </header>
+
 
   <script src="script.js"></script>
 </body>

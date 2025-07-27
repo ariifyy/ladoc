@@ -8,12 +8,14 @@
 
   --grid-color: rgba(255, 255, 255, 0.05); 
   --header-gradient: linear-gradient(270deg, #6b7aff, #c89bff); 
+  --typewriter-color: #f7f6f6;
 
   --footer-bg: #1f1f1f;
   --footer-text: #dddddd;
   --footer-subtext: #999;
 
   --tagline-color: #d6ddeb;
+  --hamburger-color-dark: rgba(239, 239, 239, 0.5);
 }
 
 [data-theme="light"] {
@@ -25,14 +27,15 @@
   --card-hover: #e1d2fa;
 
   --grid-color: rgba(0, 0, 0, 0.05); 
-  --header-gradient: linear-gradient(270deg, #7d91ff, #d1aaff); 
+  --header-gradient: linear-gradient(270deg, #7d91ff, #ad6df7);
+  --typewriter-color: #363636;
 
   --footer-bg: #f3f3f3;
   --footer-text: #444;
   --footer-subtext: #666;
 
   --tagline-color: #444;
-  --ladoc-color: #181414;
+  --hamburger-color-dark: rgba(0, 0, 0, 0.77);
 }
 
 /* Reset */
@@ -50,17 +53,70 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+.landing-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 150px;
+  text-align: center;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .app-title {
-  font-size: 3rem;
+  font-size: clamp(2.5rem, 6vw, 5rem);
   font-weight: 700;
   background: var(--header-gradient);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  text-align: center;
-  margin-top: 6rem;
+  max-width: 90vw;
+  word-wrap: break-word;
+  line-height: 1.2;
+  z-index: 1;
+  position: relative;
 }
+
+/*Typewriter effect*/
+.typewriter-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
+  font-weight: 600;
+  color: var(--typewriter-color);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 0.1em solid var(--typewriter-color);
+  animation: blink 0.8s steps(2, start) infinite;
+  line-height: 3.2rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.3rem;
+  min-height: 3.5rem;
+  z-index: 2;
+  position: relative;
+}
+
+
+@keyframes blink {
+  to {
+    border-color: transparent;
+  }
+}
+
+/* Optional override for light/dark themes */
+body.light-theme {
+  --typewriter-color: #666666;
+}
+
+body.dark-theme {
+  --typewriter-color: #aaaaaa;
+}
+
 
 
 /* Navbar */
@@ -81,17 +137,30 @@ body {
   align-items: center;
 }
 
+.navbar_logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .navbar_logo img {
   height: 40px;
   transition: filter 0.3s ease;
 }
 
-.navbar_menu {
+.navbar_controls {
   display: flex;
   align-items: center;
   gap: 2rem;
+  margin-left: auto;
+}
+
+.navbar_menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
   list-style: none;
-  transition: opacity 0.4s ease;
 }
 
 .navbar_links {
@@ -114,6 +183,66 @@ body {
   text-decoration: none;
 }
 
+.dropdown {
+  position: relative;
+}
+
+.dropdown_menu {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: 2.5rem;
+  left: 0;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-width: 200px;
+  z-index: 1001;
+  padding: 0.5rem 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.dropdown_menu li {
+  list-style: none;
+}
+
+.dropdown_menu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dropdown_menu a:hover {
+  background-color: var(--card-hover);
+  color: black;
+}
+
+.dropdown:hover .dropdown_menu,
+.dropdown.open .dropdown_menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.dropdown_arrow {
+  width: 10px;
+  height: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  transition: filter 0.3s ease;
+}
+
+
+.navbar_right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 /* Hamburger */
 .navbar_toggle {
   display: none;
@@ -130,11 +259,12 @@ body {
 .bar {
   width: 25px;
   height: 3px;
-  background-color: var(--text-color);
+  background-color: var(--hamburger-color-dark);
   margin: 3px 0;
   border-radius: 2px;
   transition: all 0.3s ease;
   position: absolute;
+  left: 0;
 }
 
 .bar:nth-child(1) { top: 4px; }
@@ -197,10 +327,14 @@ body {
 /* Landing Section */
 .landing-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding-top: 150px;
+  justify-content: center;
   text-align: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .grid-overlay {
