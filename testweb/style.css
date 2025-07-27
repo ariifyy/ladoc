@@ -1,5 +1,6 @@
 :root {
   --bg-color: #1a1c1f;
+  --navbar-bg: #232427; 
   --text-color: #ffffff;
   --accent-color: #a470f0;
   --header-color: #5a3c77;
@@ -10,7 +11,7 @@
   --header-gradient: linear-gradient(270deg, #6b7aff, #c89bff); 
   --typewriter-color: #f7f6f6;
 
-  --footer-bg: #1a1c1f;
+  --footer-bg: #22242a;
   --footer-text: #efefef;
   --footer-subtext: #999;
 
@@ -20,6 +21,7 @@
 
 [data-theme="light"] {
   --bg-color: #ffffff;
+  --navbar-bg: #f5f5f5;
   --text-color: #181414;
   --accent-color: #a470f0;
   --header-color: #eae2f5;
@@ -30,7 +32,7 @@
   --header-gradient: linear-gradient(270deg, #7d91ff, #ad6df7);
   --typewriter-color: #363636;
 
-  --footer-bg: #f2f2f2;
+  --footer-bg: #e5e7eb;
   --footer-text: #444;
   --footer-subtext: #666;
 
@@ -127,7 +129,7 @@ body.dark-theme {
   top: 0;
   left: 0;
   z-index: 1000;
-  background-color: transparent;
+  background-color: var(--navbar-bg);
   transition: background-color 0.4s ease;
 }
 
@@ -195,7 +197,7 @@ body.dark-theme {
   position: absolute;
   top: 2.5rem;
   left: 0;
-  background-color: var(--bg-color);
+  background-color: var(--navbar-bg);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   min-width: 200px;
@@ -289,7 +291,7 @@ body.dark-theme {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: var(--bg-color);
+    background-color: var(--navbar-bg);
     width: 100%;
     padding: 2rem;
     gap: 1.5rem;
@@ -354,7 +356,7 @@ body.dark-theme {
 }
 
 
-/*test footer*/
+/* Footer*/
 .site-footer {
   background-color: var(--footer-bg);
   color: var(--footer-text);
@@ -399,7 +401,6 @@ body.dark-theme {
   opacity: 0.85;
 }
 
-/* Optional: force footer to bottom even if content is short */
 body {
   display: flex;
   flex-direction: column;
@@ -408,4 +409,5 @@ body {
 
 main {
   flex: 1;
+  padding-top: 80px;
 }
