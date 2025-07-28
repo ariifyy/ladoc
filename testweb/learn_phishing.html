@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Like a Deck of Cards</title>
+  <title>Password Checker - Like a Deck of Cards</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+
 </head>
 <body>
 
@@ -39,9 +41,9 @@
                 <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
             </a>
             <ul class="dropdown_menu">
-              <li><a href="learn_password.html" class="navbar_links">Password Safety</a></li>
-              <li><a href="learn_phishing.html" class="navbar_links">Phishing & Scam Awareness</a></li>
-              <li><a href="learn_safebrowsing.html" class="navbar_links">Safe Browsing and URLs</a></li>
+              <li><a href="#password-safety" class="navbar_links">Password Safety</a></li>
+              <li><a href="#url-safety" class="navbar_links">Phishing Scams</a></li>
+              <li><a href="#url-safety" class="navbar_links">Safe Browsing and URLs</a></li>
   
             </ul>
           </li>
@@ -54,7 +56,7 @@
               <li><a href="#quiz-phishing" class="navbar_links">Phishing Awareness</a></li>
             </ul>
           </li>
-          <li class="navbar_item"><a href="about.html" class="navbar_links">About</a></li>
+          <li class="navbar_item"><a href="#about" class="navbar_links">About</a></li>
         </ul>
 
         <div class="navbar_right">
@@ -76,48 +78,51 @@
     </div>
   </nav>
 
-  <!-- Landing Section -->
-  <header class="landing-header">
-    <div class="header-content">
-      <p id="typewriter" class="typewriter-text"></p>
-      <h1 class="app-title">Like a Deck of Cards</h1>
-      <p class="page-description tagline">Your security, simplified</p>
-    </div>
-  </header>
-
-  <!-- Main stuff-->
+  <!-- Page main content -->
   <main>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-       
+    <section class="page-header">
+      <h1 class="page-title">Phishing & Scam Awareness </h1>
+      <p class="page-description">Learn to spot and avoid fake messages, links and websites designed to trick you</p>
+    </section>
+
+    <br>
+    <br>
+
+    <div class="module-section">
+      <h3>1. What Makes a Strong Password</h3>
+      <p>Explore why longer passphrases are stronger, how entropy works, and how to avoid common weak password patterns.</p>
+    </div>
+
+    <div class="module-section">
+      <h3>2. Common Password Mistakes</h3>
+      <p>Learn what not to do—like reusing passwords, using personal info, or making slight variations like "password1".</p>
+    </div>
+
+    <div class="module-section">
+      <h3>3. Password Managers</h3>
+      <p>Understand how password managers work and how they can simplify your security while increasing your protection.</p>
+    </div>
+
+    <div class="module-section">
+      <h3>4. Two-Factor Authentication (2FA)</h3>
+      <p>Add an extra layer of protection to your accounts using authenticator apps or security keys.</p>
+    </div>
+  </section>
+ 
   </main>
 
   <script src="script.js"></script>
 
   <footer class="site-footer">
-  <div class="footer-content">
-    <nav class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="#about">About</a>
-      <a href="/download">Download</a>
-    </nav>
-    <p class="footer-note">2025 | Like a Deck of Cards</p>
-  </div>
-</footer>
+    <div class="footer-content">
+      <nav class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="#about">About</a>
+        <a href="/download">Download</a>
+      </nav>
+      <p class="footer-note">2025 | Like a Deck of Cards</p>
+    </div>
+  </footer>
 
 
 </body>

@@ -21,6 +21,8 @@
   --hamburger-color-dark: rgba(239, 239, 239, 0.5);
 
   --title-gradient: linear-gradient(270deg, #19e18e, #2aace3);
+
+  --section-header-color: #91a7c4;
 }
 
 [data-theme="light"] {
@@ -46,6 +48,9 @@
   --hamburger-color-dark: rgba(0, 0, 0, 0.77);
 
   --title-gradient: linear-gradient(270deg, #83ccb4, #26a8e4);
+
+  --section-header-color: #3e5282;
+
 }
 
 /* Reset */
@@ -546,4 +551,22 @@ main {
 
 #dropZone input[type="file"] {
   display: none;
+}
+
+
+/* For learn modules*/
+.module-section {
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--section-header-color);
+}
+
+.module-section h3 {
+  font-size: 1.25rem;
+  color: var(--section-header-color);
+}
+
+.module-section p {
+  margin-top: 0.25rem;
+  color: var(--text-color);
 }
