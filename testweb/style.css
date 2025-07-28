@@ -570,3 +570,20 @@ main {
   margin-top: 0.25rem;
   color: var(--text-color);
 }
+
+/* About section*/
+.about-section h2 {
+  color: var(--section-header-color);
+  margin-bottom: 0.5em;
+}
+
+.about-section {
+  margin: 2em auto;
+  max-width: 800px;
+  padding: 0 1.5em;
+}
+
+.about-section p,
+.about-section ul {
+  line-height: 1.6;
+}

@@ -139,7 +139,7 @@ async function analyzeUrl(url) {
   // --- Regex Definitions ---
   const ipInHostnameRegex = /(\d{1,3}\.){3}\d{1,3}/;
 
-  // Check valid IPv4
+  // Check valid IPv4 function
   function isValidIPv4(hostname) {
     const parts = hostname.split(".");
     if (parts.length !== 4) return false;
@@ -238,36 +238,42 @@ async function analyzeUrl(url) {
 
   // Domain and sub-domain checker
   try {
-    const hostnameParts = hostname.split(".");
-    if (hostnameParts.length > 2) {
-      const subdomains = hostnameParts.slice(0, -2); // remove domain + TLD
-      const domain = hostnameParts[hostnameParts.length - 2];
-      const tld = hostnameParts[hostnameParts.length - 1];
-      const mainDomain = `${domain}.${tld}`;
+    if (isValidIPv4(hostname)) {
+      results.push({
+        name: "Subdomain Structure",
+        status: "pass",
+        message: `The URL uses a direct IP address (${hostname}). Subdomain checks are not applicable.`
+      });
+    } else {
+      const hostnameParts = hostname.split(".");
+      if (hostnameParts.length > 2) {
+        const subdomains = hostnameParts.slice(0, -2); // remove domain + TLD
+        const domain = hostnameParts[hostnameParts.length - 2];
+        const tld = hostnameParts[hostnameParts.length - 1];
+        const mainDomain = `${domain}.${tld}`;
 
-      if (subdomains.length >= 4) {
+        let status = "warn";
+        let note = "which may be used to mislead or obscure the main domain.";
+
+        if (subdomains.length >= 4) {
+          status = "fail";
+          note = "which is unusually deep and commonly associated with suspicious URLs.";
+        }
+
         results.push({
           name: "Subdomain Structure",
-          status: "warn",
-          message: `The URL uses ${subdomains.length} subdomain levels, which is unusually deep and may be used to mislead.<br>
-          Subdomain(s) used: ${subdomains.join(".")}<br>
+          status: status,
+          message: `The URL uses ${subdomains.length} subdomain level${subdomains.length !== 1 ? "s" : ""}, ${note}<br>
+          Subdomain(s): ${subdomains.join(".")}<br>
           Main domain: ${mainDomain}`
         });
       } else {
         results.push({
           name: "Subdomain Structure",
           status: "pass",
-          message: `The URL uses ${subdomains.length} subdomain level${subdomains.length !== 1 ? "s" : ""}, which is within normal range.<br>
-          Subdomain(s): ${subdomains.join(".")}<br>
-          Main domain: ${mainDomain}`
+          message: "No subdomains detected."
         });
       }
-    } else {
-      results.push({
-        name: "Domain and  Structure",
-        status: "pass",
-        message: "No subdomains detected."
-      });
     }
   } catch (err) {
     results.push({
@@ -278,7 +284,6 @@ async function analyzeUrl(url) {
   }
 
 
- 
 
   // Shortener Check (with Unshorten API)
   const knownShorteners = [
@@ -373,7 +378,7 @@ async function handleAnalysis() {
   }
 
   if (!isValidUrl(url)) {
-    output.textContent = "Invalid URL format. Please enter a valid URL starting with http:// or https://";
+    output.textContent = "Invalid URL format. Please enter a valid URL starting with http:// or https://. If you have checked that the link you entered is correct, then it is a suspicious link - proceed with caution ";
     return;
   }
 
