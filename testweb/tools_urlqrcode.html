@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Like a Deck of Cards</title>
+  <title>URL & QR Code Checker - Like a Deck of Cards</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
 
@@ -31,7 +33,7 @@
             <ul class="dropdown_menu">
               <li><a href="tools_password.html" class="navbar_links">Password Checker</a></li>
               <li><a href="tools_urlqrcode.html" class="navbar_links">URL & QR Checker</a></li>
-              <li><a href="tools_email.html" class="navbar_links">Email Checker</a></li>
+              <li><a href="#email" class="navbar_links">Email Checker</a></li>
             </ul>
           </li>
           <li class="navbar_item dropdown">
@@ -39,10 +41,8 @@
                 <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
             </a>
             <ul class="dropdown_menu">
-              <li><a href="learn_password.html" class="navbar_links">Password Safety</a></li>
+              <li><a href="#password-safety" class="navbar_links">Password Safety</a></li>
               <li><a href="#url-safety" class="navbar_links">Phishing Scams</a></li>
-              <li><a href="#url-safety" class="navbar_links">Safe Browsing and URLs</a></li>
-  
             </ul>
           </li>
           <li class="navbar_item dropdown">
@@ -76,49 +76,66 @@
     </div>
   </nav>
 
-  <!-- Landing Section -->
-  <header class="landing-header">
-    <div class="header-content">
-      <p id="typewriter" class="typewriter-text"></p>
-      <h1 class="app-title">Like a Deck of Cards</h1>
-      <p class="page-description tagline">Your security, simplified</p>
-    </div>
-  </header>
-
-  <!-- Main stuff-->
+  <!-- Page Header -->
   <main>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-       
+    <section class="page-header">
+      <h1 class="page-title">URL & QR Code Checker</h1>
+      <p class="page-description">Check if a link is suspicious or preview what's behind a QR code</p>
+    </section>
+
+      <section id="decoder" style="max-width: 500px; margin: 4rem auto; padding: 1rem;">
+      <h2>QR Code / URL analyser</h2>
+      <p>Select how you'd like to scan a QR code or paste a URL manually:</p>
+
+      <!-- Scan Method Buttons -->
+      <div id="inputMethodButtons" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <button onclick="showUrl()">URL Link</button>
+        <button onclick="showUpload()">Upload Image</button>
+      </div>
+
+      <!-- Paste URL Section -->
+      <section id="urlSection" style="display: none;">
+        <input type="text" id="urlInput" placeholder="Paste a link here" style="width: 100%; margin-bottom: 1rem;" />
+        <div id="pasteResult" class="result"></div>
+      </section>
+
+      <!-- Upload Section -->
+      <section id="uploadSection" style="display: none;">
+        <article id="dropZone">
+          <p>Drag & drop QR Code or click to upload</p>
+          <input type="file" id="qrInput" accept="image/*" hidden />
+          <canvas id="qrCanvas" style="display: none;"></canvas>
+        </article>
+        <div id="uploadResult" class="result"></div>
+      </section>
+
+      <!-- Analyze Button -->
+      <section id="analyzeButtonSection" style="margin-top: 1rem;">
+        <button onclick="handleAnalysis()">Analyze</button>
+      </section>
+
+    </section>
+
+    <!-- Analysis Result Section -->
+    <section id="analysisSection" style="max-width: 500px; margin: 2rem auto; padding: 1rem;">
+      <h3>Result</h3>
+      <div id="analysisOutput" class="result"></div>
+    </section> 
   </main>
 
   <script src="script.js"></script>
-
+  <script src="tools_urlqrcode.js"></script>
+  
   <footer class="site-footer">
-  <div class="footer-content">
-    <nav class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="#about">About</a>
-      <a href="/download">Download</a>
-    </nav>
-    <p class="footer-note">2025 | Like a Deck of Cards</p>
-  </div>
-</footer>
-
+    <div class="footer-content">
+      <nav class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="#about">About</a>
+        <a href="/download">Download</a>
+      </nav>
+      <p class="footer-note">2025 | Like a Deck of Cards</p>
+    </div>
+  </footer>
 
 </body>
 </html>

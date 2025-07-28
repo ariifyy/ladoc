@@ -150,9 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let isDeleting = false;
 
   const typingSpeed = 60;
-  const deletingSpeed = 30;
-  const pauseAfterTyping = 1900;
-  const pauseAfterDeleting = 300;
+  const deletingSpeed = 20;
+  const pauseAfterTyping = 2000;
+  const pauseAfterDeleting = 200;
 
   function typewriterCycle() {
     const currentPhrase = phrases[currentPhraseIndex];
