@@ -6,7 +6,7 @@
   <title>Password Checker - Like a Deck of Cards</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -61,7 +61,7 @@
 
         <div class="navbar_right">
           <div class="navbar_item">
-            <button class="cta_button" onclick="location.href='/download'">Download</button>          </div>
+            <button class="cta_button" onclick="location.href='download.html'">Download</button>          </div>
           <div class="navbar_item theme-toggle">
             <button id="themeToggleBtn">
               <img id="themeIcon" src="assets/sun.png" alt="Switch to light mode" />
@@ -80,45 +80,167 @@
 
   <!-- Page main content -->
   <main>
-    <section class="page-header">
-      <h1 class="page-title">Safe Browsing & URL Safety</h1>
-      <p class="page-description">Browse the web confidently by understanding links, threats and browser protection</p>
+      <section class="page-header">
+        <h1 class="page-title">Learn Safe Browsing</h1>
+        <p class="page-description">Understand how to navigate the web safely</p>
+    </section>
+    <div class="content-wrapper">
+      
+      <!-- Intro -->
+      <section class="module-section" data-aos="fade-up">
+        <h1>Safe Browsing & URL Safety</h1>
+        <p>The web is full of useful information but also traps. Attackers exploit links, downloads, and even QR codes to deceive and infect. Let’s learn how to browse smarter.</p>
+      </section>
+
+      <br><br>
+
+      <!-- Why URLs Matter -->
+      <section class="module-section" data-aos="fade-up">
+        <h2>Why URLs Matter More Than You Think</h2>
+        <div class="grid-cards">
+          <div class="tip-card">
+            <h3>Hidden Threats</h3>
+            <p>Malicious URLs can install malware or lead to phishing sites—just one wrong click can compromise your system or data.</p>
+          </div>
+          <div class="tip-card">
+            <h3>Disguised Links</h3>
+            <p>Scammers often hide harmful URLs behind shortened or lookalike links in emails, ads, or messages.</p>
+          </div>
+          <div class="tip-card">
+            <h3>QR Code Risks</h3>
+            <p>QR codes can hide dangerous URLs, directing users to fake websites or malicious downloads without revealing the actual link.</p>
+          </div>
+        </div>
+      </section>
+
+
+      <br><br>
+
+      <!-- Anatomy of a URL -->
+      <section class="module-section" data-aos="fade-up">
+        <h2>Anatomy of a URL</h2>
+        <p>Understanding the structure of a URL helps you spot red flags before you click:</p>
+        <div class="grid-box">
+          <ul>
+            <li>🔗 <strong>TLD (Top-Level Domain):</strong> <code>.com</code>, <code>.org</code>, <code>.xyz</code></li>
+            <li>🏢 <strong>Domain:</strong> The core identity of the website (e.g. <code>example.com</code>)</li>
+            <li>🏷 <strong>Subdomain:</strong> Comes before the domain (e.g. <code>login.example.com</code>)</li>
+            <li>📂 <strong>Path:</strong> The page or folder location (e.g. <code>/account/reset</code>)</li>
+            <li>❓ <strong>Query:</strong> Parameters after a <code>?</code> (e.g. <code>?id=123</code>)</li>
+          </ul>
+        </div>
+        <br><br>
+            <blockquote>In short, reading a URL is like reading from <em>right to left</em>.<br><code>https://account.google.com</code> (a legitimate website)
+            would mean that <code>google.com</code> is the domain and <code>account</code> is the subdomain.</blockquote>
+            
+      </section>
+
+      <br><br>
+
+    <!-- How Attackers Abuse URLs -->
+    <section class="module-section" data-aos="fade-up">
+      <h2>How Attackers Can Exploit URLs</h2>
+      <div class="grid-cards">
+        <div class="tip-card">
+          <h3>🔡 Typosquatting</h3>
+          <p>Attackers register URLs with subtle misspellings of trusted brands—like <code>micorsoft.com</code> or <code>faceboook.com</code>, hoping users won’t notice the typo.</p>
+          <br>
+          <p><em>Look closely. Did you catch it?</em></p>
+        </div>
+        
+        <div class="tip-card">
+          <h3>🌐 IP Address URLs</h3>
+          <p>Instead of a regular domain, attackers use raw IP addresses like <code>http://203.0.113.42/login</code> to avoid detection and obscure who they really are.</p>
+        </div>
+
+        <div class="tip-card">
+          <h3>🧱 Subdomain Traps</h3>
+          <p>Hackers create realistic-looking subdomains to fool users. A URL like <code>https://apple.support-account.com</code> might seem safe, but it's actually owned by <code>account.com</code> and not Apple.</p>
+        </div>
+
+        <div class="tip-card">
+          <h3>🕵️‍♂️ Mixed Content URLs</h3>
+          <p>Secure sites (https) sometimes load unsafe (http) resources via URLs, exposing users to attacks.</p>
+          <p>Look for full HTTPS in the browser bar, especially on login pages.</p>
+        </div>
+
+        <div class="tip-card">
+          <h3>↪ Redirect Chains</h3>
+          <p>Links that redirect through multiple URLs hide the final destination, making it harder to spot phishing or malware sites.</p>
+          <p>Attackers use legitimate services to mask harmful sites, like <code>http://bit.ly/xyz</code> redirecting to a scam site.</p>
+        </div>
+
+        <div class="tip-card">
+          <h3>👀 Homograph Attacks</h3>
+          <p>Using visually similar characters from other alphabets (like Cyrillic “а” instead of Latin “a”) to create deceptive URLs.</p>
+          <p>Example: <code>раypal.com</code> (with Cyrillic “р”) looks like <code>paypal.com</code> but leads to a fake site.</p>
+        </div>
+      </div>
+
+      
+
+      <!-- URL Example -->
+      <div class="phishing-example" style="margin-top: 2rem; background: var(--card-bg); padding: 1rem 1.5rem; border-left: 4px solid var(--accent-color); border-radius: 0.5rem;">
+        <p><strong>Quiz: Can you spot what's wrong with this URL?</strong></p>
+        <p style="font-size: 1.1rem; margin: 0.5rem 0; font-family: monospace; color: var(--text-color);">
+          https://mybank.security-update.com/login
+        </p>
+        <p>This looks official, but it's a trick. The domain is actually <strong>login-security-update.com</strong>—not <code>mybank.com</code>. Attackers use these tactics to harvest login credentials from unsuspecting users.</p>
+      </div>
     </section>
 
-    <br>
-    <br>
 
-    <div class="module-section">
-      <h3>1. What Makes a Strong Password</h3>
-      <p>Explore why longer passphrases are stronger, how entropy works, and how to avoid common weak password patterns.</p>
+      <br><br>
+
+      <!-- HTTPS -->
+      <section class="module-section" data-aos="fade-up">
+        <h2>Is HTTPS Enough?</h2>
+        <p>
+          SSL certificates (which enable the upgrade from HTTP to HTTPS) can be easily and cheaply obtained, even by attackers. 
+          While HTTPS ensures your connection to the website is encrypted and secure from eavesdropping, 
+          it does <strong>not</strong> guarantee that the website itself is trustworthy or safe.
+        </p>
+        <br>
+        <p>
+          In other words, HTTPS means data privacy in transit, but not website legitimacy. Always verify the URL and the website’s reputation, 
+          as attackers often use HTTPS to make malicious sites appear more credible.
+        </p>
+      </section>
+      <br><br>
+
+      <!-- Conclusion -->
+      <section class="module-section" data-aos="fade-up">
+        <h2>To Click or Not to Click?</h2>
+        <div class="grid-box">
+          <ul>
+            <li>🔍 Use tools like <a href="https://www.virustotal.com" target="_blank">VirusTotal</a> or <a href="https://unshorten.me" target="_blank">Unshorten.me</a> to check links before visiting them.</li>
+            <li>📷 Got a suspicious QR code or URL? Use our <strong>QR/URL Safety Tool</strong> in the app to preview and analyze it.</li>
+            <li>🧠 Most importantly: Always think before you click.</li>
+          </ul>
+        </div>
+      </section>
     </div>
 
-    <div class="module-section">
-      <h3>2. Common Password Mistakes</h3>
-      <p>Learn what not to do—like reusing passwords, using personal info, or making slight variations like "password1".</p>
-    </div>
-
-    <div class="module-section">
-      <h3>3. Password Managers</h3>
-      <p>Understand how password managers work and how they can simplify your security while increasing your protection.</p>
-    </div>
-
-    <div class="module-section">
-      <h3>4. Two-Factor Authentication (2FA)</h3>
-      <p>Add an extra layer of protection to your accounts using authenticator apps or security keys.</p>
-    </div>
-  </section>
  
   </main>
 
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out',
+      once: true
+    });
+  </script>
+
 
   <footer class="site-footer">
     <div class="footer-content">
       <nav class="footer-links">
         <a href="index.html">Home</a>
-        <a href="#about">About</a>
-        <a href="/download">Download</a>
+        <a href="about.html">About</a>
+        <a href="download.html">Download</a>
       </nav>
       <p class="footer-note">2025 | Like a Deck of Cards</p>
     </div>

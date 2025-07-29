@@ -61,7 +61,7 @@
 
   --content-bg: #eaeaea;
 
-  --learn-header: #21aca5;
+  --learn-header: #39c0b9;
   --learn-subheader: #333333;
   --learn-text: #555555;
 }
@@ -625,7 +625,7 @@ main {
   padding: 2rem;
   border-radius: 1rem;
   /* background-color: var(--content-bg); */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   position: relative;
   z-index: 1;
 }

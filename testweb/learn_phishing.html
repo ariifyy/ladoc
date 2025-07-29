@@ -2,12 +2,11 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Password Checker - Like a Deck of Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Learn Phishing - Like a Deck of Cards</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
-
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -61,7 +60,7 @@
 
         <div class="navbar_right">
           <div class="navbar_item">
-            <button class="cta_button" onclick="location.href='/download'">Download</button>          </div>
+            <button class="cta_button" onclick="location.href='download.html'">Download</button>          </div>
           <div class="navbar_item theme-toggle">
             <button id="themeToggleBtn">
               <img id="themeIcon" src="assets/sun.png" alt="Switch to light mode" />
@@ -81,44 +80,163 @@
   <!-- Page main content -->
   <main>
     <section class="page-header">
-      <h1 class="page-title">Phishing & Scam Awareness </h1>
-      <p class="page-description">Learn to spot and avoid fake messages, links and websites designed to trick you</p>
+      <h1 class="page-title">Learn About Phishing</h1>
+      <p class="page-description">Understand phishing attacks and how to protect yourself from online scams.</p>
     </section>
 
-    <br>
-    <br>
+    <section class="layout-container content-wrapper">
 
-    <div class="module-section">
-      <h3>1. What Makes a Strong Password</h3>
-      <p>Explore why longer passphrases are stronger, how entropy works, and how to avoid common weak password patterns.</p>
+      <!-- Introduction -->
+      <div class="module-section" data-aos="fade-up">
+        <h1>What is Phishing?</h1>
+        <p>Phishing is a type of cyber attack where attackers impersonate trustworthy entities to steal sensitive information such as passwords, credit card numbers, or personal data. It’s dangerous because it targets the weakest link in security — humans. Even with strong technology, social engineering tricks can cause breaches.</p>
+        <br>
+        <p>Over <strong>90% of successful cyber attacks</strong> start with phishing attempts.</p>
+      </div>
+
+      <br><br>
+
+      <!-- Types of Phishing -->
+      <div class="module-section" data-aos="fade-up">
+        <h1>Types of Phishing Attacks</h1>
+        <p>How many of these do you recognise?</p>
+
+        <div class="grid-cards">
+          <div class="tip-card">
+            <h3>📧 Email Phishing</h3>
+            <p>Fake emails designed to look like they come from real companies</p>
+          </div>
+          <div class="tip-card">
+            <h3>🎯 Spear phishing</h3>
+            <p>Targeted phishing aimed at specific individuals or organizations.</p>
+          </div>
+          <div class="tip-card">
+            <h3>📱 Smishing</h3>
+            <p>Phishing via SMS or text messages.</p>
+          </div>
+          <div class="tip-card">
+            <h3>📞 Vishing</h3>
+            <p>Voice phishing via phone calls, more commonly known as scam calls.</p>
+          </div>
+          <div class="tip-card">
+            <h3>📷 Quishing</h3>
+            <p>Phishing attacks that use QR codes to trick you into visiting malicious websites or downloading harmful content.</p>
+          </div>
+          <div class="tip-card">
+            <h3>📝 Clone phishing</h3>
+            <p>A legitimate email is copied and modified to include malicious links.</p>
+          </div>
+        </div>
+      </div>
+
+      <br><br>
+
+      <!-- Psychology of Phishing -->
+      <div class="module-section" data-aos="fade-up">
+        <h1>How Phishing Works</h1>
+        <p><em>"Urgent action required", "Your account will be suspended", "Click here to claim your free phone!"</em></p>
+        <p>Phishing attacks manipulate emotions such as fear, urgency, curiosity, or greed to trick victims into acting without thinking.</p>
+        <br>
+        <br>
+        <h3 style="text-align: center;">The bottom line is: <em>Think before you act</em></h3>
+        <p>Always pause and verify suspicious messages. Don’t panic or rush — attackers count on rushed decisions.</p>
+      </div>
+
+      <br><br>
+
+    <!-- Common Phishing Signs -->
+    <div class="module-section" data-aos="fade-up">
+      <h1>How to Spot Phishing</h1>
+      <div class="grid-cards">
+        <div class="tip-card">
+          <h3>Check the sender</h3>
+          <p>If it looks like it's from a friend or colleague but seems off, confirm with them in person or via a trusted channel.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Spoofed sender address</h3>
+          <p>The email address might be slightly altered to trick you (e.g., <code>support@payp4l.com</code>).</p>
+        </div>
+        <div class="tip-card">
+          <h3>Suspicious links or attachments</h3>
+          <p>Hover over links to see the real URL. Avoid clicking unknown attachments when possible.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Too good to be true</h3>
+          <p>Offers that sound too good to be true usually are. Winning a staycation? Check twice before proceeding.</p>
+        </div>
+        <div class="tip-card">
+          <h3>Urgency and threats</h3>
+          <p>Messages pressuring immediate action or threatening consequences are red flags.</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 2rem; color: var(--text-color);">
+        Test your phishing awareness with Google's interactive quiz: 
+        <a href="https://phishingquiz.withgoogle.com/" target="_blank" rel="noopener">Take the Quiz</a>
+        <br><span>(Optimized for desktop use. Name and email is only for simulating challenges, not for signing up)</span>
+      </p>
     </div>
 
-    <div class="module-section">
-      <h3>2. Common Password Mistakes</h3>
-      <p>Learn what not to do—like reusing passwords, using personal info, or making slight variations like "password1".</p>
+    <br><br>
+
+    <!-- Bonus Tips -->
+    <div class="module-section" data-aos="fade-up">
+      <h1>Protect yourself from being phished</h1>
+      <div class="grid-cards">
+        <div class="tip-card">
+          <p>📧 <strong>Be cautious with unexpected emails</strong></p>
+          <br>
+          <p>Don't click links or open attachments from unknown senders. Always verify first.</p>
+        </div>
+        <div class="tip-card">
+          <p>🎯 <strong>Watch for personalized bait</strong></p>
+          <br>
+          <p>Spear phishing uses your name or workplace to gain your trust — stay alert even if it seems legit.</p>
+        </div>
+        <div class="tip-card">
+          <p>📱 <strong>Think twice before tapping SMS links</strong></p>
+          <br>
+          <p>Smishing messages often appear urgent. Avoid tapping unknown links or calling strange numbers.</p>
+        </div>
+        <div class="tip-card">
+          <p>📞 <strong>Never give info over phone unless you initiated</strong></p>
+          <br>
+          <p>Vishing scams often impersonate banks or tech support. Hang up and call ScamShield helpline at 1799.</p>
+        </div>
+        <div class="tip-card">
+          <p>🔳 <strong>Don’t scan random QR codes</strong></p>
+          <br>
+          <p>Quishing uses malicious QR codes in emails, signs, or even menus. Only scan codes from trusted sources.</p>
+        </div>
+        <div class="tip-card">
+          <p>📩 <strong>Beware of lookalike emails</strong></p>
+          <br>
+          <p>Clone phishing mimics legitimate emails. Check URLs and attachments carefully, even if the sender looks familiar.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="module-section">
-      <h3>3. Password Managers</h3>
-      <p>Understand how password managers work and how they can simplify your security while increasing your protection.</p>
-    </div>
 
-    <div class="module-section">
-      <h3>4. Two-Factor Authentication (2FA)</h3>
-      <p>Add an extra layer of protection to your accounts using authenticator apps or security keys.</p>
-    </div>
-  </section>
- 
+
+    </section>
   </main>
 
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out',
+      once: true
+    });
+  </script>
 
   <footer class="site-footer">
     <div class="footer-content">
       <nav class="footer-links">
         <a href="index.html">Home</a>
-        <a href="#about">About</a>
-        <a href="/download">Download</a>
+        <a href="about.html">About</a>
+        <a href="download.html">Download</a>
       </nav>
       <p class="footer-note">2025 | Like a Deck of Cards</p>
     </div>
