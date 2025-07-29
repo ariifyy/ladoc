@@ -1,4 +1,3 @@
-// Email breach checker
 const emailForm = document.getElementById("emailForm");
 const emailInput = document.getElementById("emailInput");
 const emailResult = document.getElementById("emailResult");
@@ -13,28 +12,47 @@ if (emailForm) {
       const res = await fetch(`https://api.xposedornot.com/v1/check-email/${encodeURIComponent(email)}`);
       const data = await res.json();
 
-      if (data && data.status === "success" && data.breaches.length > 0) {
-        const breachesList = data.breaches.map(b => `<li>${b}</li>`).join("");
-        emailResult.innerHTML = `
-          <p>⚠️ This email was found in <strong>${data.breaches.length}</strong> breach(es).</p>
-          <button id="toggleDetails">Show Details</button>
-          <ul id="breachDetails" class="hidden">${breachesList}</ul>
-        `;
+      if (data && data.status === "success") {
+        let breachesArray = [];
 
-        const toggleBtn = document.getElementById("toggleDetails");
-        const breachDetails = document.getElementById("breachDetails");
+        if (Array.isArray(data.breaches)) {
+          if (Array.isArray(data.breaches[0])) {
+            breachesArray = data.breaches.flat();
+          } else {
+            breachesArray = data.breaches;
+          }
+        } else if (typeof data.breaches === "string") {
+          breachesArray = data.breaches.split(",").map(s => s.trim()).filter(Boolean);
+        }
 
-        toggleBtn.addEventListener("click", () => {
-          breachDetails.classList.toggle("hidden");
-          toggleBtn.textContent = breachDetails.classList.contains("emailhidden") ? "Show Details" : "Hide Details";
-        });
+        if (breachesArray.length > 0) {
+          const breachesList = breachesArray.map(b => `<li>${b}</li>`).join("");
+          emailResult.innerHTML = `
+            <p>⚠️ This email was found in <strong>${breachesArray.length}</strong> breach(es).</p>
+            <button id="toggleDetails">Show Details</button>
+            <ul id="breachDetails" class="hide">${breachesList}</ul>
+          `;
+
+          const toggleBtn = document.getElementById("toggleDetails");
+          const breachDetails = document.getElementById("breachDetails");
+
+          toggleBtn.addEventListener("click", () => {
+            breachDetails.classList.toggle("hide");
+            toggleBtn.textContent = breachDetails.classList.contains("hide")
+              ? "Show Details"
+              : "Hide Details";
+          });
+        } else {
+          emailResult.innerHTML = "<p>✅ No breaches found for this email.</p>";
+        }
       } else if (data.status === "not_found") {
         emailResult.innerHTML = "<p>✅ No breaches found for this email.</p>";
       } else {
-        emailResult.innerHTML = "<p>❗ Unexpected response from the API.</p>";
+        emailResult.innerHTML = "<p>❗ No breaches found or unexpected response.</p>";
       }
     } catch (err) {
       emailResult.innerHTML = "<p>❌ Error checking email.</p>";
+      console.error(err);
     }
   });
 }

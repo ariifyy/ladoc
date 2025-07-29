@@ -187,3 +187,36 @@ document.addEventListener("DOMContentLoaded", () => {
     typewriterCycle();
   }
 });
+
+
+// Copy to clipboard
+  // Universal copy-to-clipboard handler for all buttons with class "copy-btn"
+  document.body.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("copyBtn")) return;
+
+    const btn = e.target;
+    let textToCopy = "";
+
+    // Use data-copy-target selector to find element to copy text/value from
+    const targetSelector = btn.getAttribute("data-copy-target");
+    if (targetSelector) {
+      const targetEl = document.querySelector(targetSelector);
+      if (targetEl) textToCopy = targetEl.value || targetEl.textContent || "";
+    } else if (btn.previousElementSibling && btn.previousElementSibling.value !== undefined) {
+      // fallback: previous sibling input value
+      textToCopy = btn.previousElementSibling.value;
+    }
+
+    if (!textToCopy) return;
+
+    // Write text to clipboard and give user feedback
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const originalText = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 1500);
+    }).catch(() => {
+      btn.textContent = "Failed to copy";
+    });
+  });

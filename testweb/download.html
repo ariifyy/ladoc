@@ -61,7 +61,7 @@
 
         <div class="navbar_right">
           <div class="navbar_item">
-            <button class="cta_button" onclick="location.href='/download'">Download</button>          </div>
+            <button class="cta_button" onclick="window.location.href='download.html'">Download</button>          </div>
           <div class="navbar_item theme-toggle">
             <button id="themeToggleBtn">
               <img id="themeIcon" src="assets/sun.png" alt="Switch to light mode" />
@@ -81,59 +81,13 @@
   <!-- Page main content -->
   <main>
     <section class="page-header">
-      <h1 class="page-title">Password Quiz</h1>
-      <p class="page-description">Put your password knowledge to the test</p>
-    </section>
-
-    <section id="quiz" class="quiz-section">
-      <div id="quiz-container">
-        <div id="question-container" class="hide">
-          <!-- Question counter -->
-          <div id="question-counter" class="quiz-counter"></div>
-
-          <!-- Actual question -->
-          <div id="question" class="quiz-question"></div>
-
-          <!-- Answer buttons -->
-          <div id="answer-buttons" class="btn-grid"></div>
-
-          <!-- Buttons for submit and next -->
-          <div class="quiz-controls">
-            <div class="button-row">
-              <button id="submit-btn" class="cta_button" disabled>Submit</button>
-              <button id="next-btn" class="cta_button hide">Next</button>
-            </div>
-          </div>
-
-          <!-- Explanation after answer -->
-          <div id="explanation-container" class="hide">
-            <p id="explanation-text"></p>
-          </div>
-        </div>
-
-        <!-- Results -->
-        <div id="result-container" class="hide">
-          <h2>Quiz Complete!</h2>
-          <p id="score-text"></p>
-          <button id="restart-btn" class="cta_button">Try Again</button>
-        </div>
-      </div>
-
-      <!-- Review -->
-      <div id="review-container" class="hide">
-        <h3>Review Your Answers</h3>
-        <ul id="review-list"></ul>
-      </div>
-
-      <!-- Start Quiz -->
-      <button id="start-btn" class="cta_button">Start Quiz</button>
+      <h1 class="page-title">Download</h1>
+      <p class="page-description">Take your security game to the next level</p>
     </section>
 
   </main>
 
-
   <script src="script.js"></script>
-  <script src="quiz_password.js"></script>
 
   <footer class="site-footer">
     <div class="footer-content">
@@ -146,6 +100,6 @@
     </div>
   </footer>
 
-
+ 
 </body>
 </html>
