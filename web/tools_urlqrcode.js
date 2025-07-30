@@ -26,7 +26,7 @@ function escapeHtml(text) {
   }[m]));
 }
 
-// Show URL paste input and hide upload section
+// Show url and hide upload image
 function showUrl() {
   urlSection.style.display = "block";
   uploadSection.style.display = "none";
@@ -35,9 +35,11 @@ function showUrl() {
   urlInput.value = "";
   clearCanvas();
   uploadResult.innerHTML = "";
+
+  setActiveToggle("urlButton"); 
 }
 
-// Show upload section and hide URL paste input
+// Show upload image and hide url
 function showUpload() {
   urlSection.style.display = "none";
   uploadSection.style.display = "block";
@@ -46,7 +48,10 @@ function showUpload() {
   urlInput.value = "";
   clearCanvas();
   uploadResult.innerHTML = "";
+
+  setActiveToggle("uploadButton");
 }
+
 
 // Clear canvas drawing
 function clearCanvas() {
@@ -129,6 +134,13 @@ window.addEventListener("DOMContentLoaded", () => {
   // Start with URL paste mode by default
   showUrl();
 });
+
+function setActiveToggle(activeId) {
+  const buttons = document.querySelectorAll("#inputMethodButtons .toggle-btn");
+  buttons.forEach(btn => btn.classList.remove("active"));
+  document.getElementById(activeId).classList.add("active");
+}
+
 
 
 

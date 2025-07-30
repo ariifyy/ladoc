@@ -88,12 +88,12 @@
 
     <section id="decoder" class="content-wrapper">
       <h2>QR Code / URL analyser</h2>
-      <p>Select how you'd like to scan a QR code or paste a URL manually:</p>
-
+      <p>Select how you'd like to upload/scan a QR code or paste a URL manually:</p>
+      <br>
       <!-- Scan Method Buttons -->
-      <div id="inputMethodButtons" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-        <button onclick="showUrl()">URL Link</button>
-        <button onclick="showUpload()">Upload Image</button>
+      <div id="inputMethodButtons" class="toggle-group">
+        <button id="urlButton" onclick="showUrl()" class="toggle-btn active">URL Link</button>
+        <button id="uploadButton" onclick="showUpload()" class="toggle-btn">Upload Image</button>
       </div>
 
       <!-- Paste URL Section -->
@@ -109,13 +109,14 @@
           <input type="file" id="qrInput" accept="image/*" hidden />
           <canvas id="qrCanvas" style="display: none;"></canvas>
         </article>
+        <br>
         <div id="uploadResult" class="result"></div>
       </section>
 
 
       <!-- Analyze Button -->
       <section id="analyzeButtonSection" style="margin-top: 1rem;">
-        <button onclick="handleAnalysis()">Analyze</button>
+        <button onclick="handleAnalysis()" class="btn">Analyze</button>
       </section>
 
     </section>

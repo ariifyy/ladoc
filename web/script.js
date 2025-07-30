@@ -32,6 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
         : "assets/down_arrow_light.png";
     });
 
+    // Scroll down arrow (landing)
+    const downArrow = document.getElementById("downArrow");
+    if (downArrow) {
+      downArrow.src = theme === "dark"
+        ? "assets/down_arrow_dark.png"
+        : "assets/down_arrow_light.png";
+}
+
+
     
   }
 
@@ -220,3 +229,4 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.textContent = "Failed to copy";
     });
   });
+

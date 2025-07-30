@@ -6,6 +6,7 @@
   <title>Like a Deck of Cards</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 </head>
 <body class="landing-page">
 
@@ -84,31 +85,161 @@
       <p id="typewriter" class="typewriter-text"></p>
       <h1 class="app-title">Like a Deck of Cards</h1>
       <p class="page-description tagline">Your security, simplified</p>
+      <img id="downArrow" src="assets/down_arrow_light.png" alt="Scroll down" class="down-arrow" />
     </div>
   </header>
 
   <!-- Main stuff-->
   <main>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+    <div class="content-wrapper">
+
+      <!-- Statistics Section -->
+      <section class="stats-section" data-aos="fade-up" data-aos-delay="100">
+        <h1 style="text-align: center; font-size: 2.5rem;">Why Cybersecurity Matters</h1>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number" data-end="81">0</span>
+            <p style="font-size: 18px;">percent of breaches use weak or stolen passwords</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" data-end="3">0</span>
+            <p style="font-size: 18px;">seconds to crack a common password</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" data-end="43">0</span>
+            <p style="font-size: 18px;">percent of phishing attacks target credentials</p>
+          </div>
+        </div>
+      </section>
+      <br><br><br><br>
+      <!-- Introduction Section -->
+      <section class="landing-section" data-aos="fade-up" data-aos-delay="100">
+        <h2 style="text-align: center; font-size: 2.5rem;">Introducing LADOC</h2>
+        <br>
+        <p class="intro-text">
+          <strong>Like a Deck of Cards (LADOC)</strong> is your all-in-one security toolkit. 
+          Our goal is to cybersecurity through interactive tools, engaging learning modules, and smart checks — because staying safe online <strong>shouldn’t feel like a gamble</strong>.
+        </p>
+      </section>
+
+      <br><br><br><br>
+      <!-- Tools Flip Card Section -->
+      <section class="landing-section" data-aos="fade-up" data-aos-delay="100">
+        <h2 style="text-align: center; font-size: 2.5rem;">Explore Our Tools</h2>
+        <br>
+        <div class="flip-card-grid">
+          <!-- Card 1 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <h3>Password Checker</h3>
+              </div>
+              <div class="flip-card-back">
+                <p style="font-size: 18px;">Check your password strength, entropy, and breach status in real-time.</p>
+                <a href="tools_password.html" class="cta_button landing-download">Explore</a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card 2 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <h3>URL & QR Checker</h3>
+              </div>
+              <div class="flip-card-back">
+                <p style="font-size: 18px;">Decode and scan links or QR codes for hidden threats or malicious domains.</p>
+                <a href="tools_urlqrcode.html" class="cta_button landing-download">Explore</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <h3>Email Breach Checker</h3>
+              </div>
+              <div class="flip-card-back">
+                <p style="font-size: 18px;">Check if your email has appeared in known data breaches.</p>
+                <a href="tools_email.html" class="cta_button landing-download">Explore</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <br><br>
+      <section class="download-section content-wrapper" data-aos="fade-up" data-aos-delay="100">
+        <h2>Download Our App</h2>
+        <p>Get the full desktop experience with enhanced security tools and offline access. Available for Windows, macOS, and Linux.</p>
+        <button class="cta_button landing-download" onclick="window.location.href='download.html'">Go to Download Page</button>
+      </section>
+
+    </div>
+
+
        
   </main>
 
+  <!-- Script for flow in -->
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out',
+      once: false
+    });
+  </script>
+
+  <!-- Script for animation-->
+  <script>
+    const counters = document.querySelectorAll(".stat-number");
+    const options = { threshold: 0.7 };
+
+    const animateCount = (el, end) => {
+      let start = 0;
+      const duration = 1500;
+      const step = Math.ceil(end / (duration / 30));
+      clearInterval(el._interval);  // Clear any previous interval if any
+
+      el.textContent = '0'; // reset count visually before start
+
+      el._interval = setInterval(() => {
+        start += step;
+        if (start >= end) {
+          el.textContent = end;
+          clearInterval(el._interval);
+        } else {
+          el.textContent = start;
+        }
+      }, 30);
+    };
+
+    // Create Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const el = entry.target;
+        const endValue = parseInt(el.getAttribute("data-end") || el.textContent, 10);
+
+        if (entry.isIntersecting) {
+          // Animate when element enters viewport
+          animateCount(el, endValue);
+        } else {
+          // Reset to zero when element leaves viewport so animation can retrigger
+          el.textContent = '0';
+          clearInterval(el._interval);
+        }
+      });
+    }, options);
+
+    // Observe each counter
+    counters.forEach(counter => {
+      observer.observe(counter);
+    });
+
+  </script>
+
 
   <footer class="site-footer">
   <div class="footer-content">
