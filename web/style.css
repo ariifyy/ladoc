@@ -19,7 +19,7 @@
 
   --tagline-color: #d6ddeb;
   --hamburger-color-dark: rgba(239, 239, 239, 0.5);
-  --title-gradient: linear-gradient(270deg, #19e18e, #2aace3);
+  --title-gradient: linear-gradient(270deg, #10f194, #13a3e0);
   --section-header-color: #91a7c4;
 
   --dropdown-hover-color-landing: #a470f0;
@@ -560,6 +560,36 @@ main {
   }
 }
 
+/* For buttons for tools */
+/* Button Base Style */
+.btn {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+}
+
 
 
 /* For password character indicator*/
@@ -580,7 +610,7 @@ main {
 
 /* For QR code upload*/
 #dropZone {
-  border: 2px dashed var(--accent-color);
+  border: 2px dashed var(--bluegreen-button-color);
   border-radius: 10px;
   padding: 2rem;
   text-align: center;
