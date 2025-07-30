@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About - Like a Deck of Cards</title>
+  <title>Password Checker - Like a Deck of Cards</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+
 </head>
 <body>
 
@@ -41,7 +43,7 @@
             <ul class="dropdown_menu">
               <li><a href="learn_password.html" class="navbar_links">Password Safety</a></li>
               <li><a href="learn_phishing.html" class="navbar_links">Phishing Scams</a></li>
-              <li><a href="learn_safebrowsing.html" class="navbar_links">Safe Browsing and URLs</a></li>
+              <li><a href="learn_safebrowsing.html" class="navbar_links">Safe Browsing</a></li>
   
             </ul>
           </li>
@@ -50,8 +52,10 @@
                 <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
             </a>
             <ul class="dropdown_menu">
-              <li><a href="quiz_password.html" class="navbar_links">Password</a></li>
+              <li><a href="quiz_password.html" class="navbar_links">Password Safety</a></li>
               <li><a href="quiz_phishing.html" class="navbar_links">Phishing Awareness</a></li>
+              <li><a href="quiz_safebrowsing.html" class="navbar_links">Safe Browsing</a></li>
+
             </ul>
           </li>
           <li class="navbar_item"><a href="about.html" class="navbar_links">About</a></li>
@@ -79,82 +83,57 @@
   <!-- Page main content -->
   <main>
     <section class="page-header">
-      <h1 class="page-title">About</h1>
-      <p class="page-description">What even is Like a Deck of Cards?</p>
+      <h1 class="page-title">Phishing Awareness Quiz</h1>
+      <p class="page-description">Take the quiz and shapen your instincts</p>
     </section>
 
+    <section id="quiz" class="quiz-section">
+      <div id="quiz-container">
+        <div id="question-container" class="hide">
+          <!-- Question counter -->
+          <div id="question-counter" class="quiz-counter"></div>
 
-    <section class="about-section" id="what-is-ladoc">
-      <h2>What is LADOC?</h2>
-      <p>
-        Think Swiss army knife — Like a Deck of Cards (LADOC) is a free, growing collection of security tools that help you stay safe and smart online.
-        The name is symbolic: your personal data is like a deck of cards — sensitive, valuable, and easily scattered. Our tools? Like a deck of cards in your hands, ready to protect.
-      </p>
-    </section>
+          <!-- Actual question -->
+          <div id="question" class="quiz-question"></div>
 
-    <br>
+          <!-- Answer buttons -->
+          <div id="answer-buttons" class="btn-grid"></div>
 
-    <section class="about-section" id="why-ladoc">
-      <h2>Why LADOC?</h2>
-      <p>
-        From weak passwords to phishing links and QR scams — the digital world is full of traps.
-        Yet, security tools remain fragmented, overly technical, or hidden behind paywalls.
-        LADOC was built with accessibility in mind. Inspired by tools like CyberChef used in CTFs, we wanted everything in one place — free, easy, and effective.
-        Staying safe online shouldn’t require a cybersecurity degree.
-      </p>
-    </section>
+          <!-- Buttons for submit and next -->
+          <div class="quiz-controls">
+            <div class="button-row">
+              <button id="submit-btn" class="cta_button" disabled>Submit</button>
+              <button id="next-btn" class="cta_button hide">Next</button>
+            </div>
+          </div>
 
-    <br>
+          <!-- Explanation after answer -->
+          <div id="explanation-container" class="hide">
+            <p id="explanation-text"></p>
+          </div>
+        </div>
 
-    <section class="about-section" id="who-is-it-for">
-      <h2>Who is LADOC for?</h2>
-      <p>
-        LADOC is designed for <strong>everyone</strong> who cares aobut online safety.
-        Looking to do simple security checks, verify links or QR codes? 
-        Or wanting to learn more about how to be tech safe and smart? LADOC is the place for you.
-      </p>
-    </section>
+        <!-- Results -->
+        <div id="result-container" class="hide">
+          <h2>Quiz Complete!</h2>
+          <p id="score-text"></p>
+          <button id="restart-btn" class="cta_button">Try Again</button>
+        </div>
+      </div>
 
-    <br>
+      <!-- Review -->
+      <div id="review-container" class="hide">
+        <h3>Review Your Answers</h3>
+        <ul id="review-list"></ul>
+      </div>
 
-    <section class="about-section" id="security-privacy">
-      <h2>Security & Privacy</h2>
-      <p>
-        LADOC is fully client-side — nothing you enter is stored or sent to a server.
-        No passwords or credentials are ever saved, and we never log or track your links or QR codes.
-        In fact, we can't see anything you type.
-      </p>
-    </section>
-
-    <br>
-
-    <section class="about-section" id="acknowledgements">
-      <h2>Acknowledgements</h2>
-      <p>
-        LADOC draws inspiration from amazing open-source projects and security tools around the web. Special thanks to:
-      </p>
-      <ul>
-        <li>CyberChef by GCHQ</li>
-        <li>Have I Been Pwned (Troy Hunt)</li>
-        <li>Zxcvbn password strength library by Dropbox</li>
-        <li>Danielmiessler's top 10k password list</li>
-        <li>Unshorten.me</li>
-        <li>Xposedornot</li>
-        <li>JsQR, html5-qrcode</li>
-      </ul>
-    </section>
-
-    <br>
-
-    <section class="about-section" id="get-in-touch">
-      <h2>Get in Touch</h2>
-      <p>
-        Questions? Ideas? Found a bug? We’d love to hear from you — reach out at
-        <a href="mailto:your@email.com">your@email.com</a> or visit
-        <a href="https://github.com/yourusername/ladoc" target="_blank">our GitHub</a>.
-      </p>
+      <!-- Start Quiz -->
+      <button id="start-btn" class="cta_button">Start Quiz</button>
     </section>
   </main>
+
+  <script src="script.js"></script>
+  <script src="quiz_phishing.js"></script>
 
   <footer class="site-footer">
     <div class="footer-content">
@@ -167,6 +146,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+
 </body>
 </html>

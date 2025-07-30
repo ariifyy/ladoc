@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Password Checker - Like a Deck of Cards</title>
+  <title>URL & QR Code Checker - Like a Deck of Cards</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
 
@@ -52,8 +52,9 @@
                 <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
             </a>
             <ul class="dropdown_menu">
-              <li><a href="quiz_password.html" class="navbar_links">Password</a></li>
+              <li><a href="quiz_password.html" class="navbar_links">Password Safety</a></li>
               <li><a href="quiz_phishing.html" class="navbar_links">Phishing Awareness</a></li>
+              <li><a href="quiz_safebrowsing.html" class="navbar_links">Safe Browsing</a></li>
             </ul>
           </li>
           <li class="navbar_item"><a href="about.html" class="navbar_links">About</a></li>
@@ -61,7 +62,7 @@
 
         <div class="navbar_right">
           <div class="navbar_item">
-            <button class="cta_button" onclick="window.location.href='download.html'">Download</button>          </div>
+            <button class="cta_button" onclick="location.href='download.html'">Download</button>          </div>
           <div class="navbar_item theme-toggle">
             <button id="themeToggleBtn">
               <img id="themeIcon" src="assets/sun.png" alt="Switch to light mode" />
@@ -78,17 +79,57 @@
     </div>
   </nav>
 
-  <!-- Page main content -->
+  <!-- Page Header -->
   <main>
     <section class="page-header">
-      <h1 class="page-title">Download</h1>
-      <p class="page-description">Take your security game to the next level</p>
+      <h1 class="page-title">URL & QR Code Checker</h1>
+      <p class="page-description">Check if a link is suspicious or preview what's behind a QR code</p>
     </section>
 
+      <section id="decoder" style="max-width: 500px; margin: 4rem auto; padding: 1rem;">
+      <h2>QR Code / URL analyser</h2>
+      <p>Select how you'd like to scan a QR code or paste a URL manually:</p>
+
+      <!-- Scan Method Buttons -->
+      <div id="inputMethodButtons" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <button onclick="showUrl()">URL Link</button>
+        <button onclick="showUpload()">Upload Image</button>
+      </div>
+
+      <!-- Paste URL Section -->
+      <section id="urlSection" style="display: none;">
+        <input type="text" id="urlInput" placeholder="Paste a link here" style="width: 100%; margin-bottom: 1rem;" />
+        <div id="pasteResult" class="result"></div>
+      </section>
+
+      <!-- Upload Section -->
+      <section id="uploadSection" style="display: none;">
+        <article id="dropZone">
+          <p>Drag & drop QR Code or click to upload</p>
+          <input type="file" id="qrInput" accept="image/*" hidden />
+          <canvas id="qrCanvas" style="display: none;"></canvas>
+        </article>
+        <div id="uploadResult" class="result"></div>
+      </section>
+
+
+      <!-- Analyze Button -->
+      <section id="analyzeButtonSection" style="margin-top: 1rem;">
+        <button onclick="handleAnalysis()">Analyze</button>
+      </section>
+
+    </section>
+
+    <!-- Analysis Result Section -->
+    <section id="analysisSection" style="max-width: 500px; margin: 2rem auto; padding: 1rem;">
+      <h3>Result</h3>
+      <div id="analysisOutput" class="result"></div>
+    </section> 
   </main>
 
   <script src="script.js"></script>
-
+  <script src="tools_urlqrcode.js"></script>
+  
   <footer class="site-footer">
     <div class="footer-content">
       <nav class="footer-links">
@@ -100,6 +141,5 @@
     </div>
   </footer>
 
- 
 </body>
 </html>

@@ -3,54 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Like a Deck of Cards</title>
-  <link rel="icon" type="image/png" href="assets/logodark.png" />
+  <title>Password Checker - Like a Deck of Cards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+
 </head>
-
 <body>
-  <header>
-    <a href="index.html" id="logo-link">
-      <img src="assets/logodark.png" alt="LADOC Logo" id="logo" />
-    </a>
 
-    <button id="themeToggle" aria-label="Toggle theme">
-      <img src="assets/moon.png" alt="Toggle Theme" id="themeIcon" />
-    </button>
-  </header>
-  
-  <main style="max-width: 500px; margin: 4rem auto; padding: 1rem;">
-    <h2>Download the Desktop Version of LADOC</h2>
-        <p>
-            The web version offers essential features, 
-            but for full access to advanced tools such as the password manager 
-            and CIS benchmark utilities, please download our desktop application.
-        </p>
+  <div class="grid-overlay"></div>
 
-        <p>
-            Click the button below to begin your download, or visit our
-            <a href="https://github.com/yourusername/LADOC" target="_blank" style="color: #3d85c6; text-decoration: underline;">
-            GitHub repository</a> to explore the source code or download the latest release.
-        </p>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar_container">
+      
+      <div class="navbar_logo">
+        <a href="index.html">
+          <img id="logo" src="assets/logodark.png" alt="Logo" />
+        </a>
+      </div>
 
-        <p>
-            <a href="assets/dummydownload.zip" download style="display: inline-block; margin-top: 1rem; background-color: #3d85c6; color: white; padding: 0.7rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: bold; transition: background-color 0.3s;">
-                ⬇️ Download Now
+      <div class="navbar_controls">
+        <ul class="navbar_menu center" id="navbar_menu">
+          <li class="navbar_item"><a href="index.html" class="navbar_links">Home</a></li>
+          <li class="navbar_item dropdown">
+            <a href="#" class="navbar_links dropdown_toggle">Tools
+                <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
             </a>
-        </p>
-    </main>
+            <ul class="dropdown_menu">
+              <li><a href="tools_password.html" class="navbar_links">Password Checker</a></li>
+              <li><a href="tools_urlqrcode.html" class="navbar_links">URL & QR Checker</a></li>
+              <li><a href="tools_email.html" class="navbar_links">Email Checker</a></li>
+            </ul>
+          </li>
+          <li class="navbar_item dropdown">
+            <a href="#" class="navbar_links dropdown_toggle">Learn
+                <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
+            </a>
+            <ul class="dropdown_menu">
+              <li><a href="learn_password.html" class="navbar_links">Password Safety</a></li>
+              <li><a href="learn_phishing.html" class="navbar_links">Phishing Scams</a></li>
+              <li><a href="learn_safebrowsing.html" class="navbar_links">Safe Browsing and URLs</a></li>
+  
+            </ul>
+          </li>
+          <li class="navbar_item dropdown">
+            <a href="#" class="navbar_links dropdown_toggle">Quiz
+                <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
+            </a>
+            <ul class="dropdown_menu">
+              <li><a href="quiz_password.html" class="navbar_links">Password Safety</a></li>
+              <li><a href="quiz_phishing.html" class="navbar_links">Phishing Awareness</a></li>
+              <li><a href="quiz_safebrowsing.html" class="navbar_links">Safe Browsing</a></li>
+            </ul>
+          </li>
+          <li class="navbar_item"><a href="about.html" class="navbar_links">About</a></li>
+        </ul>
 
+        <div class="navbar_right">
+          <div class="navbar_item">
+            <button class="cta_button" onclick="window.location.href='download.html'">Download</button>          </div>
+          <div class="navbar_item theme-toggle">
+            <button id="themeToggleBtn">
+              <img id="themeIcon" src="assets/sun.png" alt="Switch to light mode" />
+            </button>
+          </div>
 
-  <footer>
-    <div class="footer-links">
-      <a href="mailto:support@ladoc.app">Contact</a>
-      <a href="https://github.com/yourusername/LADOC/issues/new?labels=bug&template=vulnerability-report.md" target="_blank">Report Vulnerability</a>
-      <a href="https://github.com/yourusername/LADOC/issues/new?labels=enhancement&template=feature-request.md" target="_blank">Suggest Feature</a>
-      <a href="https://github.com/yourusername/LADOC" target="_blank">GitHub</a>
+          <!-- Hamburger menu for mobile -->
+          <div class="navbar_toggle" id="mobile_menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="footer-copy">2025 | LADOC Project</p>
+  </nav>
+
+  <!-- Page main content -->
+  <main>
+    <section class="page-header">
+      <h1 class="page-title">Download</h1>
+      <p class="page-description">Take your security game to the next level</p>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <nav class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="download.html">Download</a>
+      </nav>
+      <p class="footer-note">2025 | Like a Deck of Cards</p>
+    </div>
   </footer>
 
-  <script src="global.js"></script>
+ 
 </body>
 </html>

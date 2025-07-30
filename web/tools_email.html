@@ -52,8 +52,9 @@
                 <img id="dropdownArrow" class="dropdown_arrow" src="assets/down_arrow_dark.png" alt="" class="dropdown-arrow" />
             </a>
             <ul class="dropdown_menu">
-              <li><a href="quiz_password.html" class="navbar_links">Password</a></li>
+              <li><a href="quiz_password.html" class="navbar_links">Password Safety</a></li>
               <li><a href="quiz_phishing.html" class="navbar_links">Phishing Awareness</a></li>
+              <li><a href="quiz_safebrowsing.html" class="navbar_links">Safe Browsing</a></li>
             </ul>
           </li>
           <li class="navbar_item"><a href="about.html" class="navbar_links">About</a></li>
@@ -81,12 +82,20 @@
   <!-- Page main content -->
   <main>
     <section class="page-header">
-      <h1 class="page-title">Phishing Awareness Quiz</h1>
-      <p class="page-description">Take the quiz and shapen your instincts</p>
+      <h1 class="page-title">Email Checker</h1>
+      <p class="page-description">Check if your email is breached</p>
     </section>
+
+    <form id="emailForm">
+      <input type="email" id="emailInput" placeholder="Enter your email" required />
+      <button type="submit">Check</button>
+    </form>
+    <div id="emailResult" style="margin-top: 1rem;"></div>
+
   </main>
 
   <script src="script.js"></script>
+  <script src="tools_email.js"></script>
 
   <footer class="site-footer">
     <div class="footer-content">
@@ -99,6 +108,6 @@
     </div>
   </footer>
 
-
+ 
 </body>
 </html>

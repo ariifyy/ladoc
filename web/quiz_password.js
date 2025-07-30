@@ -23,46 +23,107 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const questions = [
     {
-      question: "Which password is the most secure?",
+      question: "What is one of the most common mistakes people make with passwords?",
       answers: [
-        { text: "12345678", correct: false },
-        { text: "password123", correct: false },
-        { text: "L$d!9g@2#kZ", correct: true },
-        { text: "letmein", correct: false },
+        { text: "Using two-factor authentication", correct: false },
+        { text: "Changing passwords regularly", correct: false },
+        { text: "Creating long and complex passwords", correct: false },
+        { text: "Reusing the same password across multiple sites", correct: true },
       ],
-      explanation: "A strong password uses uppercase, lowercase, numbers, and symbols, making it much harder to guess or brute-force."
+      explanation: "Reusing passwords makes all your accounts vulnerable if one gets breached."
     },
     {
-      question: "How often should you change your password?",
+      question: "Which of the following is considered a weak password?",
       answers: [
-        { text: "Never", correct: false },
-        { text: "Every 90 days or when compromised", correct: true },
-        { text: "Once a week", correct: false },
-        { text: "Only when logging in from new devices", correct: false },
+        { text: "h4ppyB1rthd@y", correct: false },
+        { text: "12345678", correct: true },
+        { text: "likeadeckofcards2048", correct: false },
+        { text: "fG8^zL2&hJ0", correct: false },
       ],
-      explanation: "Regular password changes reduce the risk of long-term breaches. 90 days is standard in most security policies."
+      explanation: "Passwords like 12345678 are among the most common and easily guessed."
     },
     {
-      question: "What’s a good practice for creating a strong password?",
+      question: "Why should you avoid using personal info in your passwords?",
       answers: [
-        { text: "Use pet names or birthdays", correct: false },
-        { text: "Use dictionary words", correct: false },
-        { text: "Use a mix of letters, numbers, symbols", correct: true },
-        { text: "Use your username", correct: false },
+        { text: "It’s too boring", correct: false },
+        { text: "It’s too long", correct: false },
+        { text: "It’s easy to guess", correct: true },
+        { text: "It’s illegal", correct: false },
       ],
-      explanation: "Avoid predictable info. Mixing character types increases entropy and makes it harder to guess."
+      explanation: "Hackers often look for names, birthdays, and pet names in data breaches or social media."
     },
     {
-      question: "What is the benefit of a password manager?",
+      question: "What is the recommended minimum length for a strong password?",
       answers: [
-        { text: "Stores passwords insecurely", correct: false },
-        { text: "Helps reuse one password everywhere", correct: false },
-        { text: "Helps generate and store complex passwords safely", correct: true },
-        { text: "Makes passwords public", correct: false },
+        { text: "6 characters", correct: false },
+        { text: "8 characters", correct: false },
+        { text: "10 characters", correct: false },
+        { text: "12 characters", correct: true },
       ],
-      explanation: "A password manager stores strong, unique passwords in an encrypted vault, so you don't have to remember them."
+      explanation: "12–16 characters is the widely recommended minimum for password security."
+    },
+    {
+      question: "What is a 'keyboard walk' password?",
+      answers: [
+        { text: "A phrase from a book", correct: false },
+        { text: "A password using keys next to each other", correct: true },
+        { text: "A string of random emojis", correct: false },
+        { text: "A phrase translated from another language", correct: false },
+      ],
+      explanation: "Examples like 'qwerty' or 'asdfgh' are called keyboard walks and are easy to guess."
+    },
+    {
+      question: "What is the risk of using the same password on multiple accounts?",
+      answers: [
+        { text: "You might forget it", correct: false },
+        { text: "It makes logging in faster", correct: false },
+        { text: "It’s easier to type", correct: false },
+        { text: "If one account is breached, others are at risk", correct: true },
+      ],
+      explanation: "Hackers can use your breached login on other websites—called credential stuffing."
+    },
+    {
+      question: "What is a passkey?",
+      answers: [
+        { text: "A code stored on paper", correct: false },
+        { text: "A recovery email", correct: false },
+        { text: "Biometric or device-based authentication method", correct: true },
+        { text: "A dictionary word with a number", correct: false },
+      ],
+      explanation: "Passkeys are modern alternatives to passwords, often using biometrics or hardware."
+    },
+    {
+      question: "What does a password manager help with?",
+      answers: [
+        { text: "It shares your passwords with others", correct: false },
+        { text: "It stores them on your clipboard", correct: false },
+        { text: "It securely stores and generates strong passwords", correct: true },
+        { text: "It makes all passwords public", correct: false },
+      ],
+      explanation: "Password managers store your credentials in an encrypted vault and help generate strong passwords."
+    },
+    {
+      question: "What is Multi-Factor Authentication (MFA)?",
+      answers: [
+        { text: "Using multiple usernames", correct: false },
+        { text: "Using both a password and another verification method", correct: true },
+        { text: "Typing your password twice", correct: false },
+        { text: "Logging in from multiple devices", correct: false },
+      ],
+      explanation: "MFA protects your account by requiring a second factor like a code or biometric scan."
+    },
+    {
+      question: "Which of these is NOT a good password practice?",
+      answers: [
+        { text: "Using at least one symbol and one number", correct: false },
+        { text: "Generating unique passwords for each account", correct: false },
+        { text: "Storing passwords securely in a password manager", correct: false },
+        { text: "Using your name and birthday", correct: true },
+      ],
+      explanation: "Personal information is predictable and commonly guessed by attackers."
     }
   ];
+
 
   startBtn.addEventListener("click", startQuiz);
   submitBtn.addEventListener("click", submitAnswer);
@@ -104,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     question.answers.forEach((answer) => {
       const button = document.createElement("button");
       button.innerText = answer.text;
-      button.classList.add("cta_button");
+      button.classList.add("cta_button", "quiz_button");
       button.dataset.correct = answer.correct;
       button.addEventListener("click", () => selectAnswer(button));
       answerButtons.appendChild(button);
