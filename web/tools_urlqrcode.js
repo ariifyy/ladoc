@@ -331,7 +331,7 @@ async function analyzeUrl(url) {
   // Common suspicious keywords check
   const phishingKeywords = [
     "login", "verify", "account", "secure", "bank", "webscr", "signin", "redirect", 
-    "update", "confirm", "validate", "pay", "password", "wp-admin", "win"
+    "update", "confirm", "validate", "activate", "pay", "password", "wp-admin", "win", "download"
   ];
 
   const lowerUrl = url.toLowerCase();
@@ -341,7 +341,7 @@ async function analyzeUrl(url) {
     results.push({
       name: "Phishing Keywords",
       status: "warn",
-      message: `URL contains suspicious keywords: ${foundKeywords.join(", ")}, verify before proceeding`
+      message: `URL contains suspicious keywords: ${foundKeywords.join(", ")}. Verify before proceeding`
     });
   } else {
     results.push({
@@ -415,5 +415,9 @@ async function handleAnalysis() {
     <div style="margin-bottom: 1em;"><strong>Analyzing:</strong> ${escapeHtml(url)}</div>
     ${resultsHTML}
   `;
+
+  
 }
+
+
 

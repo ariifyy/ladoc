@@ -29,7 +29,9 @@ if (emailForm) {
           const breachesList = breachesArray.map(b => `<li>${b}</li>`).join("");
           emailResult.innerHTML = `
             <p>⚠️ This email was found in <strong>${breachesArray.length}</strong> breach(es).</p>
-            <button id="toggleDetails btn">Show Details</button>
+            <p>We recommend changing your password for this account immediately and enabling two-factor authentication.</p>
+            <br>
+            <button id="toggleDetails" class="btn">Show Breach Details</button>
             <ul id="breachDetails" class="hide">${breachesList}</ul>
           `;
 

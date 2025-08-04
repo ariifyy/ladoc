@@ -238,14 +238,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     reviewList.innerHTML = "";
     userAnswers.forEach((item, i) => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <strong>Q${i + 1}: ${item.question}</strong><br/>
-        Your answer: <span class="${item.selected === item.correct ? 'correct' : 'wrong'}">${item.selected}</span><br/>
-        Correct answer: ${item.correct}<br/>
-        <em>${item.explanation}</em>
+      const section = document.createElement("div");
+      section.classList.add("module-section");
+
+      section.innerHTML = `
+        <p><strong>Q${i + 1}: ${item.question}</strong></p>
+        <p>Your answer: <span class="${item.selected === item.correct ? 'correct' : 'wrong'}">${item.selected}</span></p>
+        <p>Correct answer: ${item.correct}</p>
+        <p><em>${item.explanation}</em></p>
       `;
-      reviewList.appendChild(li);
+
+      reviewList.appendChild(section);
     });
+
   }
 });

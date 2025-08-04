@@ -91,7 +91,7 @@
     <h1>Ready for More?</h1>
     <p>Download the LADOC desktop app and get advanced tools for ultimate digital safety.</p>
     <div class="download-buttons">
-      <a href="/downloads/LADOC-Setup.exe" class="cta_button">Download for Windows</a>
+      <a href="assets/dummydownload.zip" class="cta_button">Download for Windows</a>
     </div>
     <p class="small-note">Compatible with Windows 10+ | Version 1.0.0</p>
     </section>
@@ -100,9 +100,9 @@
       <h1>Web vs Desktop</h1>
       <div class="comparison-table">
         <div class="table-row table-header">
-          <div>Feature</div>
-          <div>Web</div>
-          <div>Desktop</div>
+          <div>Features</div>
+          <div>Web App</div>
+          <div>Desktop App</div>
         </div>
         <div class="table-row">
           <div>Password Strength Checker</div>
@@ -144,12 +144,23 @@
           <div>✅</div>
           <div>❌</div>
         </div>
+        <div class="table-row">
+          <div>Works on mobile</div>
+          <div>✅</div>
+          <div>❌</div>
+        </div>
+        <div class="table-row">
+          <div>Works on desktop</div>
+          <div>✅</div>
+          <div>✅</div>
+        </div>
       </div>
     </section>
 
     <!--Features-->
     <section class="feature-section">
       <h1>See it in action</h1>
+      <br><br>
       <div class="feature-row" data-aos="fade-up">
         <div class="feature-image">
           <img src="assets/placeholder.jpeg" alt="Password Manager" class="screenshot">
@@ -172,14 +183,16 @@
       </div>
     </section>
 
-    <section class="layout-container" data-aos="fade-up">
+    <section class="layout-container module-section" data-aos="fade-up">
       <h1>Should I go for the Desktop app?</h1>
       <p>Think of the desktop app as your full deck - more tools, more ways control over your data. 
+        Perfect for people who really want to play it smart.
         With additional tools such as a Password Manager, CIS Checker and even File Scanner, we equip <strong>YOU</strong> to to be tech smart and safe. 
         Like what you see here? I'm sure you'll like our desktop app too.
       </p>
       <br>
-      <p>But hey, not willing to commit just yet? The web version is still<strong> a strong hand.</strong> 
+      <p>But hey, not willing to commit just yet? The <strong>web version</strong> is still a strong hand.
+        Perfect for those just exploring or wanting to do security checks. 
         Security might seem daunting, but we're here to help. 
         Even in our web version, we still hold true to being Like a Deck of Cards: 
         a collection of easy-to-use tools for everyday life.</p>
@@ -188,7 +201,13 @@
     <section class="layout-container" data-aos="fade-up">
       <h1>Installation Guide / Dependencies</h1>
       <ul>
-        <li>stuff</li>
+        <li>*opencv_python==4.12.0.88</li>
+        <li>Pillow==11.3.0</li>
+        <li>PyQt5==5.15.11</li>
+        <li>PyQt5_sip==12.17.0</li>
+        <li>python_bcrypt==0.3.2</li>
+        <li>pyzbar==0.1.9</li>
+        <li>Requests==2.32.4*</li>
       </ul>
     </section>
 

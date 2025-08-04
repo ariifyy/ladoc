@@ -47,9 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Failed to load common password list:", err);
     });
 
-
-
-
   // Calculate entropy in bits based on character sets used in the password
   function calculateEntropy(password) {
     let charsetSize = 0;
@@ -95,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return `${seconds.toFixed(0)} seconds`; // fallback
   }
+  
 
   // Update UI feedback as user types or updates password input
   function updateFeedback(password) {
