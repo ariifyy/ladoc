@@ -1,5 +1,22 @@
 #Imports
 import sys, os
+import subprocess
+import sqlite3
+
+
+# Ensure the database is initialized before running the app
+def ensure_database():
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    db_path = os.path.join(base_dir, "LADOC.db")
+
+    if not os.path.exists(db_path):
+        print("Database not found. Initializing...")
+        init_script = os.path.join(os.path.dirname(__file__), "db", "init_db.py")
+        subprocess.run([sys.executable, init_script], cwd=base_dir)
+
+ensure_database()
+
+#PyQt5 imports
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QStackedWidget, QWidget, QVBoxLayout, QLabel,
     QPushButton, QHBoxLayout, QSizePolicy, QScrollArea, QFrame
@@ -25,6 +42,7 @@ from lib.email_breachchecker import EmailBreachChecker
 from lib.url_qrdecoder import  QRDecoderPage
 from lib.account import AccountPage
 from lib.virustotalscanning import VirusTotalScanner
+from lib.utilities.db_connection import get_db_path
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import Qt
@@ -160,13 +178,22 @@ class CollapsibleSection(QWidget):
         self.toggle_animation.start()
         self.toggle_button.setChecked(False)
 
+    def create_separator(self):
+        # Create a horizontal line as a separator
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setObjectName("SeparatorLine")
+        return line
+
     def add_widget(self, widget):
         content_layout = self.content_area.layout()
         if not content_layout:
             content_layout = QVBoxLayout()
             content_layout.setContentsMargins(10, 0, 0, 0)
             self.content_area.setLayout(content_layout)
+        content_layout.addWidget(self.create_separator())
         content_layout.addWidget(widget)
+        
 
 
 class LADOClandingpage(QWidget):
@@ -191,11 +218,24 @@ class LADOClandingpage(QWidget):
 
         self.show_home_page()
 
+    def button_separator(self):
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine) 
+        line.setObjectName("ButtonSeparator")
+        return line
+    
+    def create_section_header(title):
+        header = QLabel(title)
+        header.setFont(QFont("Inter", 18, QFont.Bold))  # Make only the header bold
+        header.setObjectName("sectionHeader")  # Assign an object name for styling
+        return header
+
     #constructing left menu bar
     def build_sidebar(self):
+
         sidebar = QFrame()
         sidebar.setObjectName("Sidebar")
-        sidebar.setFixedWidth(220)
+        sidebar.setFixedWidth(400)
 
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
@@ -212,6 +252,8 @@ class LADOClandingpage(QWidget):
         self.add_sidebar_button(layout, "Home", self.show_home_page)
 
         # creating menu sections and register them
+
+        layout.addWidget(self.button_separator())
         # password stuff
         pw_section = self.create_section("Password Tools")
         pw_section.add_widget(self.make_action_button("HaveIBeenPwned", self.show_breach_checker))
@@ -222,26 +264,31 @@ class LADOClandingpage(QWidget):
         layout.addWidget(pw_section)
 
         #cis stuff
+        layout.addWidget(self.button_separator())
         cis_section = self.create_section("CIS Tools")
         cis_section.add_widget(self.make_action_button("CIS Hardening", self.show_cis_launcher))
         layout.addWidget(cis_section)
 
         #osint stuff
+        layout.addWidget(self.button_separator())
         osint_section = self.create_section("Email")
         osint_section.add_widget(self.make_action_button("Email Breach Checker", self.show_email_breach_checker))
         layout.addWidget(osint_section)
 
         #url stuff
+        layout.addWidget(self.button_separator())
         url_section = self.create_section("URL")
         url_section.add_widget(self.make_action_button("QR/URL checker", self.show_qrdecoder_page))
         layout.addWidget(url_section)
 
         #virustotalscanning stuff
+        layout.addWidget(self.button_separator())
         VirusTotalScanner_section = self.create_section("File Hashing")
         VirusTotalScanner_section.add_widget(self.make_action_button("VirusTotal Scanner", self.show_virustotal_scanner))
         layout.addWidget(VirusTotalScanner_section)
 
         #settings stuff
+        layout.addWidget(self.button_separator())
         settings_section = self.create_section("Settings")
         settings_section.add_widget(self.make_action_button("Account", self.show_account_page))
         settings_section.add_widget(self.make_action_button("Toggle Theme", self.toggle_theme))

@@ -1,13 +1,14 @@
+import sqlite3
+
 from PyQt5.QtWidgets import (
     QDialog, QFormLayout, QLineEdit, QComboBox, QDateEdit, QTreeWidget,
     QTreeWidgetItem, QLabel, QDialogButtonBox, QPushButton, QHBoxLayout,
     QVBoxLayout, QWidget, QTextEdit, QMessageBox
 )
 from PyQt5.QtCore import Qt, QDate, pyqtSignal
-import sqlite3
 
 from .manager_addpassword import GeneratePasswordDialog
-
+from .utilities.db_connection import get_db_path
 
 
 class EditPasswordDialog(QDialog):
@@ -251,7 +252,7 @@ class EditPasswordDialog(QDialog):
                 QMessageBox.critical(self, "Error", "No password entry ID set.")
                 return
             try:
-                conn = sqlite3.connect("LADOC.db")
+                conn = sqlite3.connect(get_db_path())
                 cursor = conn.cursor()
                 cursor.execute("DELETE FROM user_passwords WHERE id = ?", (self.entry_id,))
                 conn.commit()

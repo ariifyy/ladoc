@@ -24,7 +24,7 @@ QPushButton:pressed {
 /* === Section Headers === */
 QLabel#SectionTitle {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
     padding: 5px;
     background-color: %(section_header_bg)s;
     color: %(section_header_text)s;
@@ -35,7 +35,8 @@ QLabel#SectionTitle {
 /* === Sidebar === */
 QFrame#Sidebar {
     background-color: %(card_bg)s;
-    border: none;
+    border: 5px solid %(accent_color)s;
+    border-radius: 12px
 }
 
 #Sidebar QWidget {
@@ -45,7 +46,7 @@ QFrame#Sidebar {
 
 /* Sidebar Title Label */
 QLabel#SidebarTitle {
-    font-size: 18px;
+    font-size: 34px;
     font-weight: bold;
     color: %(text_color)s;
 }
@@ -56,12 +57,24 @@ QPushButton#SidebarButton {
     color: %(text_color)s;
     padding: 10px;
     text-align: left;
-    font-size: 14px;
+    font-size: 24px;
     border: none;
+    
 }
 
 QPushButton#SidebarButton:hover {
     background-color: %(card_hover)s;
+}
+
+QFrame#SeparatorLine {
+    background-color: %(section_header_border)s; 
+    border: none;
+}
+
+QFrame#ButtonSeparator {
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 %(accent_pressed)s, stop: 1 %(accent_color)s );
+    height: 2px;  
+    border: none;
 }
 
 /* === Inputs === */
@@ -127,7 +140,7 @@ QFrame#AuthCard QLineEdit {
     padding: 8px;
     border-radius: 6px;
     border: 1px solid %(accent_color)s;
-    font-size: 14px;
+    font-size: 20px;
     margin-bottom: 10px;
 }
 
@@ -136,7 +149,7 @@ QFrame#AuthCard QPushButton {
     color: %(button_text_colour)s;
     padding: 10px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 20px;
 }
 
 QFrame#AuthCard QPushButton:hover {
@@ -168,13 +181,13 @@ QFrame#AuthCard QLabel#AuthSubLink:hover {
 
 /* === Welcome Labels on Home Page === */
 QLabel#WelcomeHeading {
-    font-size: 20px;
+    font-size: 45px;
     font-weight: bold;
     color: %(text_color)s;
 }
 
 QLabel#WelcomeSubheading {
-    font-size: 12px;
+    font-size: 30px;
     color: %(text_color)s;
 }
 

@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
+from lib.utilities.db_connection import get_db_path
 
 
 class SignupPage(QWidget):
@@ -27,7 +28,7 @@ class SignupPage(QWidget):
 
         # Container for all signup elements
         container = QWidget()
-        container.setMaximumWidth(500)
+        container.setMaximumWidth(1000)
         container_layout = QVBoxLayout(container)
         container_layout.setContentsMargins(0, 0, 0, 0)
         container_layout.setSpacing(20)
@@ -35,7 +36,7 @@ class SignupPage(QWidget):
         # Title
         title = QLabel("Like a Deck of Cards")
         title.setAlignment(Qt.AlignCenter)
-        title.setFont(QFont("Inter", 25, QFont.DemiBold))
+        title.setFont(QFont("Inter", 25, QFont.Bold))
         container_layout.addWidget(title, alignment=Qt.AlignHCenter)
 
         # Spacer between title and signup form
@@ -146,7 +147,7 @@ class SignupPage(QWidget):
             )
             return
 
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
         try:
             hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()

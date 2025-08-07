@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
+from lib.utilities.db_connection import get_db_path
 
 
 class LoginPage(QWidget):
@@ -26,7 +27,7 @@ class LoginPage(QWidget):
 
         # Container for all login elements
         container = QWidget()
-        container.setMaximumWidth(500)
+        container.setMaximumWidth(1000)
         container_layout = QVBoxLayout(container)
         container_layout.setContentsMargins(0, 0, 0, 0)
         container_layout.setSpacing(20)
@@ -34,7 +35,7 @@ class LoginPage(QWidget):
         # Title
         title = QLabel("Like a Deck of Cards")
         title.setAlignment(Qt.AlignCenter)
-        title.setFont(QFont("Inter", 25, QFont.DemiBold))
+        title.setFont(QFont("Inter", 25, QFont.Bold))
         container_layout.addWidget(title, alignment=Qt.AlignHCenter)
 
         # Spacer between title and login form
@@ -86,7 +87,7 @@ class LoginPage(QWidget):
         or_label = QLabel("OR")
         or_label.setAlignment(Qt.AlignCenter)
         or_label.setFont(QFont("Inter", 10))
-        or_label.setStyleSheet("color: #bbbbbb; font-size: 11px; padding: 0px; margin: 0px;")
+        or_label.setStyleSheet("color: #bbbbbb; font-size: 20px; padding: 0px; margin: 0px;")
 
         line2 = QFrame()
         line2.setFrameShape(QFrame.HLine)
@@ -105,7 +106,7 @@ class LoginPage(QWidget):
         create_account_btn.setObjectName("CreateAccountButton")
         create_account_btn.setFont(QFont("Inter", 11, QFont.Medium))
         create_account_btn.clicked.connect(self.switch_to_signup)
-        create_account_btn.setStyleSheet("color: #B994F5;")  # Optional styling
+        create_account_btn.setStyleSheet("color: #B994F5; font-size: 16px;")  # Optional styling
         container_layout.addWidget(create_account_btn, alignment=Qt.AlignCenter)
 
         # Add container to outer layout
@@ -122,7 +123,7 @@ class LoginPage(QWidget):
             QMessageBox.warning(self, "Input Error", "Please enter both username and password.")
             return
 
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
 
         try:

@@ -12,6 +12,7 @@ from .manager_addpassword import AddPasswordDialog
 from .manager_editpassword import EditPasswordDialog
 from .manager_addfolder import AddFolderDialog
 from .manager_editfolder import EditFolderDialog
+from .utilities.db_connection import get_db_path
 
 MAX_DEPTH = 3
 
@@ -191,7 +192,7 @@ class PasswordManagerWidget(QWidget):
         root.setExpanded(True)
         self.folder_tree.addTopLevelItem(root)
 
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
         cursor.execute("SELECT id, name, parent_id FROM users_folders WHERE user_id = ?", (self.user_id,))
         folders = cursor.fetchall()
@@ -209,7 +210,7 @@ class PasswordManagerWidget(QWidget):
         self.load_common_passwords()
         self.password_list.clear()
 
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
 
         if self.selected_folder is None:
@@ -237,9 +238,9 @@ class PasswordManagerWidget(QWidget):
         for entry_id, title, username, encrypted_password in rows:
             try:
                 password = fernet.decrypt(encrypted_password.encode()).decode()
+                decrypted_passwords.append((entry_id, title, username, password))
             except Exception:
-                password = None  # skip if can't decrypt
-            decrypted_passwords.append((entry_id, title, username, password))
+                continue  # skip entry if decryption fails
 
         # Count reuse: password -> count
         password_counts = {}
@@ -326,7 +327,7 @@ class PasswordManagerWidget(QWidget):
 
         def handle_folder_deleted():
             # Delete folder and all passwords in it from DB
-            conn = sqlite3.connect("LADOC.db")
+            conn = sqlite3.connect(get_db_path())
             cursor = conn.cursor()
 
             folder_path = self.build_folder_path(folder_item)
@@ -359,7 +360,7 @@ class PasswordManagerWidget(QWidget):
             new_name = dialog.get_new_name()
             if new_name != current_name:
                 # Rename folder in DB
-                conn = sqlite3.connect("LADOC.db")
+                conn = sqlite3.connect(get_db_path())
                 cursor = conn.cursor()
 
                 # Update folder name
@@ -427,7 +428,7 @@ class PasswordManagerWidget(QWidget):
     def on_password_selected(self, item):
         self.edit_password_btn.setEnabled(True)
         entry_id = item.data(Qt.UserRole)
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
         cursor.execute("SELECT title, username, password, site, notes, password_expiry FROM user_passwords WHERE id = ?", (entry_id,))
         row = cursor.fetchone()
@@ -493,7 +494,7 @@ Notes:
             name = dialog.get_folder_name()
             parent_id = selected.data(0, Qt.UserRole)
 
-            conn = sqlite3.connect("LADOC.db")
+            conn = sqlite3.connect(get_db_path())
             cursor = conn.cursor()
             cursor.execute(
                 "INSERT INTO users_folders (user_id, name, parent_id) VALUES (?, ?, ?)",
@@ -505,7 +506,7 @@ Notes:
             self.load_folders()
 
     def add_password(self):
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
         cursor.execute("SELECT id, name, parent_id FROM users_folders WHERE user_id = ?", (self.user_id,))
         folders = cursor.fetchall()
@@ -521,7 +522,7 @@ Notes:
             fernet = get_fernet()
             encrypted_password = fernet.encrypt(data["password"].encode()).decode()
 
-            conn = sqlite3.connect("LADOC.db")
+            conn = sqlite3.connect(get_db_path())
             cursor = conn.cursor()
             cursor.execute(
                 """
@@ -546,7 +547,7 @@ Notes:
 
         entry_id = selected_item.data(Qt.UserRole)
 
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
         cursor.execute(
             "SELECT title, username, password, site, notes, password_expiry, folder_path FROM user_passwords WHERE id = ?",
@@ -567,7 +568,7 @@ Notes:
         except Exception:
             decrypted_password = ""
 
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
         cursor.execute("SELECT id, name, parent_id FROM users_folders WHERE user_id = ?", (self.user_id,))
         folders = cursor.fetchall()
@@ -603,7 +604,7 @@ Notes:
 
             encrypted_password = fernet.encrypt(data["password"].encode()).decode()
 
-            conn = sqlite3.connect("LADOC.db")
+            conn = sqlite3.connect(get_db_path())
             cursor = conn.cursor()
             cursor.execute(
                 """

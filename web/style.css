@@ -201,6 +201,44 @@ body.dark-theme {
   50% { opacity: 0.3; }
 }
 
+/* For landing page secondary title*/
+.gradient-title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  background: linear-gradient(90deg, #7f5af0, #2cb1ff, #7f5af0);
+  background-size: 600% 600%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: flowGradient 7s ease infinite;
+  display: inline-block;
+}
+
+@keyframes flowGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* For landing story line animation*/
+.story-line {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin: 1.2rem 0;
+  opacity: 0; /* AOS will handle fade-in */
+}
+
+.story-line span {
+  display: block;
+  margin: -0.2em 0;
+}
 
 
 /* Navbar */
@@ -1171,8 +1209,6 @@ code {
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
 }
-
-
 
 /* download section */
 .download-section {

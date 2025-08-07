@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import (
 )
 
 from .crypto_utils import get_fernet
-
+from .utilities.db_connection import get_db_path
 
 class PasswordScanWorker(QObject):
     finished = pyqtSignal(str)
@@ -42,7 +42,7 @@ class PasswordScanWorker(QObject):
             self.finished.emit(f"Error: {str(e)}")
 
     def _get_decrypted_passwords(self):
-        conn = sqlite3.connect("LADOC.db")
+        conn = sqlite3.connect(get_db_path())
         cursor = conn.cursor()
         cursor.execute("SELECT site, password FROM user_passwords WHERE user_id = ?", (self.user_id,))
         encrypted_rows = cursor.fetchall()
@@ -111,7 +111,7 @@ class WeeklyChecker(QWidget):
 
     def _populate_passwords(self, layout):
         try:
-            conn = sqlite3.connect("LADOC.db")
+            conn = sqlite3.connect(get_db_path())
             cursor = conn.cursor()
             cursor.execute("SELECT site, password FROM user_passwords WHERE user_id = ?", (self.user_id,))
             rows = cursor.fetchall()

@@ -1,9 +1,12 @@
 import sqlite3
+
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QMessageBox, QSpacerItem,
     QSizePolicy
 )
 from PyQt5.QtCore import Qt
+from .utilities.db_connection import get_db_path 
+import sqlite3
 
 class AccountPage(QWidget):
     def __init__(self, username, user_id, parent=None):
@@ -81,7 +84,7 @@ class AccountPage(QWidget):
 
     def delete_account(self):
         try:
-            conn = sqlite3.connect("LADOC.db")
+            conn = sqlite3.connect(get_db_path())
             cursor = conn.cursor()
             
             cursor.execute("DELETE FROM user_passwords WHERE user_id = ?", (self.user_id,))
