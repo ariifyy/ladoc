@@ -10,19 +10,21 @@ from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
 from PyQt5.QtGui import QIcon
 
 #Importing widgets from respective .py pages
-from fonts import load_inter_fonts
-from themes import dark_theme, light_theme
+from lib.fonts import load_inter_fonts
+from lib.themes import dark_theme, light_theme
 from auth_pages.login_page import LoginPage
 from auth_pages.signup_page import SignupPage
-from password_manager import PasswordManagerWidget
-from password_haveibeenpwned import HaveIBeenPwnedWidget
-from password_checkstrength import PasswordStrengthWidget
-from password_recommend import PasswordGeneratorWidget
-from cis_machine_checker import CISLauncher
-from password_weeklychecker import WeeklyChecker
-from email_breachchecker import EmailBreachChecker
-from url_qrdecoder import  QRDecoderPage
-from account import AccountPage
+
+from lib.password_manager import PasswordManagerWidget
+from lib.password_haveibeenpwned import HaveIBeenPwnedWidget
+from lib.password_checkstrength import PasswordStrengthWidget
+from lib.password_recommend import PasswordGeneratorWidget
+from lib.cis_machine_checker import CISLauncher
+from lib.password_weeklychecker import WeeklyChecker
+from lib.email_breachchecker import EmailBreachChecker
+from lib.url_qrdecoder import  QRDecoderPage
+from lib.account import AccountPage
+from lib.virustotalscanning import VirusTotalScanner
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import Qt
@@ -56,8 +58,12 @@ class MainWindow(QMainWindow):
         self.stack.addWidget(self.signup_page)
         self.stack.setCurrentWidget(self.login_page)
 
+        self.email_breach_checker = EmailBreachChecker()
+        self.stack.addWidget(self.email_breach_checker)
+        # self.stack.setCurrentWidget(self.email_breach_checker)  # for testing
+
         # Setup tray
-        self.tray_icon = QSystemTrayIcon(QIcon("password-512.png"), self)
+        self.tray_icon = QSystemTrayIcon(QIcon("app/assets/password-512.png"), self)
         tray_menu = QMenu()
         restore_action = QAction("Restore", self)
         quit_action = QAction("Exit", self)
@@ -73,7 +79,7 @@ class MainWindow(QMainWindow):
     #applying style.qss
     def apply_stylesheet(self):
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        qss_path = os.path.join(base_dir, "style.qss")
+        qss_path = os.path.join(base_dir, "lib", "style.qss")
         with open(qss_path, "r") as f:
             qss_template = f.read()
         themed_qss = qss_template % self.themes[self.current_theme]
@@ -103,7 +109,7 @@ class MainWindow(QMainWindow):
         self.hide()
         self.tray_icon.showMessage(
             "Still Running",
-            "Weekly Password Checker is running in background.",
+            "App has been minimized to the system tray.",
             QSystemTrayIcon.Information,
             2000
         )
@@ -221,14 +227,19 @@ class LADOClandingpage(QWidget):
         layout.addWidget(cis_section)
 
         #osint stuff
-        osint_section = self.create_section("OSINT")
+        osint_section = self.create_section("Email")
         osint_section.add_widget(self.make_action_button("Email Breach Checker", self.show_email_breach_checker))
         layout.addWidget(osint_section)
 
         #url stuff
         url_section = self.create_section("URL")
-        url_section.add_widget(self.make_action_button("QR Decoder", self.show_qrdecoder_page))
+        url_section.add_widget(self.make_action_button("QR/URL checker", self.show_qrdecoder_page))
         layout.addWidget(url_section)
+
+        #virustotalscanning stuff
+        VirusTotalScanner_section = self.create_section("File Hashing")
+        VirusTotalScanner_section.add_widget(self.make_action_button("VirusTotal Scanner", self.show_virustotal_scanner))
+        layout.addWidget(VirusTotalScanner_section)
 
         #settings stuff
         settings_section = self.create_section("Settings")
@@ -333,6 +344,10 @@ class LADOClandingpage(QWidget):
     def show_account_page(self):
         self.clear_main_content()
         self.main_content.addWidget(AccountPage(self.username, self.user_id))
+
+    def show_virustotal_scanner(self):
+        self.clear_main_content()
+        self.main_content.addWidget(VirusTotalScanner(self.user_id, self))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

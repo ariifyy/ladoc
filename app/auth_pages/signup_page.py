@@ -1,5 +1,6 @@
 # auth_pages/signup_page.py
 
+import re
 import sqlite3, bcrypt
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton,
@@ -56,16 +57,21 @@ class SignupPage(QWidget):
         self.email_input = QLineEdit()
         self.email_input.setPlaceholderText("Email")
         self.email_input.setFont(QFont("Inter", 10))
+        self.email_input.returnPressed.connect(self.register_user)
+
 
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("Password")
         self.password_input.setEchoMode(QLineEdit.Password)
         self.password_input.setFont(QFont("Inter", 10))
+        self.password_input.returnPressed.connect(self.register_user)
+
 
         register_btn = QPushButton("Sign Up")
         register_btn.setObjectName("LoginButton")  # Reuse style
         register_btn.setFont(QFont("Inter", 11, QFont.Medium))
         register_btn.clicked.connect(self.register_user)
+        self.username_input.returnPressed.connect(self.register_user)
 
         form_layout.addWidget(self.username_input)
         form_layout.addWidget(self.email_input)
@@ -120,9 +126,24 @@ class SignupPage(QWidget):
         username = self.username_input.text()
         email = self.email_input.text()
         password = self.password_input.text()
+        pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$'
 
         if not username or not email or not password:
             QMessageBox.warning(self, "Missing Info", "Please fill in all fields.")
+            return
+        
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            QMessageBox.warning(self, "Invalid Email", "Please enter a valid email address.")
+            return
+        
+        if not re.match(pattern, password):
+            QMessageBox.warning(
+                self, "Weak Password", 
+                "Password must be at least 12 characters long and include:\n"
+                "- Uppercase and lowercase letters\n"
+                "- A digit\n"
+                "- A special character"
+            )
             return
 
         conn = sqlite3.connect("LADOC.db")
@@ -130,7 +151,7 @@ class SignupPage(QWidget):
         try:
             hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
             cursor.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-                           (username, email, hashed_pw))
+                (username, email, hashed_pw))
             conn.commit()
             QMessageBox.information(self, "Success", "Account created successfully!")
             self.switch_to_login()

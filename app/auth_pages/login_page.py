@@ -52,11 +52,13 @@ class LoginPage(QWidget):
         self.username_input = QLineEdit()
         self.username_input.setPlaceholderText("Username")
         self.username_input.setFont(QFont("Inter", 10))
+        self.username_input.returnPressed.connect(self.login)
 
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("Password")
         self.password_input.setEchoMode(QLineEdit.Password)
         self.password_input.setFont(QFont("Inter", 10))
+        self.password_input.returnPressed.connect(self.login)
 
         login_btn = QPushButton("Login")
         login_btn.setObjectName("LoginButton")
@@ -103,6 +105,7 @@ class LoginPage(QWidget):
         create_account_btn.setObjectName("CreateAccountButton")
         create_account_btn.setFont(QFont("Inter", 11, QFont.Medium))
         create_account_btn.clicked.connect(self.switch_to_signup)
+        create_account_btn.setStyleSheet("color: #B994F5;")  # Optional styling
         container_layout.addWidget(create_account_btn, alignment=Qt.AlignCenter)
 
         # Add container to outer layout

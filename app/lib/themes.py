@@ -3,8 +3,8 @@ dark_theme = {
     "bg_color": "#1a1c1f",
     "text_color": "#ffffff",
     "accent_color": "#ae80f3",
-    "accent_hover": "#b994f5",      # Slightly lighter purple for hover
-    "accent_pressed": "#5a3c77",    # Darker purple for pressed
+    "accent_hover": "#b994f5",     
+    "accent_pressed": "#5a3c77",   
     "input_bg": "#2e2e2e",
     "input_text_color": "#ffffff",
     "card_bg": "#2a2a2a",
@@ -13,7 +13,10 @@ dark_theme = {
     "button_text_colour": "#ffffff",
     "delete_button_colour": "#e74c3c",
     "delete_button_hover": "#c0392b",
-    "delete_button_pressed": "#a93226"
+    "delete_button_pressed": "#a93226",
+    "section_header_bg": "#3a3a3a",
+    "section_header_text": "#ffffff",
+    "section_header_border": "#5a5a5a"
 }
 
 light_theme = {
@@ -30,5 +33,8 @@ light_theme = {
     "button_text_colour": "#181414",
     "delete_button_colour": "#e74c3c",
     "delete_button_hover": "#ff6b5a",
-    "delete_button_pressed": "#d43f2d"
+    "delete_button_pressed": "#d43f2d",
+    "section_header_bg": "#e8e8e8",
+    "section_header_text": "#333333",
+    "section_header_border": "#cccccc"
 }

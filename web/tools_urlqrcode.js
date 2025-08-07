@@ -1,7 +1,7 @@
 //Qr Code decoder and URL threat indicator
 
 //INPUT METHODS (QR AND URL) ---------
-// Cache DOM elements once for efficiency
+// Cache DOM elements 
 const urlSection = document.getElementById("urlSection");
 const uploadSection = document.getElementById("uploadSection");
 
@@ -17,13 +17,14 @@ const ctx = qrCanvas.getContext("2d");
 
 // Utility to escape HTML to prevent injection
 function escapeHtml(text) {
-  return text.replace(/[&<>"']/g, (m) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  }[m]));
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+  return text.replace(/[&<>"']/g, m => map[m]);
 }
 
 // Show url and hide upload image
@@ -144,14 +145,14 @@ function setActiveToggle(activeId) {
 
 
 
-//URL THREAT ANALYSER LOGIC --------
+// URL THREAT ANALYSER LOGIC --------
 async function analyzeUrl(url) {
   const results = [];
 
-  // --- Regex Definitions ---
-  const ipInHostnameRegex = /(\d{1,3}\.){3}\d{1,3}/;
+  // Regex for IP matching (matches full IPv4)
+  const ipLikePattern = /\b((25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\.){3}(25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\b/;
 
-  // Check valid IPv4 function
+  // Function to validate full IPv4 address
   function isValidIPv4(hostname) {
     const parts = hostname.split(".");
     if (parts.length !== 4) return false;
@@ -161,8 +162,7 @@ async function analyzeUrl(url) {
     });
   }
 
-
-  // HTTPS/HTTP Check
+  // HTTPS / HTTP check
   if (url.startsWith("https://")) {
     results.push({
       name: "Uses HTTPS",
@@ -177,30 +177,30 @@ async function analyzeUrl(url) {
     });
   }
 
-  // IP Address in Hostname Check (even inside subdomains)
+  // Get hostname safely
   let hostname = "";
   try {
     hostname = new URL(url).hostname;
-  } catch (_) {
+  } catch {
     hostname = "";
   }
 
-  // Match any IP-like patterns (e.g., 192.168.1.1) in hostname or disguised inside it
-  const ipLikePattern = /\b((25[0-5]|2[0-4]\d|1\d\d|\d\d?)\.){3}(25[0-5]|2[0-4]\d|1\d\d|\d\d?)\b/g;
-  const hostnameParts = hostname.split(/[\.\-]/);
+  // Check if hostname is a full IPv4
+  const isFullIpHost = isValidIPv4(hostname);
+
+  // IP address detection anywhere in hostname parts (including subdomains)
+  const hostnamePartsSplit = hostname.split(/[\.\-]/);
   const candidates = [];
-
-  for (let i = 0; i < hostnameParts.length - 3; i++) {
-    candidates.push(`${hostnameParts[i]}.${hostnameParts[i+1]}.${hostnameParts[i+2]}.${hostnameParts[i+3]}`);
+  for (let i = 0; i <= hostnamePartsSplit.length - 4; i++) {
+    candidates.push(hostnamePartsSplit.slice(i, i + 4).join("."));
   }
-
   const foundIpLike = candidates.some(part => ipLikePattern.test(part)) || ipLikePattern.test(hostname);
 
   if (foundIpLike) {
     results.push({
-      name: "IP-Like Pattern in Hostname",
+      name: "IP Address in Hostname",
       status: "warn",
-      message: "Hostname contains a suspicious IP-like pattern, often used to mislead users."
+      message: "IP address detected in URL hostname. IP-based URLs might be suspicious or unsafe."
     });
   } else {
     results.push({
@@ -210,21 +210,17 @@ async function analyzeUrl(url) {
     });
   }
 
-  // Top level domain checker
-  // Will skip if url is a full ip-based url (eg https://192.168.1.1)
-  const isFullIpHost = isValidIPv4(hostname);
-
+  // TLD checking (skip if IP)
   if (!isFullIpHost) {
     try {
-      const hostnameParts = hostname.split(".");
-      const tld = hostnameParts[hostnameParts.length - 1].toLowerCase();
+      const parts = hostname.split(".");
+      const tld = parts[parts.length - 1].toLowerCase();
       const commonTLDs = ["com", "org", "net", "edu", "gov", "sg", "io"];
-
       if (!commonTLDs.includes(tld)) {
         results.push({
           name: "Unusual Top-Level Domain",
           status: "warn",
-          message: `The domain ends in .${tld}, which is less commonly used. Be cautious if you're not familiar with this TLD.`
+          message: `The domain ends in .${tld}, which is less commonly used. Be cautious if unfamiliar with this TLD.`
         });
       } else {
         results.push({
@@ -233,7 +229,7 @@ async function analyzeUrl(url) {
           message: `The domain ends in .${tld}, a commonly used and trusted top-level domain.`
         });
       }
-    } catch (err) {
+    } catch {
       results.push({
         name: "TLD Parsing Error",
         status: "warn",
@@ -248,46 +244,67 @@ async function analyzeUrl(url) {
     });
   }
 
-  // Domain and sub-domain checker
+  // Subdomain structure check
   try {
-    if (isValidIPv4(hostname)) {
+    if (isFullIpHost) {
       results.push({
         name: "Subdomain Structure",
         status: "pass",
         message: `The URL uses a direct IP address (${hostname}). Subdomain checks are not applicable.`
       });
     } else {
-      const hostnameParts = hostname.split(".");
-      if (hostnameParts.length > 2) {
-        const subdomains = hostnameParts.slice(0, -2); // remove domain + TLD
-        const domain = hostnameParts[hostnameParts.length - 2];
-        const tld = hostnameParts[hostnameParts.length - 1];
+      const parts = hostname.split(".");
+      if (parts.length < 2) {
+        results.push({
+          name: "Subdomain Structure",
+          status: "warn",
+          message: "Unable to determine domain structure from the hostname."
+        });
+      } else {
+        const tld = parts[parts.length - 1];
+        const domain = parts[parts.length - 2];
         const mainDomain = `${domain}.${tld}`;
+        const subdomains = parts.slice(0, -2);
 
-        let status = "warn";
-        let note = "which may be used to mislead or obscure the main domain.";
+        // Clean IP-like subdomains as single tokens
+        const cleanedSubdomains = [];
+        let skip = 0;
+        for (let i = 0; i < subdomains.length; i++) {
+          if (skip > 0) {
+            skip--;
+            continue;
+          }
+          const candidate = subdomains.slice(i, i + 4).join(".");
+          if (ipLikePattern.test(candidate)) {
+            cleanedSubdomains.push(candidate);
+            skip = 3;
+          } else {
+            cleanedSubdomains.push(subdomains[i]);
+          }
+        }
 
-        if (subdomains.length >= 4) {
+        let status = "pass";
+        let note = "Subdomain structure appears normal.";
+
+        if (cleanedSubdomains.length >= 4) {
           status = "fail";
-          note = "which is unusually deep and commonly associated with suspicious URLs.";
+          note = "This URL has many nested subdomains, which is unusual and sometimes used to mislead users.";
+        } else if (cleanedSubdomains.length >= 2) {
+          status = "warn";
+          note = "This URL contains multiple subdomains. Always verify that you're on the correct domain.";
         }
 
         results.push({
           name: "Subdomain Structure",
           status: status,
-          message: `The URL uses ${subdomains.length} subdomain level${subdomains.length !== 1 ? "s" : ""}, ${note}<br>
-          Subdomain(s): ${subdomains.join(".")}<br>
-          Main domain: ${mainDomain}`
-        });
-      } else {
-        results.push({
-          name: "Subdomain Structure",
-          status: "pass",
-          message: "No subdomains detected."
+          message: `Detected ${cleanedSubdomains.length} subdomain level${cleanedSubdomains.length !== 1 ? "s" : ""}.<br>
+            Subdomain: ${cleanedSubdomains.join(".") || "(none)"}<br>
+            Main domain: ${mainDomain}<br>
+            ${note}`
         });
       }
     }
-  } catch (err) {
+  } catch {
     results.push({
       name: "Subdomain Check Error",
       status: "warn",
@@ -295,13 +312,13 @@ async function analyzeUrl(url) {
     });
   }
 
-
-
-  // Shortener Check (with Unshorten API)
+  // URL shortener check
   const knownShorteners = [
     "bit.ly", "tinyurl.com", "t.co", "goo.gl", "rebrand.ly",
     "ow.ly", "is.gd", "buff.ly", "shorte.st", "bl.ink"
   ];
+
+  // Extract domain from url
   const domainMatch = url.match(/^https?:\/\/([^\/]+)/i);
   const domain = domainMatch ? domainMatch[1].toLowerCase() : "";
 
@@ -311,7 +328,7 @@ async function analyzeUrl(url) {
       const response = await fetch(`https://unshorten.me/json/${encodeURIComponent(url)}`);
       const data = await response.json();
       expanded = data.resolved_url || "(could not resolve)";
-    } catch (err) {
+    } catch {
       expanded = "(error expanding URL)";
     }
 
@@ -328,20 +345,19 @@ async function analyzeUrl(url) {
     });
   }
 
-  // Common suspicious keywords check
+  // Phishing keyword check
   const phishingKeywords = [
-    "login", "verify", "account", "secure", "bank", "webscr", "signin", "redirect", 
+    "login", "verify", "account", "secure", "bank", "webscr", "signin", "redirect",
     "update", "confirm", "validate", "activate", "pay", "password", "wp-admin", "win", "download"
   ];
-
   const lowerUrl = url.toLowerCase();
-  const foundKeywords = phishingKeywords.filter(keyword => lowerUrl.includes(keyword));
+  const foundKeywords = phishingKeywords.filter(k => lowerUrl.includes(k));
 
   if (foundKeywords.length > 0) {
     results.push({
       name: "Phishing Keywords",
       status: "warn",
-      message: `URL contains suspicious keywords: ${foundKeywords.join(", ")}. Verify before proceeding`
+      message: `URL contains suspicious keywords: ${foundKeywords.join(", ")}. Verify before proceeding.`
     });
   } else {
     results.push({
@@ -354,11 +370,9 @@ async function analyzeUrl(url) {
   return results;
 }
 
-
-
+// Validate if a string is a valid URL
 function isValidUrl(string) {
   try {
-    // Try to construct a URL object; if it throws, invalid URL
     new URL(string);
     return true;
   } catch (_) {
@@ -366,17 +380,17 @@ function isValidUrl(string) {
   }
 }
 
-//MAIN THREAT ANALYSIS FUNCTION ---------
+// MAIN THREAT ANALYSIS FUNCTION ---------
 async function handleAnalysis() {
   let url = "";
 
-  // Check QR code for input
+  // Check QR code content first
   const qrSpan = uploadResult.querySelector("span");
   if (qrSpan && qrSpan.textContent) {
     url = qrSpan.textContent.trim();
   }
 
-  // Check link for input
+  // Fallback to URL input
   if (!url && urlInput.value.trim()) {
     url = urlInput.value.trim();
   }
@@ -390,23 +404,23 @@ async function handleAnalysis() {
   }
 
   if (!isValidUrl(url)) {
-    output.textContent = "Invalid URL format. Please enter a valid URL starting with http:// or https://. If you have checked that the link you entered is correct, then it is a suspicious link - proceed with caution ";
+    output.textContent = "Invalid URL format. Please enter a valid URL starting with http:// or https://. If you have checked that the link you entered is correct, then it is a suspicious link - proceed with caution.";
     return;
   }
 
   output.innerHTML = `<em>Analyzing ${escapeHtml(url)}...</em>`;
 
-  const results = await analyzeUrl(url); // ← await here
+  const results = await analyzeUrl(url);
 
   const resultsHTML = results.map(res => {
-    let color = {
+    const color = {
       pass: "limegreen",
       warn: "orange",
       fail: "red"
     }[res.status] || "gray";
 
     return `<div style="margin-bottom: 0.5em;">
-      <span style="color:${color}">${escapeHtml(res.name)}</span><br>
+      <span style="color:${color}; font-weight: 600;">${escapeHtml(res.name)}</span><br>
       <span>${res.message}</span>
     </div>`;
   }).join("");
@@ -415,9 +429,6 @@ async function handleAnalysis() {
     <div style="margin-bottom: 1em;"><strong>Analyzing:</strong> ${escapeHtml(url)}</div>
     ${resultsHTML}
   `;
-
-  
 }
-
 
 

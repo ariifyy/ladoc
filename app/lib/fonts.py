@@ -1,8 +1,9 @@
 import os
 from PyQt5.QtGui import QFontDatabase
 
-# Set path to your fonts folder
-FONT_FOLDER = os.path.join(os.path.dirname(__file__), "assets","fonts", "Inter", "static")
+# Go up from lib/ to app/
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+FONT_FOLDER = os.path.join(BASE_DIR, "assets", "fonts", "Inter", "static")
 
 def load_inter_fonts():
     font_db = QFontDatabase()

@@ -21,6 +21,17 @@ QPushButton:pressed {
     background-color: %(accent_pressed)s;
 }
 
+/* === Section Headers === */
+QLabel#SectionTitle {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px;
+    background-color: %(section_header_bg)s;
+    color: %(section_header_text)s;
+    border: 1px solid %(section_header_border)s;
+    border-radius: 4px;
+}
+
 /* === Sidebar === */
 QFrame#Sidebar {
     background-color: %(card_bg)s;
@@ -93,7 +104,6 @@ QPushButton#CreateAccountButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
     text-decoration: underline;
 }
-
 
 /* === AuthCard Login/Signup Box === */
 QFrame#AuthCard {
@@ -180,11 +190,6 @@ QScrollBar::handle:vertical {
     border-radius: 4px;
 }
 
-QPushButton#DeleteAccountButton {
-    background-color: 
-}
-
-
 /* === Delete Account Button === */
 QPushButton#DeleteAccountButton {
     background-color: %(delete_button_colour)s;
@@ -201,4 +206,3 @@ QPushButton#DeleteAccountButton:hover {
 QPushButton#DeleteAccountButton:pressed {
     background-color: %(delete_button_pressed)s;
 }
-
