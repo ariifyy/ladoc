@@ -74,14 +74,17 @@ class MainWindow(QMainWindow):
 
         self.stack.addWidget(self.login_page)
         self.stack.addWidget(self.signup_page)
-        self.stack.setCurrentWidget(self.login_page)
+        
+        if not self.login_page.try_auto_login():
+            self.stack.setCurrentWidget(self.login_page)
 
         self.email_breach_checker = EmailBreachChecker()
         self.stack.addWidget(self.email_breach_checker)
         # self.stack.setCurrentWidget(self.email_breach_checker)  # for testing
 
         # Setup tray
-        self.tray_icon = QSystemTrayIcon(QIcon("app/assets/password-512.png"), self)
+        icon_path = os.path.join(os.path.dirname(__file__), "assets", "password-512.png")
+        self.tray_icon = QSystemTrayIcon(QIcon(icon_path), self)
         tray_menu = QMenu()
         restore_action = QAction("Restore", self)
         quit_action = QAction("Exit", self)
@@ -277,13 +280,13 @@ class LADOClandingpage(QWidget):
 
         #url stuff
         layout.addWidget(self.button_separator())
-        url_section = self.create_section("URL")
+        url_section = self.create_section("Links")
         url_section.add_widget(self.make_action_button("QR/URL checker", self.show_qrdecoder_page))
         layout.addWidget(url_section)
 
         #virustotalscanning stuff
         layout.addWidget(self.button_separator())
-        VirusTotalScanner_section = self.create_section("File Hashing")
+        VirusTotalScanner_section = self.create_section("Files")
         VirusTotalScanner_section.add_widget(self.make_action_button("VirusTotal Scanner", self.show_virustotal_scanner))
         layout.addWidget(VirusTotalScanner_section)
 

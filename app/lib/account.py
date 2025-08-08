@@ -56,6 +56,12 @@ class AccountPage(QWidget):
         delete_account_btn.clicked.connect(self.confirm_delete_account)
         layout.addWidget(delete_account_btn)
 
+        # === Logout Button ===
+        logout_btn = QPushButton("Log Out")
+        logout_btn.setObjectName("LogoutButton")   
+        logout_btn.clicked.connect(self.logout_user)
+        layout.addWidget(logout_btn)
+
     def change_password(self):
         old = self.old_password_input.text()
         new = self.new_password_input.text()
@@ -101,3 +107,28 @@ class AccountPage(QWidget):
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to delete account: {e}")
+
+            
+
+    def logout_user(self):
+        """Return to the login screen and clear any sensitive fields."""
+        reply = QMessageBox.question(
+            self,
+            "Log Out",
+            "Are you sure you want to log out?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        if reply != QMessageBox.Yes:
+            return
+
+        
+        for w in (self.old_password_input, self.new_password_input, self.confirm_password_input):
+            w.clear()
+
+        # Navigate back to the login page using your existing stack
+        main_window = self.window()
+        if hasattr(main_window, "login_page") and hasattr(main_window, "stack"):
+            main_window.stack.setCurrentWidget(main_window.login_page)
+
+        QMessageBox.information(self, "Logged Out", "You have been logged out.")

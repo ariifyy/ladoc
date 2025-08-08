@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
     QTextBrowser, QFileDialog, QMessageBox, QFrame, QApplication
 )
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import (QPixmap, QFont)
 from PIL import Image
 from pyzbar.pyzbar import decode
 
@@ -40,10 +40,12 @@ class QRDecoderPage(QWidget):
         top_layout.addWidget(self.url_input)
 
         self.browse_btn = QPushButton("Browse")
+        self.browse_btn.setFont(QFont("Inter", 12))
         self.browse_btn.clicked.connect(self.open_file)
         top_layout.addWidget(self.browse_btn)
 
         self.analyze_btn = QPushButton("Analyze")
+        self.analyze_btn.setFont(QFont("Inter", 12))
         self.analyze_btn.clicked.connect(self.handle_analysis)
         top_layout.addWidget(self.analyze_btn)
 
@@ -53,6 +55,7 @@ class QRDecoderPage(QWidget):
         self.drop_label = ClickableLabel("Drag & drop QR code image here")
         self.drop_label.clicked = self.open_file
         self.drop_label.setAlignment(Qt.AlignCenter)
+        self.drop_label.setFont(QFont("Inter", 12))
         self.drop_label.setStyleSheet("border: 2px dashed gray; padding: 20px;")
         layout.addWidget(self.drop_label)
 
@@ -60,10 +63,12 @@ class QRDecoderPage(QWidget):
         utility_layout = QHBoxLayout()
         
         self.vt_btn = QPushButton("Scan with VirusTotal")
+        self.vt_btn.setFont(QFont("Inter", 12))
         self.vt_btn.clicked.connect(self.scan_with_virustotal)
         utility_layout.addWidget(self.vt_btn)
 
         self.shorturl_btn = QPushButton("Unshorten a link")
+        self.shorturl_btn.setFont(QFont("Inter", 12))
         self.shorturl_btn.clicked.connect(self.open_checkshorturl)
         utility_layout.addWidget(self.shorturl_btn)
 

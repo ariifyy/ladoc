@@ -73,7 +73,7 @@ class PasswordManagerWidget(QWidget):
 
         main_layout.addWidget(splitter)
 
-         # Bottom Resizable Section 
+        # Bottom Resizable Section 
         bottom_splitter = QSplitter(Qt.Horizontal)
 
         # Password details section with title
@@ -449,13 +449,13 @@ class PasswordManagerWidget(QWidget):
             formatted_notes = self.format_notes_with_line_breaks(notes) if notes else ""
 
             details_visible = f"""Title: {title}
-Username: {username}
-Password: {password}
-Site: {site}
-Expiry Date: {expiry_str}
+            Username: {username}
+            Password: {password}
+            Site: {site}
+            Expiry Date: {expiry_str}
 
-Notes:
-{formatted_notes}"""
+            Notes:
+            {formatted_notes}"""
 
             censor = "*" * len(password)
             details_hidden = details_visible.replace(f"Password: {password}", f"Password: {censor}")

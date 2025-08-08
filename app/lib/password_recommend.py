@@ -18,14 +18,14 @@ class PasswordGeneratorWidget(QWidget):
 
         # Title
         title = QLabel("Random Password Generator")
-        title.setFont(QFont("Arial", 20, QFont.Bold))
+        title.setFont(QFont("Inter", 24, QFont.Bold))
         title.setAlignment(Qt.AlignCenter)
         layout.addWidget(title)
 
         # Password length selector
         length_layout = QHBoxLayout()
         length_label = QLabel("Password Length:")
-        length_label.setFont(QFont("Arial", 11))
+        length_label.setFont(QFont("Inter", 12))
         length_layout.addWidget(length_label)
 
         self.length_spin = QSpinBox()

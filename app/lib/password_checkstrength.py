@@ -17,7 +17,7 @@ class PasswordStrengthWidget(QWidget):
 
         # Title
         title = QLabel("Password Strength Checker")
-        title.setFont(QFont("Arial", 20, QFont.Bold))
+        title.setFont(QFont("Inter", 20, QFont.Bold))
         title.setAlignment(Qt.AlignCenter)
         layout.addWidget(title)
 
@@ -34,7 +34,7 @@ class PasswordStrengthWidget(QWidget):
         # Show/Hide toggle button
         self.toggle_button = QPushButton("Show")
         self.toggle_button.setCheckable(True)
-        self.toggle_button.setFixedWidth(60)
+        self.toggle_button.setFixedWidth(120)
         self.toggle_button.clicked.connect(self.toggle_password_visibility)
         input_layout.addWidget(self.toggle_button)
 
@@ -46,7 +46,7 @@ class PasswordStrengthWidget(QWidget):
 
         # Label for "Password Entropy"
         entropy_label = QLabel("Password Entropy:")
-        entropy_label.setFont(QFont("Arial", 11))
+        entropy_label.setFont(QFont("Inter", 11))
         entropy_layout.addWidget(entropy_label)
 
         # Strength meter (progress bar)
@@ -82,7 +82,7 @@ class PasswordStrengthWidget(QWidget):
         # Strength label
         self.strength_label = QLabel("")
         self.strength_label.setAlignment(Qt.AlignCenter)
-        self.strength_label.setFont(QFont("Arial", 12, QFont.Bold))
+        self.strength_label.setFont(QFont("Inter", 12, QFont.Bold))
         self.strength_label.setMaximumWidth(300)
         self.strength_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         layout.addWidget(self.strength_label, alignment=Qt.AlignCenter)
@@ -90,8 +90,8 @@ class PasswordStrengthWidget(QWidget):
         # Tips label for dynamic feedback
         self.tips_label = QLabel("")
         self.tips_label.setWordWrap(True)
-        self.tips_label.setFont(QFont("Arial", 10))
-        self.tips_label.setStyleSheet("color: #000000;")  # Accent color
+        self.tips_label.setFont(QFont("Inter", 10))
+        self.tips_label.setStyleSheet("color: #ae80f3;")  # Accent color
         self.tips_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.tips_label)
 

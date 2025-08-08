@@ -18,13 +18,13 @@ class HaveIBeenPwnedWidget(QWidget):
 
         # --- Title ---
         title = QLabel("Check Password Breach Status")
-        title.setFont(QFont("Arial", 20, QFont.Bold))
+        title.setFont(QFont("Inter", 20, QFont.Bold))
         title.setAlignment(Qt.AlignCenter)
         layout.addWidget(title)
 
         # --- Subtitle ---
         subtitle = QLabel("Enter a password below to check against known breaches:")
-        subtitle.setFont(QFont("Arial", 12))
+        subtitle.setFont(QFont("Inter", 12))
         subtitle.setAlignment(Qt.AlignCenter)
         layout.addWidget(subtitle)
 
@@ -32,20 +32,20 @@ class HaveIBeenPwnedWidget(QWidget):
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("Enter password here")
         self.password_input.setEchoMode(QLineEdit.Password)
-        self.password_input.setFixedWidth(300)  # Narrower input
+        self.password_input.setFixedWidth(400)  # Narrower input
         self.password_input.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.password_input, alignment=Qt.AlignCenter)
 
         # --- Toggle Button ---
         self.toggle_button = QPushButton("Show / Hide Password")
         self.toggle_button.clicked.connect(self.toggle_password_visibility)
-        self.toggle_button.setFixedWidth(200)
+        self.toggle_button.setFixedWidth(350)
         layout.addWidget(self.toggle_button, alignment=Qt.AlignCenter)
 
         # --- Submit Button ---
         submit_button = QPushButton("Check Breach")
         submit_button.clicked.connect(self.check_breach)
-        submit_button.setFixedWidth(200)
+        submit_button.setFixedWidth(350)
         layout.addWidget(submit_button, alignment=Qt.AlignCenter)
 
         # --- Result Label ---

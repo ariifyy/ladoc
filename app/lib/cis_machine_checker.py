@@ -1,17 +1,21 @@
 import os
 import subprocess
+import ctypes
+import sys
+
 from PyQt5.QtWidgets import (
     QWidget, QLabel, QPushButton, QVBoxLayout,
     QMessageBox, QApplication
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
-import sys
+
 
 
 class CISLauncher(QWidget):
     def __init__(self):
         super().__init__()
+        self.cis_script = None  # Path to the .bat file
         self.init_ui()
 
     def init_ui(self):
@@ -20,76 +24,101 @@ class CISLauncher(QWidget):
 
         # Title
         title = QLabel("Apply CIS Windows Hardening")
-        title.setFont(QFont("Arial", 20, QFont.Bold))
+        title.setFont(QFont("Inter", 20, QFont.Bold))
         title.setAlignment(Qt.AlignCenter)
         layout.addWidget(title)
 
-        # Instruction Label
+        # Warning
+        warning = QLabel("⚠️ Please ensure only one `.bat` file is in the CIS folder.")
+        warning.setFont(QFont("Inter", 10))
+        warning.setAlignment(Qt.AlignCenter)
+        warning.setStyleSheet("color: orange;")
+        layout.addWidget(warning)
+
+        # Description
         desc = QLabel("Click a button below to run the CIS security-hardening script "
                       "or open its folder.\nRequires administrator privileges.")
-        desc.setFont(QFont("Arial", 11))
+        desc.setFont(QFont("Inter", 11))
         desc.setAlignment(Qt.AlignCenter)
         desc.setWordWrap(True)
         layout.addWidget(desc)
 
-        # Run Script Button
+        # Buttons
         run_button = QPushButton("Run CIS Script")
-        run_button.setFont(QFont("Arial", 12, QFont.Bold))
-        run_button.setToolTip("Runs cis_hardening.bat to apply CIS security policies")
+        run_button.setFont(QFont("Inter", 12, QFont.Bold))
+        run_button.setToolTip("Runs the .bat file inside the CIS folder")
         run_button.clicked.connect(self.run_cis_script)
-        run_button.setFixedWidth(200)
+        run_button.setFixedWidth(300)
         run_button.setStyleSheet("padding: 10px;")
         layout.addWidget(run_button, alignment=Qt.AlignCenter)
 
-        # Open Folder Button
         open_folder_button = QPushButton("Open Script Folder")
-        open_folder_button.setFont(QFont("Arial", 12))
-        open_folder_button.setToolTip("Opens the folder containing cis_hardening.bat")
+        open_folder_button.setFont(QFont("Inter", 12))
+        open_folder_button.setToolTip("Opens the CIS script folder")
         open_folder_button.clicked.connect(self.open_script_folder)
-        open_folder_button.setFixedWidth(200)
+        open_folder_button.setFixedWidth(300)
         open_folder_button.setStyleSheet("padding: 10px;")
         layout.addWidget(open_folder_button, alignment=Qt.AlignCenter)
 
-        # Footer Label
-        footer = QLabel("Script: cis_hardening.bat")
-        footer.setFont(QFont("Arial", 9))
-        footer.setAlignment(Qt.AlignCenter)
-        layout.addWidget(footer)
+        # Footer
+        self.footer_label = QLabel()
+        self.footer_label.setFont(QFont("Inter", 9))
+        self.footer_label.setAlignment(Qt.AlignCenter)
+        layout.addWidget(self.footer_label)
 
         self.setLayout(layout)
         self.setMinimumWidth(400)
 
+        # Locate the script
+        self.locate_script()
+
+    def locate_script(self):
+        """Locate the .bat file in the CIS directory and update footer label."""
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        cis_dir = os.path.join(base_dir, "CIS")
+
+        if not os.path.isdir(cis_dir):
+            self.footer_label.setText("❌ CIS folder not found.")
+            return
+
+        bat_files = [f for f in os.listdir(cis_dir) if f.lower().endswith(".bat")]
+
+        if len(bat_files) == 1:
+            self.cis_script = os.path.join(cis_dir, bat_files[0])
+            self.footer_label.setText(f"✅ Script Found: {bat_files[0]}")
+        elif len(bat_files) == 0:
+            self.footer_label.setText("❌ No .bat script found in CIS folder.")
+        else:
+            self.footer_label.setText("⚠️ Multiple .bat files found in CIS folder.")
+
     def run_cis_script(self):
-        script_path = os.path.join(os.path.dirname(__file__), "cis_hardening.bat")
-        if not os.path.isfile(script_path):
-            QMessageBox.critical(self, "Error", "Could not find cis_hardening.bat in the current directory.")
+        if not self.cis_script or not os.path.isfile(self.cis_script):
+            QMessageBox.critical(self, "Error", "Valid CIS script not found.")
             return
 
         try:
-            result = subprocess.run(
-                ['cmd', '/c', script_path],
-                capture_output=True,
-                text=True,
-                shell=True
+            # Request administrator privileges and run the .bat script
+            ret = ctypes.windll.shell32.ShellExecuteW(
+                None, "runas", "cmd.exe", f'/c "{self.cis_script}"', None, 1
             )
-
-            if result.returncode == 0:
-                QMessageBox.information(self, "Success", "CIS hardening script ran successfully.")
+            if ret <= 32:
+                QMessageBox.critical(self, "Error", "Failed to launch script with admin privileges.")
             else:
-                QMessageBox.warning(self, "Script Error",
-                                    f"The script exited with code {result.returncode}.\n\n{result.stderr}")
+                QMessageBox.information(self, "Success", "CIS hardening script launched with admin privileges.")
         except Exception as e:
-            QMessageBox.critical(self, "Exception", f"An unexpected error occurred:\n{str(e)}")
+            QMessageBox.critical(self, "Exception", f"An error occurred:\n{str(e)}")
+
 
     def open_script_folder(self):
-        folder_path = os.path.dirname(os.path.abspath(__file__))
-        if os.path.isdir(folder_path):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        cis_folder = os.path.join(base_dir, "CIS")
+        if os.path.isdir(cis_folder):
             try:
-                os.startfile(folder_path)
+                os.startfile(cis_folder)
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Could not open folder:\n{str(e)}")
         else:
-            QMessageBox.critical(self, "Error", "Folder does not exist.")
+            QMessageBox.critical(self, "Error", "CIS folder does not exist.")
 
 
 if __name__ == "__main__":

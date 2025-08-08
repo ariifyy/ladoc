@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import (
     QWidget, QLabel, QVBoxLayout,
     QLineEdit, QPushButton, QTextEdit
 )
+
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 import requests
 
@@ -21,6 +23,7 @@ class EmailBreachChecker(QWidget):
         # Title
         title_label = QLabel("Enter your email to check for breaches:")
         title_label.setAlignment(Qt.AlignCenter)
+        title_label.setFont(QFont("Inter", 16, QFont.Bold))
         layout.addWidget(title_label)
 
         # Input field
@@ -29,6 +32,7 @@ class EmailBreachChecker(QWidget):
 
         # Button
         check_button = QPushButton("Check Email")
+        check_button.setFont(QFont("Inter", 12))
         check_button.clicked.connect(self.check_email)
         layout.addWidget(check_button)
 
@@ -53,16 +57,27 @@ class EmailBreachChecker(QWidget):
         self.result_box.setText("🔎 Checking...")
         try:
             url = f"https://api.xposedornot.com/v1/check-email/{email}"
-            response = requests.get(url)
+            response = requests.get(url, timeout=10)
 
             if response.status_code == 200:
                 data = response.json()
-                if data.get("breaches"):
-                    breaches = "\n".join(data["breaches"])
-                    self.result_box.setText(f"🚨 Breaches found:\n{breaches}")
+                breaches = data.get("breaches", [])
+
+                # Flatten the nested list and remove duplicates
+                flat_breaches = list(set(item for sublist in breaches for item in sublist))
+
+                if flat_breaches:
+                    breach_text = "\n".join(flat_breaches)
+                    count = len(flat_breaches)
+                    self.result_box.setText(f"🚨 {count} Breach(es) found:\n{breach_text}")
                 else:
                     self.result_box.setText(f"✅ No breaches found for {email}.")
             else:
-                self.result_box.setText(f"❌ Error: {response.status_code}")
+                self.result_box.setText(f"❌ Error: {response.status_code} - {response.reason}")
+        except requests.exceptions.Timeout:
+            self.result_box.setText("❌ Error: Request timed out.")
+        except requests.exceptions.RequestException as e:
+            self.result_box.setText(f"❌ Request Error: {str(e)}")
         except Exception as e:
-            self.result_box.setText(f"❌ Exception: {str(e)}")
+            self.result_box.setText(f"❌ Unexpected Error: {str(e)}")
+

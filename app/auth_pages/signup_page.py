@@ -67,6 +67,27 @@ class SignupPage(QWidget):
         self.password_input.setFont(QFont("Inter", 10))
         self.password_input.returnPressed.connect(self.register_user)
 
+        # --- Show/Hide for password ---
+        self.toggle_password_btn = QPushButton("Show")
+        self.toggle_password_btn.setCheckable(True)
+        self.toggle_password_btn.setFixedWidth(60)
+        self.toggle_password_btn.setFixedHeight(45)
+        self.toggle_password_btn.setFont(QFont("Inter", 16))
+        self.toggle_password_btn.setStyleSheet("""
+        QPushButton {
+            padding: 7px;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+        """)
+        self.toggle_password_btn.clicked.connect(self.toggle_password_visibility)
+
+        
+        password_row = QHBoxLayout()
+        password_row.setSpacing(5)
+        password_row.addWidget(self.password_input)
+        password_row.addWidget(self.toggle_password_btn)
+
 
         register_btn = QPushButton("Sign Up")
         register_btn.setObjectName("LoginButton")  # Reuse style
@@ -76,7 +97,7 @@ class SignupPage(QWidget):
 
         form_layout.addWidget(self.username_input)
         form_layout.addWidget(self.email_input)
-        form_layout.addWidget(self.password_input)
+        form_layout.addLayout(password_row)
         form_layout.addWidget(register_btn)
 
         container_layout.addWidget(form_card, alignment=Qt.AlignHCenter)
@@ -96,7 +117,7 @@ class SignupPage(QWidget):
         or_label = QLabel("OR")
         or_label.setAlignment(Qt.AlignCenter)
         or_label.setFont(QFont("Inter", 10))
-        or_label.setStyleSheet("color: #bbbbbb; font-size: 11px; padding: 0px; margin: 0px;")
+        or_label.setStyleSheet("color: #bbbbbb; font-size: 20px; padding: 0px; margin: 0px;")
 
         line2 = QFrame()
         line2.setFrameShape(QFrame.HLine)
@@ -113,7 +134,7 @@ class SignupPage(QWidget):
         # Login Button
         back_to_login_btn = QPushButton("Already have an account? Sign In.")
         back_to_login_btn.setObjectName("CreateAccountButton")
-        back_to_login_btn.setFont(QFont("Inter", 11, QFont.Medium))
+        back_to_login_btn.setFont(QFont("Inter", 16, QFont.Medium))
         back_to_login_btn.clicked.connect(self.switch_to_login)
         container_layout.addWidget(back_to_login_btn, alignment=Qt.AlignCenter)
 
@@ -160,3 +181,11 @@ class SignupPage(QWidget):
             QMessageBox.warning(self, "Error", "Username or email already exists.")
         finally:
             conn.close()
+
+    def toggle_password_visibility(self):
+        if self.toggle_password_btn.isChecked():
+            self.password_input.setEchoMode(QLineEdit.Normal)
+            self.toggle_password_btn.setText("Hide")
+        else:
+            self.password_input.setEchoMode(QLineEdit.Password)
+            self.toggle_password_btn.setText("Show")
