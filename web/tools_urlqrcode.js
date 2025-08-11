@@ -59,12 +59,14 @@ function clearCanvas() {
   ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
 }
 
-// Handle image file dropped or selected
 function handleImageFile(file) {
   if (!file.type.startsWith("image/")) {
     uploadResult.textContent = "Please upload a valid image file.";
     return;
   }
+
+  // Show processing message
+  uploadResult.innerHTML = "<strong>Processing image...</strong>";
 
   const img = new Image();
   const reader = new FileReader();
@@ -74,14 +76,37 @@ function handleImageFile(file) {
   };
 
   img.onload = () => {
-    qrCanvas.width = img.width;
-    qrCanvas.height = img.height;
+    // Scale down large images
+    const maxSize = 800;
+    let { width, height } = img;
+    
+    if (width > maxSize || height > maxSize) {
+      if (width > height) {
+        height = (height * maxSize) / width;
+        width = maxSize;
+      } else {
+        width = (width * maxSize) / height;
+        height = maxSize;
+      }
+    }
+
+    qrCanvas.width = width;
+    qrCanvas.height = height;
     clearCanvas();
 
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, width, height);
 
-    const imageData = ctx.getImageData(0, 0, qrCanvas.width, qrCanvas.height);
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
+    const imageData = ctx.getImageData(0, 0, width, height);
+    
+    // Try multiple QR detection attempts for better mobile photo support
+    let code = jsQR(imageData.data, imageData.width, imageData.height);
+    
+    // If failed, try with inversion (for dark QR codes)
+    if (!code) {
+      code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: "attemptBoth"
+      });
+    }
 
     if (code) {
       uploadResult.innerHTML = `
@@ -89,7 +114,10 @@ function handleImageFile(file) {
         <span>${escapeHtml(code.data)}</span>
       `;
     } else {
-      uploadResult.textContent = "Invalid or no QR code found in the image.";
+      uploadResult.innerHTML = `
+        <strong style="color: orange;">No QR code found</strong><br>
+        <span style="font-size: 0.9em;">Try taking a clearer photo with good lighting</span>
+      `;
     }
   };
 
