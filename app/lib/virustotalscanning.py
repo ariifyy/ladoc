@@ -34,7 +34,7 @@ class VirusTotalScanner(QWidget):
     def __init__(self, user_id, parent=None):
         super().__init__(parent)
         self.user_id = user_id
-        self.api_key = "d274dafa9ff2a0472544fe895f2264f9445116f33632266f752e2dee1a7645a4"
+        self.api_key = "PUT VT API KEY HERE"
 
         # Upload label (click + drag/drop)
         self.file_label = FileDropLabel(self)
